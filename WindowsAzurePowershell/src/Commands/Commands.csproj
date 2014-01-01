@@ -224,6 +224,31 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudGame\AzureGameServicesHttpClientCommandBase.cs" />
+    <Compile Include="CloudGame\DeployAzureGameServicesXblComputeCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesPropertiesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblAssetsCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblCertificatesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblClustersCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblComputeDeploymentReportCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblComputeInstancesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblComputePoolUnitReportCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblComputeSummaryReportCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblDumpFilesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblGameModesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblLogFilesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesXblPackagesCommand.cs" />
+    <Compile Include="CloudGame\NewAzureGameServicesXblAssetCommand.cs" />
+    <Compile Include="CloudGame\NewAzureGameServicesXblCertificateCommand.cs" />
+    <Compile Include="CloudGame\NewAzureGameServicesXblComputeCommand.cs" />
+    <Compile Include="CloudGame\NewAzureGameServicesXblGameModeCommand.cs" />
+    <Compile Include="CloudGame\NewAzureGameServicesXblPackageCommand.cs" />
+    <Compile Include="CloudGame\RemoveAzureGameServicesXblAssetCommand.cs" />
+    <Compile Include="CloudGame\RemoveAzureGameServicesXblCertificateCommand.cs" />
+    <Compile Include="CloudGame\RemoveAzureGameServicesXblCompute.cs" />
+    <Compile Include="CloudGame\RemoveAzureGameServicesXblGameModeCommand.cs" />
+    <Compile Include="CloudGame\RemoveAzureGameServicesXblPackageCommand.cs" />
+    <Compile Include="CloudGame\StopAzureGameServicesXblComputeCommand.cs" />
     <Compile Include="CloudService\Development\DisableAzureRemoteDesktop.cs" />
     <Compile Include="CloudService\Development\EnableAzureMemcacheRole.cs" />
     <Compile Include="CloudService\Development\EnableAzureRemoteDesktop.cs" />

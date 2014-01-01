@@ -178,6 +178,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WindowsAzure.Storage.2.0.5.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\v2.2\ref\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -228,6 +232,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudGame\Contract\Requests\AzureResourceProviderContracts.cs" />
+    <Compile Include="CloudGame\Contract\Requests\CloudServiceResource.cs" />
+    <Compile Include="CloudGame\Contract\Requests\CloudServices.cs" />
+    <Compile Include="CloudGame\Contract\Requests\EntityTypeConstants.cs" />
+    <Compile Include="CloudGame\Contract\Requests\GameMode.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblAssetRequest.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblCertificateRequest.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblCompute.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblComputeRequest.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblGameModeRequest.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblGameModeSchema.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblGameModeSchemaRequest.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblPackage.cs" />
+    <Compile Include="CloudGame\Contract\Requests\XblPackageRequest.cs" />
+    <Compile Include="CloudGame\Contract\Responses\AzureGameServicesPropertiesResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\AzureGameServicesProperty.cs" />
+    <Compile Include="CloudGame\Contract\Responses\AzureGameServicesResourceSet.cs" />
+    <Compile Include="CloudGame\Contract\Responses\ChartData.cs" />
+    <Compile Include="CloudGame\Contract\Responses\DashboardSummary.cs" />
+    <Compile Include="CloudGame\Contract\Responses\GeoRegionDeploymentInfo.cs" />
+    <Compile Include="CloudGame\Contract\Responses\GeoRegionPoolInfo.cs" />
+    <Compile Include="CloudGame\Contract\Responses\NewXblGameModeResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\PackageDeploymentInfo.cs" />
+    <Compile Include="CloudGame\Contract\Responses\UsageData.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblAssetCollectionResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblAssetPostResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblAssetResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblCertificateCollectionResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblCertificatePostResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblCertificateResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblComputeDeploymentData.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblComputePoolData.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblEnumerateClustersResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblEnumerateDiagnosticFilesResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblGameModeCollectionResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblGameModePostResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblGameModeResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblPackageCollectionResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblPackagePostResponse.cs" />
+    <Compile Include="CloudGame\Contract\Responses\XblPackageResponse.cs" />
+    <Compile Include="CloudGame\IXblComputeClient.cs" />
+    <Compile Include="CloudGame\XblComputeClient.cs" />
+    <Compile Include="CloudGame\XblComputeClientHelper.cs" />
+    <Compile Include="CloudGame\XblComputeUriElements.cs" />
     <Compile Include="CloudService\AzureTools\AzureTool.cs" />
     <Compile Include="CloudService\AzureTools\CsEncrypt.cs" />
     <Compile Include="CloudService\AzureTools\CsPack.cs" />
@@ -281,21 +329,28 @@
     <Compile Include="Common\Authentication\LoginType.cs" />
     <Compile Include="Common\Authentication\RegistryBackedDictionary.cs" />
     <Compile Include="Common\CloudBlobUtility.cs" />
+    <Compile Include="Common\CmdletSubscriptionExtensions.cs" />
     <Compile Include="Common\CmdletWithSubscriptionBase.cs" />
+    <Compile Include="Common\GlobalSettingsManager.cs" />
     <Compile Include="Common\HttpClientExtensions.cs" />
     <Compile Include="Common\HttpClientHelper.cs" />
     <Compile Include="Common\HttpRestCallLogger.cs" />
     <Compile Include="Common\IProfileStore.cs" />
+    <Compile Include="Common\ISessionManager.cs" />
+    <Compile Include="Common\ISubscriptionsManager.cs" />
     <Compile Include="Common\ObjectDeltaMapper.cs" />
     <Compile Include="Common\PowershellDefaultProfileStore.cs" />
     <Compile Include="Common\PowershellOldSettingsProfileStore.cs" />
     <Compile Include="Common\PowershellProfileStore.cs" />
     <Compile Include="Common\PowerShellUtility.cs" />
     <Compile Include="Common\ProfileData.cs" />
+    <Compile Include="Common\PsSessionManager.cs" />
     <Compile Include="Common\PublishSettingsImporter.cs" />
     <Compile Include="Common\RequiredResourceLookup.cs" />
     <Compile Include="Common\ServiceManagementClientExtensions.cs" />
     <Compile Include="Common\StandardHeadersHandler.cs" />
+    <Compile Include="Common\SubscriptionData.cs" />
+    <Compile Include="Common\SubscriptionsManager.cs" />
     <Compile Include="Common\Tasks.cs" />
     <Compile Include="Common\WindowsAzureCertificate.cs" />
     <Compile Include="Common\WindowsAzureProfile.cs" />
@@ -322,6 +377,9 @@
     <Compile Include="Common\ChannelHelper.cs" />
     <Compile Include="Common\Validate.cs" />
     <Compile Include="Common\XmlSchema\PublishProfile.cs" />
+    <Compile Include="Common\XmlSchema\SubscriptionsData.cs">
+      <DependentUpon>SubscriptionsData.xsd</DependentUpon>
+    </Compile>
     <Compile Include="HDInsight\Commands\BaseCommandInterfaces\IAddAzureHDInsightConfigValuesBase.cs" />
     <Compile Include="HDInsight\Commands\BaseCommandInterfaces\IAddAzureHDInsightMetaStoreBase.cs" />
     <Compile Include="HDInsight\Commands\BaseCommandInterfaces\IAddAzureHDInsightStorageBase.cs" />
@@ -739,6 +797,9 @@
     <Content Include="welcome.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Common\XmlSchema\SubscriptionsData.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="PostBuildCleanup.bat" />
     <None Include="Properties\DataSources\Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference.CatalogServiceReadOnlyDbContext.datasource" />
     <None Include="Resources\Scaffolding\General\WorkerRole\startup.cmd">
