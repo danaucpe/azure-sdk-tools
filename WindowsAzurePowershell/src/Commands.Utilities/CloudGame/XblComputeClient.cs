@@ -225,9 +225,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         ///     Creates a Xbl game mode.
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
-        /// <param name="gameModeName">The game mode name</param>
-        /// <param name="gameModeFileName">The game mode oringal filename</param>
-        /// <param name="gameModeStream">The game mode stream.</param>
+        /// <param name="xblGameModeName">The game mode name</param>
+        /// <param name="xblGameModeFileName">The game mode oringal filename</param>
+        /// <param name="xblGameModeStream">The game mode stream.</param>
         /// <returns></returns>
         public Task<NewXblGameModeResponse> NewXblGameMode(
             string xblComputeName, 
@@ -422,7 +422,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                             message.StatusCode,
                             new ServiceManagementError { Code = message.StatusCode.ToString() },
                             string.Empty);
-                    });
+                    }).Wait();
 
             // Return the Asset info
             return Task<string>.Factory.StartNew(() => postAssetResult.AssetId);
@@ -452,6 +452,179 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                             new ServiceManagementError { Code = message.StatusCode.ToString() },
                             string.Empty);
                     });
+        }
+
+        /// <summary>
+        ///     Creates a new Xbl game code file.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">The Xbl Game service Id this code file maps to.</param>
+        /// <param name="xblCodeFileName">The code file name.</param>
+        /// <param name="xblCodeFileFileName">The code file filename.</param>
+        /// <param name="xblCodeFileIsActive">Whether the code file should be activated or not.</param>
+        /// <param name="xblCodeFileStream">The code file filestream.</param>
+        /// <returns>The code file Id if successful, and error if unsuccessful.</returns>
+        public Task<string> NewXblCodeFile(
+            string xblComputeName,
+            string xblGameServiceId,
+            string xblCodeFileName,
+            string xblCodeFileFileName,
+            bool xblCodeFileIsActive,
+            Stream xblCodeFileStream)
+        {
+            // Call in to get a CodefileId and preauthURL to use for upload of the code file
+            var newCodeFileRequest = new XblCodeFileRequest()
+            {
+                Filename = xblCodeFileFileName,
+                Name = xblCodeFileName,
+                Active = xblCodeFileIsActive
+            };
+
+            var multipartFormContent = new MultipartFormDataContent
+            {
+                {
+                    new StringContent(ClientHelper.ToJson(newCodeFileRequest)),
+                    "metadata"
+                }
+            };
+
+            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFilesResourcePath, xblComputeName, xblGameServiceId);
+            var postCodeFileResult = _httpClient.PostAsync(url, multipartFormContent).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblCodeFilePostResponse>(tr)).Result;
+
+            try
+            {
+                var cloudblob = new CloudBlob(postCodeFileResult.CodeFilePreAuthUrl);
+                Task.Factory.FromAsync(
+                    (callback, state) => cloudblob.BeginUploadFromStream(xblCodeFileStream, callback, state),
+                    cloudblob.EndUploadFromStream,
+                    TaskCreationOptions.None).Wait();
+            }
+            catch (StorageException)
+            {
+                var errorMessage = string.Format("Failed to upload code file file for XblCompute instance to azure storage. gameId {0}, gsiId, {1} CodeFileId {2}", xblComputeName, xblGameServiceId, postCodeFileResult.CodeFileId);
+                throw ClientHelper.CreateExceptionFromJson(HttpStatusCode.Ambiguous, errorMessage);
+            }
+
+            var multpartFormContentMetadata = new MultipartFormDataContent
+            {
+                {
+                    new StringContent(ClientHelper.ToJson(newCodeFileRequest)),"metadata"
+                }
+            };
+
+            url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFileResourcePath, xblComputeName, xblGameServiceId, postCodeFileResult.CodeFileId);
+            _httpClient.PutAsync(url, multpartFormContentMetadata).ContinueWith(
+                tr =>
+                {
+                    var message = tr.Result;
+                    if (message.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+
+                    // Error result, so throw an exception
+                    throw new ServiceManagementClientException(
+                        message.StatusCode,
+                        new ServiceManagementError { Code = message.StatusCode.ToString() },
+                        string.Empty);
+                });
+
+            // Return the CodeFile info
+            return Task<string>.Factory.StartNew(() => postCodeFileResult.CodeFileId);
+        }
+
+        /// <summary>
+        ///     Gets the game code files.
+        /// </summary>
+        /// <param name="xblComputeName">The cloud game name.</param>
+        /// <param name="xblGameServiceId">The game service Id.</param>
+        /// <returns>A collection of Code files.</returns>
+        public Task<XblCodeFileCollectionResponse> GetXblCodeFiles(string xblComputeName, string xblGameServiceId)
+        {
+            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFilesResourcePath, xblComputeName, xblGameServiceId);
+            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblCodeFileCollectionResponse>(tr));
+        }
+
+        /// <summary>
+        ///     Sets values on the code file that need to change.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">Game service Id for code file.</param>
+        /// <param name="xblCodeFileId">The Id of the code file to change.</param>
+        /// /// <param name="xblCodeFileName">The code file name.</param>
+        /// <param name="xblCodeFileFileName">The code file filename.</param>
+        /// <param name="xblCodeFileIsActive">Whether the code file should be activated or not.</param>
+        /// <returns>True if the values were set; otherwise an error.</returns>
+        public Task<bool> SetXblCodeFile(
+            string xblComputeName,
+            string xblGameServiceId,
+            string xblCodeFileId,
+            string xblCodeFileName,
+            string xblCodeFileFileName,
+            bool xblCodeFileIsActive)
+        {
+            // Create the new code file metadata
+            var newCodeFileRequest = new XblCodeFileRequest()
+            {
+                Name = xblCodeFileName,
+                Filename = xblCodeFileFileName,
+                Active = xblCodeFileIsActive
+            };
+
+            var multpartFormContentMetadata = new MultipartFormDataContent
+            {
+                {
+                    new StringContent(ClientHelper.ToJson(newCodeFileRequest)),
+                    "metadata"
+                }
+            };
+
+            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFileResourcePath, xblComputeName, xblGameServiceId, xblCodeFileId);
+            return _httpClient.PutAsync(url, multpartFormContentMetadata).ContinueWith(
+                tr =>
+                {
+                    var message = tr.Result;
+                    if (message.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+
+                    // Error result, so throw an exception
+                    throw new ServiceManagementClientException(
+                        message.StatusCode,
+                        new ServiceManagementError { Code = message.StatusCode.ToString() },
+                        string.Empty);
+                });
+        }
+
+        /// <summary>
+        ///     Remove the xbl code file.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">The game service Id.</param>
+        /// <param name="xblCodeFileId">The code file to be removed.</param>
+        /// <returns>True if successfully removed, otherwise and error.</returns>
+        public Task<bool> RemoveXblCodeFile(
+            string xblComputeName,
+            string xblGameServiceId,
+            string xblCodeFileId)
+        {
+            string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFileResourcePath, xblComputeName, xblGameServiceId, xblCodeFileId);
+            return _httpClient.DeleteAsync(url).ContinueWith(
+                tr =>
+                {
+                    var message = tr.Result;
+                    if (message.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+
+                    // Error result, so throw an exception
+                    throw new ServiceManagementClientException(
+                        message.StatusCode,
+                        new ServiceManagementError { Code = message.StatusCode.ToString() },
+                        string.Empty);
+                });
         }
 
         /// <summary>

@@ -204,6 +204,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudGame\XblComputeClientTests.cs" />
     <Compile Include="CloudService\AzureServiceWrapper.cs" />
     <Compile Include="Common\ClientMocks.cs" />
     <Compile Include="Common\Data.cs" />

@@ -50,6 +50,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         public const string GameAssetResourcePath = "/cloudservices/gameservices/resources/gameservices/~/xboxlivecompute/{0}/assets/{1}";
 
         /// <summary>
+        /// The create code file resource path.
+        /// </summary>
+        public const string GameCodeFilesResourcePath = "/cloudservices/gameservices/resources/gameservices/~/xboxlivecompute/{0}/images/{1}/CodeFiles";
+
+        /// <summary>
+        /// The game Code Files resource path.
+        /// </summary>
+        public const string GameCodeFileResourcePath = "/cloudservices/gameservices/resources/gameservices/~/xboxlivecompute/{0}/images/{1}/CodeFiles/{2}";
+
+        /// <summary>
         /// The game image resource path.
         /// </summary>
         public const string GameImageResourcePath = "/cloudservices/gameservices/resources/gameservices/~/xboxlivecompute/{0}/images/{1}";

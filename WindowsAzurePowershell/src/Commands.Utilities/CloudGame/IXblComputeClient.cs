@@ -144,6 +144,62 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             Stream xblAssetStream);
 
         /// <summary>
+        ///     Creates a new Xbl game code file.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">Game service Id for code file</param>
+        /// <param name="xblCodeFileName">The code file name.</param>
+        /// <param name="xblCodeFileFileName">The code file filename.</param>
+        /// <param name="xblCodeFileIsActive">Whether the code file should be activated or not.</param>
+        /// <param name="xblCodeFileStream">The code file filestream.</param>
+        /// <returns></returns>
+        Task<string> NewXblCodeFile(
+            string xblComputeName,
+            string xblGameServiceId,
+            string xblCodeFileName,
+            string xblCodeFileFileName,
+            bool xblCodeFileIsActive,
+            Stream xblCodeFileStream);
+
+        /// <summary>
+        ///     Sets values on the code file that need to change.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">Game service Id for code file.</param>
+        /// <param name="xblCodeFileId">The Id of the code file to change.</param>
+        /// <param name="xblCodeFileName">The code file name.</param>
+        /// <param name="xblCodeFileFileName">The code file filename.</param>
+        /// <param name="xblCodeFileIsActive">Whether the code file should be activated or not.</param>
+        /// <returns></returns>
+        Task<bool> SetXblCodeFile(
+            string xblComputeName,
+            string xblGameServiceId,
+            string xblCodeFileId,
+            string xblCodeFileName,
+            string xblCodeFileFileName,
+            bool xblCodeFileIsActive);
+
+        /// <summary>
+        ///     Gets the XblCodeFiles.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">Game service Id for code file.</param>
+        /// <returns>Collection of Code Files</returns>
+        Task<XblCodeFileCollectionResponse> GetXblCodeFiles(string xblComputeName, string xblGameServiceId);
+
+        /// <summary>
+        ///     Remove the code file.
+        /// </summary>
+        /// <param name="xblComputeName">The XblCompute Instance Name.</param>
+        /// <param name="xblGameServiceId">Game service Id for code file.</param>
+        /// <param name="xblCodeFileId">The Id of the code file to remove.</param>
+        /// <returns>True if removed, false if not removed.</returns>
+        Task<bool> RemoveXblCodeFile(
+            string xblComputeName,
+            string xblGameServiceId,
+            string xblCodeFileId);
+
+        /// <summary>
         ///     Remove the xbl asset.
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
