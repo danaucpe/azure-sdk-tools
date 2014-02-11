@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
                           string.Format("Game Service:{0} will be deleted by this action.", XblComputeName),
@@ -41,9 +41,8 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
                           string.Empty,
                           () =>
                           {
-                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-                              var result = false;
-                              CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.RemoveXblCompute(XblComputeName).Result; });
+                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+                              var result = Client.RemoveXblCompute(XblComputeName).Result;
                               WriteObject(result);
                           });
         }

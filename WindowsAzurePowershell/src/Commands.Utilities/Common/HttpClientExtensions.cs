@@ -186,7 +186,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             AddUserAgent(client);
             LogRequest(
                 HttpMethod.Delete.Method,
-                client.BaseAddress + requestUri,
+                requestUri,
                 client.DefaultRequestHeaders,
                 string.Empty,
                 logger);
@@ -200,7 +200,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             AddUserAgent(client);
             LogRequest(
                 HttpMethod.Get.Method,
-                client.BaseAddress + requestUri,
+                requestUri,
                 client.DefaultRequestHeaders,
                 string.Empty,
                 Logger);

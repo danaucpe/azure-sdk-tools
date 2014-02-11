@@ -16,27 +16,49 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 {
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
     using System;
+    using System.Text;
 
     public class AzureGameServicesHttpClientCommandBase : CmdletWithSubscriptionBase
     {
-        protected virtual void OnProcessRecord()
-        {
-            // Intentionally left blank
-        }
-        protected override void ProcessRecord()
+        private StringBuilder debugLog = new StringBuilder();
+
+        public override void ExecuteCmdlet()
         {
             try
             {
-                Validate.ValidateInternetConnection();
-                ExecuteCmdlet();
-                OnProcessRecord();
+                this.debugLog.Clear();
+                this.WriteDebugLog(string.Format(
+                    "Start Commandlet execution. Subscription {0}, StartTime: {1}",
+                    this.HasCurrentSubscription ? this.CurrentSubscription.SubscriptionName + " : " + this.CurrentSubscription.SubscriptionId : "None",
+                    DateTime.UtcNow));
+                CatchAggregatedExceptionFlattenAndRethrow(() =>
+                    {
+                        Validate.ValidateInternetConnection();
+                        this.Execute();
+                    });
             }
             catch (Exception ex)
             {
+                WriteDebugLog(ex.ToString());
                 WriteExceptionError(ex);
             }
+            finally
+            {
+                this.WriteDebugLog(string.Format("End Commandlet execution. EndTime: {0}", DateTime.UtcNow));
+                WriteDebug(this.debugLog.ToString());
+            }
         }
-        protected static void CatchAggregatedExceptionFlattenAndRethrow(Action c)
+
+        protected virtual void Execute()
+        {
+        }
+
+        protected void WriteDebugLog(string log)
+        {
+            this.debugLog.AppendLine(log);
+        }
+
+        private static void CatchAggregatedExceptionFlattenAndRethrow(Action c)
         {
             try
             {

@@ -40,12 +40,10 @@ namespace Microsoft.WindowsAzure.Management.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
-            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-            XblEnumerateClustersResponse result = null;
-
-            CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.GetClusters(XblComputeName, GeoRegion, Status).Result; });
+            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.GetClusters(XblComputeName, GeoRegion, Status).Result;
             WriteObject(result);
         }
     }

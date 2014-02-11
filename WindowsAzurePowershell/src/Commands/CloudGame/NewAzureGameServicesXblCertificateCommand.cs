@@ -47,17 +47,15 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
-            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-            XblCertificatePostResponse result = null;
-
-            CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.NewXblCertificate(
+            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.NewXblCertificate(
                 XblComputeName, 
                 CertificateName,
                 CertificateFilename,
                 CertificatePassword,
-                CertificateStream).Result; });
+                CertificateStream).Result;
             WriteObject(result);
         }
     }

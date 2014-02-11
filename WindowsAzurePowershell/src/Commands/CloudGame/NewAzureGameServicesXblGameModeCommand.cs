@@ -44,12 +44,10 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
-            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-            NewXblGameModeResponse result = null;
-
-            CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.NewXblGameMode(XblComputeName, GameModeName, GameModeFileName, GameModeStream).Result; });
+            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.NewXblGameMode(XblComputeName, GameModeName, GameModeFileName, GameModeStream).Result;
             WriteObject(result);
         }
     }

@@ -39,41 +39,32 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblComputeClientHelper
     /// </summary>
     public class ClientHelper
     {
-        public static void RegisterCloudService(HttpClient httpJsonClient, HttpClient httpXmlClient)
+        public static async Task RegisterCloudService(HttpClient httpJsonClient, HttpClient httpXmlClient)
         {
             // Check registration.
             var url = httpJsonClient.BaseAddress + String.Format("/services?service=gameservices.xboxlivecompute&action=register");
-            httpJsonClient.PutAsync(url, null).ContinueWith(tr => ProcessBooleanJsonResponseAllowConflict(tr));
+            var responseMessage = await httpJsonClient.PutAsync(url, null).ConfigureAwait(false);
+            ProcessBooleanJsonResponseAllowConflict(responseMessage);
 
             // See if the cloud service exists, and create it if it does not.
             url = httpXmlClient.BaseAddress + String.Format(CloudGameUriElements.CloudServiceResourcePath);
-
-            var existingCloudService = httpXmlClient.GetAsync(url).ContinueWith(
-                tr =>
+            responseMessage = await httpXmlClient.GetAsync(url).ConfigureAwait(false);
+            CloudService existingCloudService = null;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                existingCloudService = await ClientHelper.ProcessXmlResponse<CloudService>(responseMessage).ConfigureAwait(false);
+            }
+            else if (responseMessage.StatusCode != HttpStatusCode.NotFound)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(responseMessage.StatusCode,
+                    new ServiceManagementError
                     {
-                        // If the request is sucessfull, then deserialize it, otherwise, and 404 is acceptable. All other conditions are
-                        // errors to be returned to the caller
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
-                        {
-                            return ClientHelper.ProcessXmlResponse<CloudService>(tr);
-                        }
-                        else if (message.StatusCode == HttpStatusCode.NotFound)
-                        {
-                            return null;
-                        }
-                        else
-                        {
-                            // Error result, so throw an exception
-                            throw new ServiceManagementClientException(message.StatusCode,
-                                new ServiceManagementError
-                                {
-                                    Code = message.StatusCode.ToString()
-                                },
-                                string.Empty);
+                        Code = responseMessage.StatusCode.ToString()
+                    },
+                    string.Empty);
 
-                        }
-                    }).Result;
+            }
 
             // If the cloud service exists, and it has the DefaultServiceName, then no more work is needed
             if ((existingCloudService != null) && existingCloudService.Name.Equals(CloudGameUriElements.DefaultServiceName))
@@ -89,44 +80,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblComputeClientHelper
                 GeoRegion = "West US",
                 Label = CloudGameUriElements.DefaultServiceName
             };
-            httpXmlClient.PutAsXmlAsync(url, newCloudService).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (message.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
 
-                    // Error result, so throw an exception
-                    throw new ServiceManagementClientException(
-                        message.StatusCode,
-                        new ServiceManagementError { Code = message.StatusCode.ToString() },
-                        string.Empty);
-                }).Wait();
-
-            // Poll RDFE to see if the Cloud Game "resource" has been created
-            var created = false;
-            var numRetries = 0;
-            do
+            responseMessage = await httpXmlClient.PutAsXmlAsync(url, newCloudService).ConfigureAwait(false);
+            if (!responseMessage.IsSuccessStatusCode)
             {
-                httpXmlClient.GetAsync(url).ContinueWith(
-                    tr =>
-                    {
-                        // If the request is sucessfull, then deserialize it, otherwise, and 404 is acceptable. All other conditions are
-                        // errors to be returned to the caller
-                        if (tr.Result.IsSuccessStatusCode)
-                        {
-                            created = true;
-                        }
-                    }).Wait();
-            }
-            while (!created && (numRetries++ < 10));
-            if (!created)
-            {
-                throw new ServiceManagementClientException(HttpStatusCode.InternalServerError,
-                    new ServiceManagementError { Code = HttpStatusCode.InternalServerError.ToString() },
-                    "Failed to create cloudgame Resource for subscription");                
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    responseMessage.StatusCode,
+                    new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
+                    string.Empty);
             }
         }
 
@@ -138,39 +100,36 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblComputeClientHelper
         /// <returns></returns>
         /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceManagementClientException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
-        public static T ProcessJsonResponse<T>(Task<HttpResponseMessage> responseMessage)
+        public static async Task<T> ProcessJsonResponse<T>(HttpResponseMessage responseMessage)
         {
-            var message = responseMessage.Result;
-            var content = message.Content.ReadAsStringAsync().Result;
+            var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if (message.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 return (T)JsonConvert.DeserializeObject(content, typeof(T));
             }
 
-            throw CreateExceptionFromJson(message.StatusCode, content);
+            throw CreateExceptionFromJson(responseMessage.StatusCode, content);
         }
 
-        public static bool ProcessBooleanJsonResponseAllowConflict(Task<HttpResponseMessage> responseMessage)
+        public static bool ProcessBooleanJsonResponseAllowConflict(HttpResponseMessage responseMessage)
         {
-            var message = responseMessage.Result;
-            if (message.IsSuccessStatusCode || (message.StatusCode == HttpStatusCode.Conflict))
+            if (responseMessage.IsSuccessStatusCode || (responseMessage.StatusCode == HttpStatusCode.Conflict))
             {
                 return true;
             }
 
             // Error
-            throw CreateExceptionFromJson(message.StatusCode, string.Empty);
+            throw CreateExceptionFromJson(responseMessage.StatusCode, string.Empty);
         }
 
-        public static XblComputeColletion ProcessCloudServiceResponse(Task<HttpResponseMessage> responseMessage)
+        public static async Task<XblComputeColletion> ProcessCloudServiceResponse(HttpResponseMessage responseMessage)
         {
-            var message = responseMessage.Result;
-            var content = message.Content.ReadAsStringAsync().Result;
-            var encoding = GetEncodingFromResponseMessage(message);
+            var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var encoding = GetEncodingFromResponseMessage(responseMessage);
             var response = new XblComputeColletion();
 
-            if (message.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 var ser = new DataContractSerializer(typeof(CloudService));
                 using (var stream = new MemoryStream(encoding.GetBytes(content)))
@@ -210,16 +169,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblComputeClientHelper
                 return response;
             }
 
-            throw CreateExceptionFromXml(content, message);
+            throw CreateExceptionFromXml(content, responseMessage);
         }
 
-        public static T ProcessXmlResponse<T>(Task<HttpResponseMessage> responseMessage)
+        public static async Task<T> ProcessXmlResponse<T>(HttpResponseMessage responseMessage)
         {
-            var message = responseMessage.Result;
-            var content = message.Content.ReadAsStringAsync().Result;
-            var encoding = GetEncodingFromResponseMessage(message);
+            var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var encoding = GetEncodingFromResponseMessage(responseMessage);
 
-            if (message.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 var ser = new DataContractSerializer(typeof(T));
                 using (var stream = new MemoryStream(encoding.GetBytes(content)))
@@ -230,7 +188,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblComputeClientHelper
                 }
             }
 
-            throw CreateExceptionFromXml(content, message);
+            throw CreateExceptionFromXml(content, responseMessage);
         }
 
         public static Encoding GetEncodingFromResponseMessage(HttpResponseMessage message)

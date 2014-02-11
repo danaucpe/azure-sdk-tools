@@ -30,12 +30,10 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
-            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-            XblCertificateCollectionResponse result = null;
-
-            CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.GetXblCertificates(XblComputeName).Result; });
+            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.GetXblCertificates(XblComputeName).Result;
             WriteObject(result);
         }
     }

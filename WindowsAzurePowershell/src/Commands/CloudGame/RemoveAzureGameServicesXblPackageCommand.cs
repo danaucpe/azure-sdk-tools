@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Management.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
                           string.Format("GsiId:{0} will be deleted by this action.", PackageId),
@@ -45,10 +45,8 @@ namespace Microsoft.WindowsAzure.Management.XblCompute
                           string.Empty,
                           () =>
                           {
-                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-                              var result = false;
-
-                              CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.RemoveXblPackage(XblComputeName, PackageId).Result; });
+                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+                              var result = Client.RemoveXblPackage(XblComputeName, PackageId).Result;
                               WriteObject(result);
                           });
         }

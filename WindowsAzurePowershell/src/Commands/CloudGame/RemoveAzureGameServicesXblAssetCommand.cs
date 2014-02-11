@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
                           string.Format("AssetId:{0} will be deleted by this action.", AssetId),
@@ -45,10 +45,8 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
                           string.Empty,
                           () =>
                           {
-                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-                              var result = false;
-
-                              CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.RemoveXblAsset(XblComputeName, AssetId).Result; });
+                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+                              var result = Client.RemoveXblAsset(XblComputeName, AssetId).Result;
                               WriteObject(result);
                           });
         }

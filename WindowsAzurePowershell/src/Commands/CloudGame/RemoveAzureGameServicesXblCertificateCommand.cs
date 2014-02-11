@@ -36,7 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
                           string.Format("CertificateId:{0} will be deleted by this action.", CertificateId),
@@ -44,10 +44,8 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
                           string.Empty,
                           () =>
                           {
-                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-                              var result = false;
-
-                              CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.RemoveXblCertificate(XblComputeName, CertificateId).Result; });
+                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+                              var result = Client.RemoveXblCertificate(XblComputeName, CertificateId).Result;
                               WriteObject(result);
                           });
         }

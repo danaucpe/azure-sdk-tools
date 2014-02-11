@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
                           string.Format("CodeFileId:{0} will be deleted by this action.", CodeFileId),
@@ -49,10 +49,8 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
                           string.Empty,
                           () =>
                           {
-                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-                              var result = false;
-
-                              CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.RemoveXblCodeFile(XblComputeName, GameServiceId, CodeFileId).Result; });
+                              Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+                              var result = Client.RemoveXblCodeFile(XblComputeName, GameServiceId, CodeFileId).Result;
                               WriteObject(result);
                           });
         }

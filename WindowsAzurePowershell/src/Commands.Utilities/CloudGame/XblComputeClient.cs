@@ -90,10 +90,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The cloud game name.</param>
         /// <returns></returns>
-        public Task<XblPackageCollectionResponse> GetXblPackages(string xblComputeName)
+        public async Task<XblPackageCollectionResponse> GetXblPackages(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameImagesResourcePath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblPackageCollectionResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblPackageCollectionResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <returns>
         /// True if successful
         /// </returns>
-        public Task<bool> NewXblPackage(
+        public async Task<bool> NewXblPackage(
             string xblComputeName,
             string packageName,
             int maxPlayers,
@@ -129,7 +130,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                 MaxAllowedPlayers = maxPlayers,
                 MinRequiredPlayers = 1,
                 Name = packageName,
-                AssetId = haveAsset ? assetId : null        // GSRM currently requires NULL or a valid Guid
+                AssetId = haveAsset ? assetId : null
             };
 
             XblPackagePostResponse responseMetadata;
@@ -139,17 +140,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                 multipartFormContent.Add(new StreamContent(cscfgStream), "packageconfig");
 
                 var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameImagesResourcePath, xblComputeName);
-                responseMetadata = _httpClient.PostAsync(url, multipartFormContent).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblPackagePostResponse>(tr)).Result;
+                var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+                responseMetadata = await ClientHelper.ProcessJsonResponse<XblPackagePostResponse>(responseMessage).ConfigureAwait(false);
            }
 
             try
             {
                 // Use the pre-auth URL received in the response to upload the cspkg file. Wait for it to complete
                 var cloudblob = new CloudBlob(responseMetadata.CspkgPreAuthUrl);
-                Task.Factory.FromAsync(
+                await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(cspkgStream, callback, state),
                     cloudblob.EndUploadFromStream,
-                    TaskCreationOptions.None).Wait();
+                    TaskCreationOptions.None).ConfigureAwait(false);
             }
             catch (StorageException)
             {
@@ -157,31 +159,24 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                 throw ClientHelper.CreateExceptionFromJson(HttpStatusCode.Ambiguous, errorMessage);
             }
 
-            var result = false;
             using (var multipartFormContent = new MultipartFormDataContent())
             {
                 multipartFormContent.Add(new StringContent(ClientHelper.ToJson(requestMetadata)), "metadata");
                 var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameImageResourcePath, xblComputeName, responseMetadata.GsiId);
-                result = _httpClient.PutAsync(url, multipartFormContent).ContinueWith(
-                    tr =>
-                    {
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
+                var responseMessage = await _httpClient.PutAsync(url, multipartFormContent).ConfigureAwait(false);
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    // Error result, so throw an exception
+                    throw new ServiceManagementClientException(responseMessage.StatusCode,
+                        new ServiceManagementError
                         {
-                            return true;
-                        }
-
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(message.StatusCode,
-                            new ServiceManagementError
-                            {
-                                Code = message.StatusCode.ToString()
-                            },
-                            string.Empty);
-                    }).Result;
+                            Code = responseMessage.StatusCode.ToString()
+                        },
+                        string.Empty);
+                }
             }
 
-            return Task<bool>.Factory.StartNew(() => result);
+            return true;
         }
 
         /// <summary>
@@ -190,24 +185,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <param name="xblPackageId">The package id.</param>
         /// <returns></returns>
-        public Task<bool> RemoveXblPackage(string xblComputeName, System.Guid xblPackageId)
+        public async Task<bool> RemoveXblPackage(string xblComputeName, System.Guid xblPackageId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameImageResourcePath, xblComputeName, xblPackageId);
-            return _httpClient.DeleteAsync(url).ContinueWith(
-                tr =>
-                    {
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
-                        {
-                            return true;
-                        }
+            var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
 
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    });
+            var message = responseMessage;
+            if (message.IsSuccessStatusCode)
+            {
+                return true;
+            }
+
+            // Error result, so throw an exception
+            throw new ServiceManagementClientException(
+                message.StatusCode,
+                new ServiceManagementError { Code = message.StatusCode.ToString() },
+                string.Empty);
         }
 
         /// <summary>
@@ -215,10 +208,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <returns></returns>
-        public Task<XblGameModeCollectionResponse> GetXblGameModes(string xblComputeName)
+        public async Task<XblGameModeCollectionResponse> GetXblGameModes(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModesResourcePath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblGameModeCollectionResponse>(tr));
+            var responseMessage = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblGameModeCollectionResponse>(responseMessage).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -229,14 +223,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblGameModeFileName">The game mode oringal filename</param>
         /// <param name="xblGameModeStream">The game mode stream.</param>
         /// <returns></returns>
-        public Task<NewXblGameModeResponse> NewXblGameMode(
+        public async Task<NewXblGameModeResponse> NewXblGameMode(
             string xblComputeName, 
             string xblGameModeName, 
             string xblGameModeFileName, 
             Stream xblGameModeStream)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModesResourcePath, xblComputeName);
-            var multipartContent = new MultipartFormDataContent();
+            using (var multipartContent = new MultipartFormDataContent())
             {
                 var newGameMode = new GameMode()
                 {
@@ -245,7 +239,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                 };
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(newGameMode)), "metadata");
                 multipartContent.Add(new StreamContent(xblGameModeStream), "variant");
-                return _httpClient.PostAsync(url, multipartContent).ContinueWith(tr => ClientHelper.ProcessJsonResponse<NewXblGameModeResponse>(tr));
+
+                var responseMessage = await _httpClient.PostAsync(url, multipartContent).ConfigureAwait(false);
+                return await ClientHelper.ProcessJsonResponse<NewXblGameModeResponse>(responseMessage).ConfigureAwait(false);
             }
         }
 
@@ -255,24 +251,21 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <param name="xblGameModeId">The xbl Game Mode id.</param>
         /// <returns></returns>
-        public Task<bool> RemoveXblGameMode(string xblComputeName, System.Guid xblGameModeId)
+        public async Task<bool> RemoveXblGameMode(string xblComputeName, System.Guid xblGameModeId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeResourcePath, xblComputeName, xblGameModeId);
-            return _httpClient.DeleteAsync(url).ContinueWith(
-                tr =>
-                    {
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
-                        {
-                            return true;
-                        }
+            var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new ServiceManagementClientException(
+                responseMessage.StatusCode,
+                new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
+                string.Empty);
 
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    });
+            }
+
+            // Error result, so throw an exception
+            return true;
         }
 
         /// <summary>
@@ -280,10 +273,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <returns></returns>
-        public Task<XblCertificateCollectionResponse> GetXblCertificates(string xblComputeName)
+        public async Task<XblCertificateCollectionResponse> GetXblCertificates(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CertificatesResourcePath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblCertificateCollectionResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblCertificateCollectionResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -295,7 +289,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="certificatePassword">The certificate password.</param>
         /// <param name="certificateStream">The certificate stream.</param>
         /// <returns></returns>
-        public Task<XblCertificatePostResponse> NewXblCertificate(string xblComputeName, 
+        public async Task<XblCertificatePostResponse> NewXblCertificate(string xblComputeName, 
             string certificateName, 
             string certificateFileName, 
             string certificatePassword,
@@ -314,7 +308,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             {
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(certificate)), "metadata");
                 multipartContent.Add(new StreamContent(certificateStream), "certificate");
-                return _httpClient.PostAsync(url, multipartContent).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblCertificatePostResponse>(tr));
+                var message = await _httpClient.PostAsync(url, multipartContent).ConfigureAwait(false);
+                return await ClientHelper.ProcessJsonResponse<XblCertificatePostResponse>(message).ConfigureAwait(false);
             }
         }
 
@@ -324,24 +319,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <param name="xblCertificateId">The certificate id to be removed.</param>
         /// <returns></returns>
-        public Task<bool> RemoveXblCertificate(string xblComputeName, System.Guid xblCertificateId)
+        public async Task<bool> RemoveXblCertificate(string xblComputeName, System.Guid xblCertificateId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CertificateResourcePath, xblComputeName, xblCertificateId);
-            return _httpClient.DeleteAsync(url).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (message.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
+            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            if (message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
 
-                    // Error result, so throw an exception
-                    throw new ServiceManagementClientException(
-                        message.StatusCode,
-                        new ServiceManagementError { Code = message.StatusCode.ToString() },
-                        string.Empty);
-                });
+            return true;
         }
 
         /// <summary>
@@ -349,10 +340,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The cloud game id.</param>
         /// <returns></returns>
-        public Task<XblAssetCollectionResponse> GetXblAssets(string xblComputeName)
+        public async Task<XblAssetCollectionResponse> GetXblAssets(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameAssetsResourcePath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblAssetCollectionResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblAssetCollectionResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -363,10 +355,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblAssetFileName">The asset filename.</param>
         /// <param name="xblAssetStream">The asset filestream.</param>
         /// <returns></returns>
-        public Task<string> NewXblAsset(
-            string xblComputeName, 
-            string xblAssetName, 
-            string xblAssetFileName, 
+        public async Task<string> NewXblAsset(
+            string xblComputeName,
+            string xblAssetName,
+            string xblAssetFileName,
             Stream xblAssetStream)
         {
             // Call in to get an AssetID and preauthURL to use for upload of the asset
@@ -384,15 +376,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             };
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameAssetsResourcePath, xblComputeName);
-            var postAssetResult = _httpClient.PostAsync(url, multipartFormContent).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblAssetPostResponse>(tr)).Result;
+            var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+            var postAssetResult = await ClientHelper.ProcessJsonResponse<XblAssetPostResponse>(responseMessage).ConfigureAwait(false);
 
             try
             {
                 var cloudblob = new CloudBlob(postAssetResult.AssetPreAuthUrl);
-                Task.Factory.FromAsync(
+                await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(xblAssetStream, callback, state),
                     cloudblob.EndUploadFromStream,
-                    TaskCreationOptions.None).Wait();
+                    TaskCreationOptions.None).ConfigureAwait(false);
             }
             catch (StorageException)
             {
@@ -408,24 +401,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             };
 
             url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameAssetResourcePath, xblComputeName, postAssetResult.AssetId);
-            _httpClient.PutAsync(url, multpartFormContentMetadata).ContinueWith(
-                tr =>
-                    {
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
-                        {
-                            return true;
-                        }
+            responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
 
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    }).Wait();
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    responseMessage.StatusCode,
+                    new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
+                    string.Empty);
+            }
 
             // Return the Asset info
-            return Task<string>.Factory.StartNew(() => postAssetResult.AssetId);
+            return postAssetResult.AssetId;
         }
 
         /// <summary>
@@ -434,24 +422,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <param name="xblAssetId">The asset id to be removed.</param>
         /// <returns></returns>
-        public Task<bool> RemoveXblAsset(string xblComputeName, System.Guid xblAssetId)
+        public async Task<bool> RemoveXblAsset(string xblComputeName, System.Guid xblAssetId)
         {
             string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameAssetResourcePath, xblComputeName, xblAssetId);
-            return _httpClient.DeleteAsync(url).ContinueWith(
-                tr =>
-                    {
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
-                        {
-                            return true;
-                        }
+            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
 
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    });
+            return true;
         }
 
         /// <summary>
@@ -464,7 +448,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblCodeFileIsActive">Whether the code file should be activated or not.</param>
         /// <param name="xblCodeFileStream">The code file filestream.</param>
         /// <returns>The code file Id if successful, and error if unsuccessful.</returns>
-        public Task<string> NewXblCodeFile(
+        public async Task<string> NewXblCodeFile(
             string xblComputeName,
             string xblGameServiceId,
             string xblCodeFileName,
@@ -489,15 +473,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             };
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFilesResourcePath, xblComputeName, xblGameServiceId);
-            var postCodeFileResult = _httpClient.PostAsync(url, multipartFormContent).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblCodeFilePostResponse>(tr)).Result;
+            var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+            var postCodeFileResult = await ClientHelper.ProcessJsonResponse<XblCodeFilePostResponse>(responseMessage).ConfigureAwait(false);
 
             try
             {
                 var cloudblob = new CloudBlob(postCodeFileResult.CodeFilePreAuthUrl);
-                Task.Factory.FromAsync(
+                await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(xblCodeFileStream, callback, state),
                     cloudblob.EndUploadFromStream,
-                    TaskCreationOptions.None).Wait();
+                    TaskCreationOptions.None).ConfigureAwait(false);
             }
             catch (StorageException)
             {
@@ -513,24 +498,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             };
 
             url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFileResourcePath, xblComputeName, xblGameServiceId, postCodeFileResult.CodeFileId);
-            _httpClient.PutAsync(url, multpartFormContentMetadata).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (message.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-
-                    // Error result, so throw an exception
-                    throw new ServiceManagementClientException(
-                        message.StatusCode,
-                        new ServiceManagementError { Code = message.StatusCode.ToString() },
-                        string.Empty);
-                });
+            responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                throw new ServiceManagementClientException(
+                    responseMessage.StatusCode,
+                    new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
+                    string.Empty);
+            }
 
             // Return the CodeFile info
-            return Task<string>.Factory.StartNew(() => postCodeFileResult.CodeFileId);
+            return postCodeFileResult.CodeFileId;
         }
 
         /// <summary>
@@ -539,10 +517,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">The cloud game name.</param>
         /// <param name="xblGameServiceId">The game service Id.</param>
         /// <returns>A collection of Code files.</returns>
-        public Task<XblCodeFileCollectionResponse> GetXblCodeFiles(string xblComputeName, string xblGameServiceId)
+        public async Task<XblCodeFileCollectionResponse> GetXblCodeFiles(string xblComputeName, string xblGameServiceId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFilesResourcePath, xblComputeName, xblGameServiceId);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblCodeFileCollectionResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblCodeFileCollectionResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -555,7 +534,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblCodeFileFileName">The code file filename.</param>
         /// <param name="xblCodeFileIsActive">Whether the code file should be activated or not.</param>
         /// <returns>True if the values were set; otherwise an error.</returns>
-        public Task<bool> SetXblCodeFile(
+        public async Task<bool> SetXblCodeFile(
             string xblComputeName,
             string xblGameServiceId,
             string xblCodeFileId,
@@ -580,21 +559,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             };
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFileResourcePath, xblComputeName, xblGameServiceId, xblCodeFileId);
-            return _httpClient.PutAsync(url, multpartFormContentMetadata).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (message.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
+            var message = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
 
-                    // Error result, so throw an exception
-                    throw new ServiceManagementClientException(
-                        message.StatusCode,
-                        new ServiceManagementError { Code = message.StatusCode.ToString() },
-                        string.Empty);
-                });
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -604,27 +580,23 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblGameServiceId">The game service Id.</param>
         /// <param name="xblCodeFileId">The code file to be removed.</param>
         /// <returns>True if successfully removed, otherwise and error.</returns>
-        public Task<bool> RemoveXblCodeFile(
+        public async Task<bool> RemoveXblCodeFile(
             string xblComputeName,
             string xblGameServiceId,
             string xblCodeFileId)
         {
             string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameCodeFileResourcePath, xblComputeName, xblGameServiceId, xblCodeFileId);
-            return _httpClient.DeleteAsync(url).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (message.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
+            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
 
-                    // Error result, so throw an exception
-                    throw new ServiceManagementClientException(
-                        message.StatusCode,
-                        new ServiceManagementError { Code = message.StatusCode.ToString() },
-                        string.Empty);
-                });
+            return true;
         }
 
         /// <summary>
@@ -632,10 +604,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <returns></returns>
-        public Task<DashboardSummary> GetXblComputeSummaryReport(string xblComputeName)
+        public async Task<DashboardSummary> GetXblComputeSummaryReport(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DashboardSummaryPath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<DashboardSummary>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<DashboardSummary>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -643,10 +616,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <returns></returns>
-        public Task<XblComputeDeploymentData> GetXblComputeDeploymentsReport(string xblComputeName)
+        public async Task<XblComputeDeploymentData> GetXblComputeDeploymentsReport(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DeploymentsReportPath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblComputeDeploymentData>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblComputeDeploymentData>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -654,10 +628,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <returns></returns>
-        public Task<XblComputePoolData> GetXblComputePoolsReport(string xblComputeName)
+        public async Task<XblComputePoolData> GetXblComputePoolsReport(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ServicepoolsReportPath, xblComputeName);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblComputePoolData>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblComputePoolData>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -674,7 +649,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="schemaFileName">The local schema file name (only used for reference)</param>
         /// <param name="schemaStream">The schema data as a file stream.</param>
         /// <returns>The cloud task for completion</returns>
-        public Task<bool> NewXblCompute(
+        public async Task<bool> NewXblCompute(
             string titleId,
             int selectionOrder,
             string sandboxes,
@@ -686,7 +661,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             Stream schemaStream)
         {      
             // Idempotent call to do a first time registration of the cloud service wrapping container.
-            ClientHelper.RegisterCloudService(_httpClient, _httpXmlClient);
+            await ClientHelper.RegisterCloudService(_httpClient, _httpXmlClient).ConfigureAwait(false);
 
             XblGameModeSchemaRequest xblGameModeSchemaRequestData = null;
             if (!String.IsNullOrEmpty(schemaId))
@@ -768,37 +743,34 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
             }; 
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, name);
-            _httpClient.PutAsXmlAsync(url, resource).ContinueWith(
-                tr =>
+            var message = await _httpClient.PutAsXmlAsync(url, resource).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(message.StatusCode,
+                    new ServiceManagementError
                     {
-                        var message = tr.Result;
-                        if (!message.IsSuccessStatusCode)
-                        {
-                            // Error result, so throw an exception
-                            throw new ServiceManagementClientException(message.StatusCode,
-                                new ServiceManagementError
-                                {
-                                    Code = message.StatusCode.ToString()
-                                },
-                                string.Empty);
-                        }
-
-                        return true;
-                    }).Wait();
+                        Code = message.StatusCode.ToString()
+                    },
+                    string.Empty);
+            }
 
             // Poll RDFE to see if the XblCompute instance has been created
             var created = false;
             var numRetries = 0;
             do
             {
-                var xblComputeInstances = GetXblComputeInstances().Result;
+                var xblComputeInstances = await GetXblComputeInstances().ConfigureAwait(false);
                 if (xblComputeInstances.Any(xblComputeInstance => xblComputeInstance.Name == name))
                 {
                     created = true;
                 }
+
+                System.Threading.Thread.Sleep(1000);
             }
-            while (!created && (numRetries++ < 10));               
-            return Task<bool>.Factory.StartNew(() => created);
+            while (!created && (numRetries++ < 10));
+
+            return created;
         }
 
         /// <summary>
@@ -806,46 +778,43 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">The XblCompute Instance Name.</param>
         /// <returns></returns>
-        public Task<bool> RemoveXblCompute(string xblComputeName)
+        public async Task<bool> RemoveXblCompute(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, xblComputeName);
-            return _httpClient.DeleteAsync(url).ContinueWith(
-                tr =>
-                    {
-                        var message = tr.Result;
-                        if (message.IsSuccessStatusCode)
-                        {
-                            return true;
-                        }
+            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
 
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    });
+            return true;
         }
 
         /// <summary>
         /// Gets the XblCompute instances for the Azure Game Services resource in the current subscription
         /// </summary>
         /// <returns></returns>
-        public Task<XblComputeColletion> GetXblComputeInstances()
+        public async Task<XblComputeColletion> GetXblComputeInstances()
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GetCloudServicesResourcePath);
-            return _httpXmlClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessCloudServiceResponse(tr));
-
+            var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessCloudServiceResponse(message).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Gets the AzureGameServicesProperties for the current subscription
         /// </summary>
         /// <returns>The task for completion.</returns>
-        public Task<AzureGameServicesPropertiesResponse> GetAzureGameServicesProperties()
+        public async Task<AzureGameServicesPropertiesResponse> GetAzureGameServicesProperties()
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ResourcePropertiesPath);
 
-            var propertyList = this._httpXmlClient.GetAsync(url, this.Logger).ContinueWith(tr => ClientHelper.ProcessXmlResponse<ResourceProviderProperties>(tr)).Result;
+            var message = await this._httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var propertyList = await ClientHelper.ProcessXmlResponse<ResourceProviderProperties>(message).ConfigureAwait(false);
 
             if (propertyList == null)
             {
@@ -859,8 +828,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                 return null;
             }
 
-            var result = ClientHelper.DeserializeJsonToObject<AzureGameServicesPropertiesResponse>(property.Value);
-            return Task<AzureGameServicesPropertiesResponse>.Factory.StartNew(() => result);
+            return ClientHelper.DeserializeJsonToObject<AzureGameServicesPropertiesResponse>(property.Value);
         }
 
         /// <summary>
@@ -870,23 +838,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="sandboxes">Optional, string delimitted list of sandboxes to deploy to</param>
         /// <param name="geoRegions">Optional, string delimitted list of geo regions to deploy to</param>
         /// <returns>The task for completion.</returns>
-        public Task<bool> DeployXblCompute(string xblComputeName, string sandboxes, string geoRegions)
+        public async Task<bool> DeployXblCompute(string xblComputeName, string sandboxes, string geoRegions)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DeployCloudGamePath, xblComputeName, sandboxes, geoRegions);
-            return _httpClient.PutAsync(url, null).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (!message.IsSuccessStatusCode)
-                    {
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    }
-                    return true;
-                });
+            var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -894,23 +859,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// </summary>
         /// <param name="xblComputeName">Name of the cloud game.</param>
         /// <returns>The task for completion.</returns>
-        public Task<bool> StopXblCompute(string xblComputeName)
+        public async Task<bool> StopXblCompute(string xblComputeName)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.StopCloudGamePath, xblComputeName);
-            return _httpClient.PutAsync(url, null).ContinueWith(
-                tr =>
-                {
-                    var message = tr.Result;
-                    if (!message.IsSuccessStatusCode)
-                    {
-                        // Error result, so throw an exception
-                        throw new ServiceManagementClientException(
-                            message.StatusCode,
-                            new ServiceManagementError { Code = message.StatusCode.ToString() },
-                            string.Empty);
-                    }
-                    return true;
-                });
+            var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -919,10 +881,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">Name of the cloud game.</param>
         /// <param name="instanceId">The id of the instance to get log files for</param>
         /// <returns>A list of URIs to download individual log files</returns>
-        public Task<XblEnumerateDiagnosticFilesResponse> GetLogFiles(string xblComputeName, string instanceId)
+        public async Task<XblEnumerateDiagnosticFilesResponse> GetLogFiles(string xblComputeName, string instanceId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.LogFilePath, xblComputeName, instanceId);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblEnumerateDiagnosticFilesResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblEnumerateDiagnosticFilesResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -931,10 +894,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="xblComputeName">Name of the cloud game.</param>
         /// <param name="instanceId">The id of the instance to get dump files for</param>
         /// <returns>A list of URIs to download individual dump files</returns>
-        public Task<XblEnumerateDiagnosticFilesResponse> GetDumpFiles(string xblComputeName, string instanceId)
+        public async Task<XblEnumerateDiagnosticFilesResponse> GetDumpFiles(string xblComputeName, string instanceId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DumpFilePath, xblComputeName, instanceId);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblEnumerateDiagnosticFilesResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblEnumerateDiagnosticFilesResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -944,10 +908,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
         /// <param name="geoRegion">The regiond to enumerate clusters from</param>
         /// <param name="status">The status to filter on</param>
         /// <returns>A list of clusters that match the region and status filter</returns>
-        public Task<XblEnumerateClustersResponse> GetClusters(string xblComputeName, string geoRegion, string status)
+        public async Task<XblEnumerateClustersResponse> GetClusters(string xblComputeName, string geoRegion, string status)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.EnumerateClustersPath, xblComputeName, geoRegion, status);
-            return _httpClient.GetAsync(url, Logger).ContinueWith(tr => ClientHelper.ProcessJsonResponse<XblEnumerateClustersResponse>(tr));
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<XblEnumerateClustersResponse>(message).ConfigureAwait(false);
         }
     }
 }

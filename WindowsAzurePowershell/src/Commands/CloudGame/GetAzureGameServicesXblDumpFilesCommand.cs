@@ -35,12 +35,10 @@ namespace Microsoft.WindowsAzure.Management.XblCompute
 
         public IXblComputeClient Client { get; set; }
 
-        public override void ExecuteCmdlet()
+        protected override void Execute()
         {
-            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebug);
-            XblEnumerateDiagnosticFilesResponse result = null;
-
-            CatchAggregatedExceptionFlattenAndRethrow(() => { result = Client.GetDumpFiles(XblComputeName, InstanceId).Result; });
+            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.GetDumpFiles(XblComputeName, InstanceId).Result;
             WriteObject(result);
         }
     }
