@@ -527,7 +527,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute
                         message.StatusCode,
                         new ServiceManagementError { Code = message.StatusCode.ToString() },
                         string.Empty);
-                });
+                }).Wait();
 
             // Return the CodeFile info
             return Task<string>.Factory.StartNew(() => postCodeFileResult.CodeFileId);
