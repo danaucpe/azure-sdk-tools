@@ -12,12 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
-namespace Microsoft.WindowsAzure.Commands.XblCompute
+namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract;
-    using Microsoft.WindowsAzure.Commands.Utilities.XblCompute;
-    using Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract;
+    using Utilities.CloudGame;
+    using Utilities.CloudGame.Contract;
     using System.Management.Automation;
 
     /// <summary>
@@ -26,11 +24,11 @@ namespace Microsoft.WindowsAzure.Commands.XblCompute
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesProperties"), OutputType(typeof(AzureGameServicesPropertiesResponse))]
     public class GetAzureGameServicesPropertiesCommand : AzureGameServicesHttpClientCommandBase
     {
-        public IXblComputeClient Client { get; set; }
+        public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new XblComputeClient(CurrentSubscription, WriteDebugLog);
+            Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
             var result = Client.GetAzureGameServicesProperties().Result;
             WriteObject(result);
         }

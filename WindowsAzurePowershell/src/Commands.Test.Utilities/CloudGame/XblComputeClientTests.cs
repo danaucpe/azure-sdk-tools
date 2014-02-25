@@ -12,30 +12,30 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Net.Http;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.CloudGame
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.XblCompute;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+    using System.Net.Http;
+    using VisualStudio.TestTools.UnitTesting;
+    using Common;
+    using Commands.Utilities.CloudGame;
 
     [TestClass]
     public class XblComputeClientTests
     {
         /// <summary>
-        /// StorageCloudBlobCmdletBase command
+        /// CloudGameClient command
         /// </summary>
-        public XblComputeClient command = null;
+        public CloudGameClient command = null;
 
         ////public HttpMessageHandler testHandler = new HttpRestMessageHandler();
 
         [TestInitialize]
         public void InitCommand()
         {
-            command = new XblComputeClient(null, null, new HttpClient(), null);
+            command = new CloudGameClient(null, null, new HttpClient(), null);
         }
 
         [TestCleanup]
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.CloudGame
         [TestMethod]
         public void ValidatePipelineICloudBlobWithNullTest()
         {
-            Testing.AssertThrows<ArgumentException>(() => command.NewXblCodeFile(null, null, null, null, false, null), "");
+            Testing.AssertThrows<ArgumentException>(() => command.NewGamePackage(null, CloudGamePlatform.XboxOne, Guid.NewGuid(), null, null, false, null), "");
         }
     }
 }

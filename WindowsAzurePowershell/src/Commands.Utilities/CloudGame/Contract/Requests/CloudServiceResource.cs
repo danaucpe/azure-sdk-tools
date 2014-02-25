@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System.Runtime.Serialization;
     using System.Xml;
@@ -25,43 +25,43 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
     public class CloudServiceResource
     {
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the cloud game name.
         /// </summary>
         [DataMember(Name = "Name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the etag.
         /// </summary>
         [DataMember(Name = "ETag")]
         public string ETag { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the plan.
         /// </summary>
         [DataMember(Name = "Plan")]
         public string Plan { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the resource provider namespace.
         /// </summary>
         [DataMember(Name = "ResourceProviderNamespace")]
         public string ResourceProviderNamespace { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the type.
         /// </summary>
         [DataMember(Name = "Type")]
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the schema version.
         /// </summary>
         [DataMember(Name = "SchemaVersion")]
         public string SchemaVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game.
+        /// Gets or sets the instrisic settings.
         /// </summary>
         [DataMember(Name = "IntrinsicSettings")]
         public XmlNode[] IntrinsicSettings { get; set; }

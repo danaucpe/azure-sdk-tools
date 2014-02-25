@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System;
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// The XblCompute resource set contract.
+    /// The CloudGame resource set contract.
     /// </summary>
     [DataContract(Namespace = "")]
     public class AzureGameServicesResourceSet
     {
         /// <summary>
-        /// Gets or sets the id.
+        /// Gets or sets the Id.
         /// </summary>
         [DataMember(Name = "id")]
         public Guid Id { get; set; }

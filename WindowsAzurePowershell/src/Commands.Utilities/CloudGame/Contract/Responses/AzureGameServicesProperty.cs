@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
@@ -21,10 +21,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
     public class AzureGameServicesProperty
     {
         /// <summary>
-        /// Gets or sets the title id.
+        /// Gets or sets the title Id.
         /// </summary>
         /// <value>
-        /// The title id.
+        /// The title Id.
         /// </value>
         [DataMember(Name = "titleId")]
         public string TitleId { get; set; }

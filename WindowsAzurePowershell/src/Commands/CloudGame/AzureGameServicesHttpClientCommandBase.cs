@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.XblCompute
+namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities.Common;
     using System;
     using System.Text;
 
     public class AzureGameServicesHttpClientCommandBase : CmdletWithSubscriptionBase
     {
-        private StringBuilder debugLog = new StringBuilder();
+        private readonly StringBuilder debugLog = new StringBuilder();
 
         public override void ExecuteCmdlet()
         {

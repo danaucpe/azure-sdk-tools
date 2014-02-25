@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System;
     using System.Collections.Generic;
@@ -633,8 +633,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
     {
     }
 
-    [CollectionDataContract(Name = "XblCompute", ItemName = "XblCompute", Namespace = "http://schemas.microsoft.com/windowsazure")]
-    public class XblComputeColletion : List<XblCompute>
+    [CollectionDataContract(Name = "CloudGames", ItemName = "CloudGame", Namespace = "http://schemas.microsoft.com/windowsazure")]
+    public class CloudGameColletion : List<CloudGame>
     {
     }
 
@@ -656,7 +656,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
     }
 
     /// <summary>
-    /// The XblCertificate contract.
+    /// The certificate contract.
     /// </summary>
     [DataContract(Namespace = "")]
     public sealed class GameCertificate

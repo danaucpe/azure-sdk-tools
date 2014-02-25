@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     /// <summary>
     /// The entity types in the cloud games.
@@ -22,21 +22,31 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
         /// <summary>
         /// The cloud games.
         /// </summary>
-        public const string XblCompute = "XblCompute";
+        public const string CloudGame = "CloudGame";
+
+        /// <summary>
+        /// The VM packages.
+        /// </summary>
+        public const string VmPackage = "VmPackage";
 
         /// <summary>
         /// The game packages.
         /// </summary>
-        public const string Package = "XblPackage";
+        public const string GamePackage = "GamePackage";
 
         /// <summary>
-        /// The game certificates.
+        /// The certificates.
         /// </summary>
-        public const string Certificate = "XblCertificate";
+        public const string Certificate = "Certificate";
 
         /// <summary>
         /// The game modes.
         /// </summary>
-        public const string GameMode = "XblGameMode";
+        public const string GameMode = "GameMode";
+
+        /// <summary>
+        /// The game mode schemas.
+        /// </summary>
+        public const string GameModeSchema = "GameModeSchema";
     }
 }

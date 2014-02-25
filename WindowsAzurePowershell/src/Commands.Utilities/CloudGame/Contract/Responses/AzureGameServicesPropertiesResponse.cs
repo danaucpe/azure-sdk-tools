@@ -14,9 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using Common;
 
     [DataContract]
     public class AzureGameServicesPropertiesResponse
@@ -38,5 +38,32 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         /// </value>
         [DataMember(Name = "sandboxes")]
         public List<string> Sandboxes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cloud game platform.
+        /// </summary>
+        /// <value>
+        /// The platform.
+        /// </value>
+        [DataMember(Name = "platform")]
+        public string Platform { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the sandboxes and cloudGames were successfully retrieved or not.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the results are only partially complete; otherwise, <c>false</c>.
+        /// </value>
+        [DataMember(Name = "partialResults")]
+        public bool PartialResults { get; set; }
+
+        /// <summary>
+        /// Gets or sets the package version.
+        /// </summary>
+        /// <value>
+        /// The package version.
+        /// </value>
+        [DataMember(Name = "packageVersion")]
+        public string PackageVersion { get; set; }
     }
 }

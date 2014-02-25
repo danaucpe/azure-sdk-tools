@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.XblCompute.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// A collection of XlCompute status data
+    /// A collection of cloud game status data
     /// </summary>
     [DataContract(Namespace = "")]
     public class ChartData
