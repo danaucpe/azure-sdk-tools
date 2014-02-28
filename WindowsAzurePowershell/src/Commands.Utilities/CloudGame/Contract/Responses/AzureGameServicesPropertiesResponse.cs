@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         {
             get
             {
-                switch (PlatformResourceType)
+                switch (PlatformResourceType.ToLower())
                 {
                     case CloudGameUriElements.Xbox360ComputeResourceType:
                         return CloudGamePlatform.Xbox360;

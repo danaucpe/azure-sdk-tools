@@ -787,6 +787,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var cloudGame = new CloudGame()
             {
                 Name = name,
+                Platform = platformResourceString,
                 ResourceSets = resourceSetIds,
                 Sandboxes = sandboxes,
                 SchemaName = schemaName,
