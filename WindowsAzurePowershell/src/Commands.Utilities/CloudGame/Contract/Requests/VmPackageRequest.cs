@@ -74,6 +74,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         }
 
         /// <summary>
+        /// Gets or sets the certificate ids.
+        /// </summary>
+        /// <value>
+        /// The certificate ids.
+        /// </value>
+        [DataMember(Name = "certificateIds")]
+        public string[] CertificateIds
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets MinRequiredPlayers, which defines the minimum number of players needed in a session hosted by the GSI.
         /// </summary>
         /// <value>

@@ -40,6 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="packageName">The name of the package.</param>
         /// <param name="maxPlayers">The max number of players allowed.</param>
         /// <param name="assetId">The id of a previously uploaded asset file.</param>
+        /// <param name="certificateIds">The ids of certificates to associate.</param>
         /// <param name="cspkgFileName">The name of the local cspkg file name.</param>
         /// <param name="cspkgStream">The cspkg file stream.</param>
         /// <param name="cscfgFileName">The name of the local cscfg file name.</param>
@@ -52,7 +53,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             CloudGamePlatform platform,
             string packageName,
             int maxPlayers,
-            string assetId,
+            Guid? assetId,
+            Guid[] certificateIds,
             string cspkgFileName,
             Stream cspkgStream,
             string cscfgFileName,
@@ -335,18 +337,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <param name="instanceId">The Id of the instance to get log files for</param>
-        /// <returns>A list of URIs to download individual log files</returns>
-        Task<EnumerateDiagnosticFilesResponse> GetLogFiles(string cloudGameName, CloudGamePlatform platform, string instanceId);
+        /// <param name="instanceId">The Id of the instance to get log files for.</param>
+        /// <param name="geoRegion">The geo region of the instance (if known).</param>
+        /// <returns>A list of URIs to download individual log files.</returns>
+        Task<EnumerateDiagnosticFilesResponse> GetLogFiles(string cloudGameName, CloudGamePlatform platform, string instanceId, string geoRegion);
 
         /// <summary>
         ///     Gets the list of available diagnostic dump files for the specific instance.
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <param name="instanceId">The Id of the instance to get dump files for</param>
-        /// <returns>A list of URIs to download individual dump files</returns>
-        Task<EnumerateDiagnosticFilesResponse> GetDumpFiles(string cloudGameName, CloudGamePlatform platform, string instanceId);
+        /// <param name="instanceId">The Id of the instance to get dump files for.</param>
+        /// <param name="geoRegion">The geo region of the instance (if known).</param>
+        /// <returns>A list of URIs to download individual dump files.</returns>
+        Task<EnumerateDiagnosticFilesResponse> GetDumpFiles(string cloudGameName, CloudGamePlatform platform, string instanceId, string geoRegion);
 
         /// <summary>
         ///     Gets the list of clusters.
@@ -355,7 +359,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="platform">The cloud game platform.</param>
         /// <param name="geoRegion">The regiond to enumerate clusters from</param>
         /// <param name="status">The status to filter on</param>
+        /// <param name="clusterId">The (optional) cluster ID to query for.</param>
+        /// <param name="agentId">The (optional) agent ID to query for.</param>
         /// <returns>A list of clusters that match the region and status filter</returns>
-        Task<EnumerateClustersResponse> GetClusters(string cloudGameName, CloudGamePlatform platform, string geoRegion, string status);
+        Task<EnumerateClustersResponse> GetClusters(string cloudGameName, CloudGamePlatform platform, string geoRegion, string status, string clusterId, string agentId);
     }
 }

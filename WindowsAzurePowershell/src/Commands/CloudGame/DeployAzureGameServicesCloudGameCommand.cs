@@ -21,8 +21,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Gets cloud game service.
     /// </summary>
-    [Cmdlet("Deploy", "AzureGameServicesCompute"), OutputType(typeof(bool))]
-    public class DeployAzureGameServicesComputeCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet("Deploy", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
+    public class DeployAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidateNotNullOrEmpty]

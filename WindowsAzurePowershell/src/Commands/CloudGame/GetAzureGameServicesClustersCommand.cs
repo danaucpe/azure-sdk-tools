@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
     using Utilities.CloudGame;
@@ -33,20 +35,26 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo regiond to enumerate")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region to enumerate.")]
         [ValidateNotNullOrEmpty]
         public string GeoRegion { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The status of the cluster")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The status of the clusters to query for.")]
         [ValidateNotNullOrEmpty]
         public string Status { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cluster ID for the game service.")]
+        public string ClusterId { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The agent ID for the game service.")]
+        public string AgentId { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
-            var result = Client.GetClusters(CloudGameName, Platform, GeoRegion, Status).Result;
+            var result = Client.GetClusters(CloudGameName, Platform, GeoRegion, Status, ClusterId, AgentId).Result;
             WriteObject(result);
         }
     }

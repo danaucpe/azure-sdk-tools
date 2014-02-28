@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Windows.Forms.VisualStyles;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System.Collections.Generic;
@@ -40,13 +43,35 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         public List<string> Sandboxes { get; set; }
 
         /// <summary>
-        /// Gets or sets the cloud game platform.
+        /// Gets or sets the cloud game platform resource type.
         /// </summary>
         /// <value>
         /// The platform.
         /// </value>
         [DataMember(Name = "platform")]
-        public string Platform { get; set; }
+        public string PlatformResourceType {get; set; }
+
+        /// <summary>
+        /// Gets the cloud game platform.
+        /// </summary>
+        /// <value>
+        /// The platform.
+        /// </value>
+        public CloudGamePlatform Platform
+        {
+            get
+            {
+                switch (PlatformResourceType)
+                {
+                    case CloudGameUriElements.Xbox360ComputeResourceType:
+                        return CloudGamePlatform.Xbox360;
+                    case CloudGameUriElements.PcComputeResourceType:
+                        return CloudGamePlatform.PC;
+                    default:
+                        return CloudGamePlatform.XboxOne;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the sandboxes and cloudGames were successfully retrieved or not.

@@ -22,6 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Text;
     using System.Threading.Tasks;
     using System.Threading;
     using System.Xml;
@@ -103,6 +104,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="packageName">The name of the package.</param>
         /// <param name="maxPlayers">The max number of players allowed.</param>
         /// <param name="assetId">The Id of a previously uploaded asset file.</param>
+        /// <param name="certificateIds">The ids of certificates to associate.</param>
         /// <param name="cspkgFileName">The name of the local cspkg file name.</param>
         /// <param name="cspkgStream">The cspkg file stream.</param>
         /// <param name="cscfgFileName">The name of the local cscfg file name.</param>
@@ -110,19 +112,21 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns>
         /// True if successful.
         /// </returns>
+        /// <exception cref="ServiceManagementClientException"></exception>
+        /// <exception cref="ServiceManagementError"></exception>
         public async Task<bool> NewVmPackage(
             string cloudGameName,
             CloudGamePlatform platform,
             string packageName,
             int maxPlayers,
-            string assetId,
+            Guid? assetId,
+            Guid[] certificateIds,
             string cspkgFileName,
             Stream cspkgStream,
             string cscfgFileName,
             Stream cscfgStream)
         {
-            Guid assetIdGuid;
-            var haveAsset = Guid.TryParse(assetId, out assetIdGuid);
+            certificateIds = certificateIds ?? new Guid[0];
             var requestMetadata = new VmPackageRequest()
             {
                 CspkgFilename = cspkgFileName,
@@ -130,7 +134,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 MaxAllowedPlayers = maxPlayers,
                 MinRequiredPlayers = 1,
                 Name = packageName,
-                AssetId = haveAsset ? assetId : null
+                AssetId = assetId.HasValue ? assetId.Value.ToString() : null,
+                CertificateIds = Array.ConvertAll(certificateIds, certId => certId.ToString())
             };
 
             var platformResourceString = ClientHelper.GetPlatformString(platform);
@@ -908,9 +913,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 return null;
             }
 
-            var response = ClientHelper.DeserializeJsonToObject<AzureGameServicesPropertiesResponse>(property.Value);
-            response.Platform = response.Platform.ToLower();
-            return response;
+            return ClientHelper.DeserializeJsonToObject<AzureGameServicesPropertiesResponse>(property.Value);
         }
 
         /// <summary>
@@ -966,14 +969,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <param name="instanceId">The Id of the instance to get log files for</param>
-        /// <returns>
-        /// A list of URIs to download individual log files
-        /// </returns>
-        public async Task<EnumerateDiagnosticFilesResponse> GetLogFiles(string cloudGameName, CloudGamePlatform platform, string instanceId)
+        /// <param name="instanceId">The Id of the instance to get log files for.</param>
+        /// <param name="geoRegion">The geo region of the instance (if known).</param>
+        /// <returns> A list of URIs to download individual log files.</returns>
+        public async Task<EnumerateDiagnosticFilesResponse> GetLogFiles(string cloudGameName, CloudGamePlatform platform, string instanceId, string geoRegion)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.LogFilePath, ClientHelper.GetPlatformString(platform), cloudGameName, instanceId);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var platformString = ClientHelper.GetPlatformString(platform);
+            var url = new StringBuilder(_httpClient.BaseAddress + String.Format(CloudGameUriElements.LogFilePath, platformString, cloudGameName, instanceId));
+            if (!string.IsNullOrEmpty(geoRegion))
+            {
+                url.AppendFormat("/?geoRegion={0}", geoRegion);
+            }
+
+            var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateDiagnosticFilesResponse>(message).ConfigureAwait(false);
         }
 
@@ -982,14 +990,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <param name="instanceId">The Id of the instance to get dump files for</param>
-        /// <returns>
-        /// A list of URIs to download individual dump files
-        /// </returns>
-        public async Task<EnumerateDiagnosticFilesResponse> GetDumpFiles(string cloudGameName, CloudGamePlatform platform, string instanceId)
+        /// <param name="instanceId">The Id of the instance to get dump files for.</param>
+        /// <param name="geoRegion">The geo region of the instance (if known).</param>
+        /// <returns>A list of URIs to download individual dump files.</returns>
+        public async Task<EnumerateDiagnosticFilesResponse> GetDumpFiles(string cloudGameName, CloudGamePlatform platform, string instanceId, string geoRegion)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DumpFilePath, ClientHelper.GetPlatformString(platform), cloudGameName, instanceId);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var platformString = ClientHelper.GetPlatformString(platform);
+            var url = new StringBuilder(_httpClient.BaseAddress + String.Format(CloudGameUriElements.DumpFilePath, platformString, cloudGameName, instanceId));
+            if (!string.IsNullOrEmpty(geoRegion))
+            {
+                url.AppendFormat("/?geoRegion={0}", geoRegion);
+            }
+
+            var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateDiagnosticFilesResponse>(message).ConfigureAwait(false);
         }
 
@@ -1000,13 +1013,26 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="platform">The cloud game platform.</param>
         /// <param name="geoRegion">The regiond to enumerate clusters from</param>
         /// <param name="status">The status to filter on</param>
+        /// <param name="clusterId">The (optional) cluster ID to query for.</param>
+        /// <param name="agentId">The (optional) agent ID to query for.</param>
         /// <returns>
         /// A list of clusters that match the region and status filter
         /// </returns>
-        public async Task<EnumerateClustersResponse> GetClusters(string cloudGameName, CloudGamePlatform platform, string geoRegion, string status)
+        public async Task<EnumerateClustersResponse> GetClusters(string cloudGameName, CloudGamePlatform platform, string geoRegion, string status, string clusterId, string agentId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.EnumerateClustersPath, ClientHelper.GetPlatformString(platform), cloudGameName, geoRegion, status);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var url = new StringBuilder(_httpClient.BaseAddress +
+                String.Format(CloudGameUriElements.EnumerateClustersPath, ClientHelper.GetPlatformString(platform), cloudGameName, geoRegion, status));
+            if (!string.IsNullOrEmpty(clusterId))
+            {
+                url.AppendFormat("&clusterId={0}", clusterId);
+            }
+
+            if (!string.IsNullOrEmpty(agentId))
+            {
+                url.AppendFormat("&agentId={0}", agentId);
+            }
+
+            var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateClustersResponse>(message).ConfigureAwait(false);
         }
     }

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
-
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
     using System.IO;
     using System.Management.Automation;
     using Utilities.CloudGame;
+    using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Create cloud game package.
@@ -42,8 +42,11 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNull]
         public int MaxPlayers { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The Id of the asset file to use")]
-        public string AssetId { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The IDs of the certificates to use")]
+        public Guid[] CertificateIds { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The ID of the asset file to use")]
+        public Guid? AssetId { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the local cspkg file")]
         [ValidateNotNullOrEmpty]
@@ -72,6 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                         PackageName,
                         MaxPlayers,
                         AssetId,
+                        CertificateIds,
                         CspkgFileName,
                         CspkgStream,
                         CscfgFileName,

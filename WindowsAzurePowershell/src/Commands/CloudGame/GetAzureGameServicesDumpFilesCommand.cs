@@ -37,12 +37,15 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public string InstanceId { get; set; }
 
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region of the instance (if known).")]
+        public string GeoRegion { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
-            var result = Client.GetDumpFiles(CloudGameName, Platform, InstanceId).Result;
+            var result = Client.GetDumpFiles(CloudGameName, Platform, InstanceId, GeoRegion).Result;
             WriteObject(result);
         }
     }
