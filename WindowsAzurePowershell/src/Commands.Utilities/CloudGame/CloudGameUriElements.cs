@@ -35,6 +35,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public const string XblCorrelationHeader = "X-XblCorrelationId";
 
         /// <summary>
+        /// The request ID header.
+        /// </summary>
+        public const string RequestIdHeader = "x-ms-request-id";
+
+        /// <summary>
+        /// The operation status path used for polling.
+        /// See http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx
+        /// </summary>
+        public const string OperationStatusPath = "/operations/{0}";
+
+        /// <summary>
         /// The create VM package resource path.
         /// </summary>
         public const string VmPackagesResourcePath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}/images";

@@ -12,16 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections.Generic;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Management.Compute.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 {
-    using Common;
-    using Contract;
-    using Websites.Services;
-    using ServiceManagement;
-    using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -30,9 +27,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Json;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
+    using Common;
+    using Contract;
+    using Websites.Services;
+    using ServiceManagement;
+    using Newtonsoft.Json;
     using Utilities.Common;
 
     /// <summary>
@@ -330,6 +333,153 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         }
 
         /// <summary>
+        /// Polls an asynchronous operation status asynchronously.
+        /// See http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx
+        /// </summary>
+        /// <param name="initialHttpResponse">The initial "accepted" response to perform the operation.</param>
+        /// <param name="httpXmlClient">The XML HTTP client.</param>
+        /// <param name="pollIntervalInSeconds">The poll interval in seconds.</param>
+        /// <param name="timeoutInSeconds">The timeout in seconds.</param>
+        /// <returns>
+        /// The task for completion.
+        /// </returns>
+        public static async Task<ComputeOperationStatusResponse> PollOperationStatus(
+            HttpResponseMessage initialHttpResponse,
+            HttpClient httpXmlClient,
+            int pollIntervalInSeconds,
+            int timeoutInSeconds)
+        {
+            if (initialHttpResponse.StatusCode != HttpStatusCode.Accepted)
+            {
+                // Unexpected result, so throw an exception
+                throw new ServiceManagementClientException(
+                    initialHttpResponse.StatusCode,
+                    new ServiceManagementError { Code = initialHttpResponse.StatusCode.ToString(), Message = "Unexpected status code. Should be 202 Accepted." },
+                    string.Empty);
+            }
+
+            if (!initialHttpResponse.Headers.Contains(CloudGameUriElements.RequestIdHeader))
+            {
+                throw new ServiceManagementClientException(
+                    HttpStatusCode.BadRequest,
+                    new ServiceManagementError
+                    {
+                        Code = HttpStatusCode.BadRequest.ToString(),
+                        Message = "No request ID header found in response"
+                    },
+                    string.Empty);
+            }
+
+            var requestId = initialHttpResponse.Headers.GetValues(CloudGameUriElements.RequestIdHeader).FirstOrDefault();
+
+            // Construct URL
+            var url = httpXmlClient.BaseAddress + string.Format(CloudGameUriElements.OperationStatusPath, requestId);
+
+            // Poll for a result
+            var beginPollTime = DateTime.UtcNow;
+            var pollInterval = new TimeSpan(0, 0, pollIntervalInSeconds);
+            var endPollTime = beginPollTime + new TimeSpan(0, 0, timeoutInSeconds);
+            ComputeOperationStatusResponse result = null;
+
+            var done = false;
+            while (!done)
+            {
+                var httpResponse = await httpXmlClient.GetAsync(url).ConfigureAwait(false);
+                var xmlString = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                result = ParseOperationStatusResponse(xmlString);
+                result.StatusCode = httpResponse.StatusCode;
+                if (httpResponse.Headers.Contains(CloudGameUriElements.RequestIdHeader))
+                {
+                    result.RequestId = httpResponse.Headers.GetValues(CloudGameUriElements.RequestIdHeader).FirstOrDefault();
+                }
+
+                switch (result.Status)
+                {
+                    case Management.Compute.Models.OperationStatus.InProgress:
+                        Thread.Sleep((int)pollInterval.TotalMilliseconds);
+                        break;
+
+                    case Management.Compute.Models.OperationStatus.Failed:
+                        throw new ServiceManagementClientException(
+                        result.HttpStatusCode,
+                        new ServiceManagementError
+                        {
+                            Code = result.Error.Code,
+                            Message = result.Error.Message
+                        },
+                        string.Empty);
+
+                    case Management.Compute.Models.OperationStatus.Succeeded:
+                        done = true;
+                        break;
+                }
+
+                if (!done && DateTime.UtcNow > endPollTime)
+                {
+                    done = true;
+                }
+            }
+
+            return result;
+        }
+
+        private static ComputeOperationStatusResponse ParseOperationStatusResponse(string xmlString)
+        {
+            // Note a helper method is used to parse the XML response because the endpoint is not a WCF service and does not use a standard data contract
+            var result = new ComputeOperationStatusResponse();
+            var responseDoc = XDocument.Parse(xmlString);
+
+            var operationElement = responseDoc.Element(XName.Get("Operation", "http://schemas.microsoft.com/windowsazure"));
+            if (operationElement != null)
+            {
+                var idElement = operationElement.Element(XName.Get("ID", "http://schemas.microsoft.com/windowsazure"));
+                if (idElement != null)
+                {
+                    var idInstance = idElement.Value;
+                    result.Id = idInstance;
+                }
+
+                var statusElement = operationElement.Element(XName.Get("Status", "http://schemas.microsoft.com/windowsazure"));
+                if (statusElement != null)
+                {
+                    var statusInstance = (Management.Compute.Models.OperationStatus)Enum.Parse(typeof(Management.Compute.Models.OperationStatus), statusElement.Value, false);
+                    result.Status = statusInstance;
+                }
+
+                var httpStatusCodeElement = operationElement.Element(XName.Get("HttpStatusCode", "http://schemas.microsoft.com/windowsazure"));
+                if (httpStatusCodeElement != null)
+                {
+                    var httpStatusCodeInstance = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), httpStatusCodeElement.Value, false);
+                    result.HttpStatusCode = httpStatusCodeInstance;
+                }
+
+                var errorElement = operationElement.Element(XName.Get("Error", "http://schemas.microsoft.com/windowsazure"));
+                if (errorElement != null)
+                {
+                    var errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
+                    result.Error = errorInstance;
+
+                    var codeElement = errorElement.Element(XName.Get("Code", "http://schemas.microsoft.com/windowsazure"));
+                    if (codeElement != null)
+                    {
+                        var codeInstance = codeElement.Value;
+                        errorInstance.Code = codeInstance;
+                    }
+
+                    var messageElement = errorElement.Element(XName.Get("Message", "http://schemas.microsoft.com/windowsazure"));
+                    if (messageElement != null)
+                    {
+                        var messageInstance = messageElement.Value;
+                        errorInstance.Message = messageInstance;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         ///     Creates and initialize and instance of HttpClient for a specific media type
         /// </summary>
         /// <returns></returns>
@@ -342,7 +492,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             var client = HttpClientHelper.CreateClient(endpoint.ToString(), handler: requestHandler);
             client.DefaultRequestHeaders.Add(CloudGameUriElements.XblCorrelationHeader, Guid.NewGuid().ToString());
-            client.DefaultRequestHeaders.Add(Constants.VersionHeaderName, "2012-08-01");
+            client.DefaultRequestHeaders.Add(Constants.VersionHeaderName, "2013-11-01");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
             return client;

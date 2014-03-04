@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "An existing game mode schema ID.")]
         [ValidateNotNullOrEmpty]
-        public Guid SchemaId { get; set; }
+        public Guid? SchemaId { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name for creating a new schema.")]
         [ValidateNotNullOrEmpty]

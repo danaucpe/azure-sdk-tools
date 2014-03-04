@@ -826,34 +826,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             };
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, platformResourceString, name);
-            var message = await _httpClient.PutAsXmlAsync(url, resource).ConfigureAwait(false);
-            if (!message.IsSuccessStatusCode)
-            {
-                // Error result, so throw an exception
-                throw new ServiceManagementClientException(message.StatusCode,
-                    new ServiceManagementError
-                    {
-                        Code = message.StatusCode.ToString()
-                    },
-                    string.Empty);
-            }
-
-            // Poll RDFE to see if the CloudGame instance has been created
-            var created = false;
-            var numRetries = 0;
-            do
-            {
-                var xblComputeInstances = await GetCloudGames().ConfigureAwait(false);
-                if (xblComputeInstances.Any(cloudGameInstance => cloudGameInstance.Name == name))
-                {
-                    created = true;
-                }
-
-                Thread.Sleep(1000);
-            }
-            while (!created && (numRetries++ < 10));
-
-            return created;
+            var initialResponse = await _httpClient.PutAsXmlAsync(url, resource).ConfigureAwait(false);
+            var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 2, 30);
+            return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note timeout treated as failure
         }
 
         /// <summary>
@@ -865,17 +840,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
-            if (!message.IsSuccessStatusCode)
-            {
-                // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
-            }
-
-            return true;
+            var initialResponse = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 1, 20);
+            return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note timeout treated as failure
         }
 
         /// <summary>
