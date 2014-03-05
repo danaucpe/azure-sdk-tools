@@ -307,6 +307,8 @@
     <Compile Include="CloudGame\Contract\Responses\CertificatePostResponse.cs" />
     <Compile Include="CloudGame\Contract\Responses\CertificateResponse.cs" />
     <Compile Include="CloudGame\Contract\Responses\ChartData.cs" />
+    <Compile Include="CloudGame\Contract\Responses\CounterChartData.cs" />
+    <Compile Include="CloudGame\Contract\Responses\CounterChartDataResponse.cs" />
     <Compile Include="CloudGame\Contract\Responses\DashboardSummary.cs" />
     <Compile Include="CloudGame\Contract\Responses\DeploymentData.cs" />
     <Compile Include="CloudGame\Contract\Responses\EnumerateClustersResponse.cs" />

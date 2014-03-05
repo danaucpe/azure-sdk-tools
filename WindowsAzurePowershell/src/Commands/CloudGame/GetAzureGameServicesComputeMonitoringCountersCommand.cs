@@ -14,22 +14,31 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
-    using Utilities.CloudGame;
-    using Utilities.CloudGame.Contract;
+    using System.Collections.Generic;
     using System.Management.Automation;
+    using Utilities.CloudGame;
+    using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Gets cloud games.
+    /// Gets the monitoring counter names.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesCloudGames"), OutputType(typeof(CloudGameColletion))]
-    public class GetAzureGameServicesComputeInstances : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesComputeMonitoringCounters"), OutputType(typeof(List<string>))]
+    public class GetAzureGameServicesComputeMonitoringCountersCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
+        [ValidateNotNullOrEmpty]
+        public string CloudGameName { get; set; }
+
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [ValidateNotNullOrEmpty]
+        public CloudGamePlatform Platform { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
-            CloudGameColletion result = Client.GetCloudGames().Result;
+            var result = Client.GetComputeMonitoringCounters(CloudGameName, Platform).Result;
             WriteObject(result);
         }
     }

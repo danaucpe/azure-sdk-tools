@@ -11,6 +11,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 {
     using Common;
@@ -363,5 +365,34 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="agentId">The (optional) agent ID to query for.</param>
         /// <returns>A list of clusters that match the region and status filter</returns>
         Task<EnumerateClustersResponse> GetClusters(string cloudGameName, CloudGamePlatform platform, string geoRegion, string status, string clusterId, string agentId);
+
+        /// <summary>
+        ///     Gets the monitoring counter names.
+        /// </summary>
+        /// <param name="cloudGameName">The cloud game name.</param>
+        /// <param name="platform">The cloud game platform.</param>
+        /// <returns>A list of monitoring counter names.</returns>
+        Task<List<string>> GetComputeMonitoringCounters(string cloudGameName, CloudGamePlatform platform);
+
+
+        /// <summary>
+        ///     Gets the compute monitoring counter data.
+        /// </summary>
+        /// <param name="cloudGameName">The cloud game name.</param>
+        /// <param name="platform">The cloud game platform.</param>
+        /// <param name="geoRegionName">Name of the geo region.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <param name="timeZoom">The time zoom.</param>
+        /// <param name="counterNames">The selected counters.</param>
+        /// <returns>The counter data for the selected counters.</returns>
+        Task<CounterChartDataResponse> GetComputeMonitoringCounterData(
+            string cloudGameName,
+            CloudGamePlatform platform,
+            string geoRegionName,
+            DateTime startTime,
+            DateTime endTime,
+            TimeSpan timeZoom,
+            string[] counterNames);
     }
 }

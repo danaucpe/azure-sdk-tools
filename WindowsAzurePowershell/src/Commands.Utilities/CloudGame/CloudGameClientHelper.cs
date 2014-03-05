@@ -12,9 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Xml.Linq;
-using Microsoft.WindowsAzure.Management.Compute.Models;
-
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 {
     using System;
@@ -30,12 +27,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
+    using System.Xml.Linq;
     using System.Xml.Serialization;
     using Common;
     using Contract;
     using Websites.Services;
     using ServiceManagement;
     using Newtonsoft.Json;
+    using Management.Compute.Models;
     using Utilities.Common;
 
     /// <summary>

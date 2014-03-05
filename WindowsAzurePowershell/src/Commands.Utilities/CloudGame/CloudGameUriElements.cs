@@ -181,6 +181,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public const string EnumerateClustersPath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}/clusters/?geoRegion={2}&status={3}";
 
         /// <summary>
+        /// The monitoring counters list path.
+        /// </summary>
+        public const string MonitoringCountersPath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}/counters";
+
+        /// <summary>
+        /// The monitoring counter data path.
+        /// </summary>
+        public const string MonitoringCounterDataPath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}/counters/chart?startTime={2}&endTime={3}&zoom={4}&geoRegion={5}&counterIds={6}";
+
+        /// <summary>
         /// The put cloud service resource path.
         /// </summary>
         public const string CloudServiceResourcePath = "/cloudservices/gameservices";

@@ -257,7 +257,9 @@
     <Compile Include="CloudGame\GetAzureGameServicesCertificatesCommand.cs" />
     <Compile Include="CloudGame\GetAzureGameServicesClustersCommand.cs" />
     <Compile Include="CloudGame\GetAzureGameServicesComputeDeploymentsCommand.cs" />
-    <Compile Include="CloudGame\GetAzureGameServicesComputeInstancesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesCloudGamesCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesComputeMonitoringCounterDataCommand.cs" />
+    <Compile Include="CloudGame\GetAzureGameServicesComputeMonitoringCountersCommand.cs" />
     <Compile Include="CloudGame\GetAzureGameServicesComputePoolUnitReportCommand.cs" />
     <Compile Include="CloudGame\GetAzureGameServicesComputeSummaryReportCommand.cs" />
     <Compile Include="CloudGame\GetAzureGameServicesDumpFilesCommand.cs" />

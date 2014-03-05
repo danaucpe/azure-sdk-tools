@@ -11,6 +11,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 {
     using Common;
@@ -841,6 +843,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName);
             var initialResponse = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            if (initialResponse.StatusCode == HttpStatusCode.NotFound)
+            {
+                // Already removed
+                return true;
+            }
+
             var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 1, 20);
             return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note timeout treated as failure
         }
@@ -1002,6 +1010,54 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateClustersResponse>(message).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the monitoring counter names.
+        /// </summary>
+        /// <param name="cloudGameName">The cloud game name.</param>
+        /// <param name="platform">The cloud game platform.</param>
+        /// <returns>A list of monitoring counter names.</returns>
+        public async Task<List<string>> GetComputeMonitoringCounters(string cloudGameName, CloudGamePlatform platform)
+        {
+            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.MonitoringCountersPath, ClientHelper.GetPlatformString(platform), cloudGameName);
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<List<string>>(message).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the compute monitoring counter data.
+        /// </summary>
+        /// <param name="cloudGameName">The cloud game name.</param>
+        /// <param name="platform">The cloud game platform.</param>
+        /// <param name="geoRegionName">Name of the geo region.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <param name="timeZoom">The time zoom.</param>
+        /// <param name="counterNames">The selected counters.</param>
+        /// <returns>The counter data for the selected counters.</returns>
+        public async Task<CounterChartDataResponse> GetComputeMonitoringCounterData(
+            string cloudGameName,
+            CloudGamePlatform platform,
+            string geoRegionName,
+            DateTime startTime,
+            DateTime endTime,
+            TimeSpan timeZoom,
+            string[] counterNames)
+        {
+            var counterNamesString = string.Join(",", counterNames);
+            var url = _httpClient.BaseAddress + String.Format(
+                CloudGameUriElements.MonitoringCounterDataPath,
+                ClientHelper.GetPlatformString(platform),
+                cloudGameName,
+                startTime.ToString("s"), // Converts to ISO 8601 string
+                endTime.ToString("s"),
+                (int)timeZoom.TotalSeconds,
+                geoRegionName,
+                counterNamesString);
+
+            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<CounterChartDataResponse>(message).ConfigureAwait(false);
         }
     }
 }
