@@ -251,6 +251,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public const string CloudGameResourcePath = "/cloudservices/gameservices/resources/gameservices/{0}/{1}";
 
         /// <summary>
+        /// The cloud games resource info path
+        /// </summary>
+        public const string CloudGameResourceInfoPath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}";
+
+        /// <summary>
         /// The get cloud services resource path.
         /// </summary>
         public const string GetCloudServicesResourcePath = "/cloudservices/gameservices?detailLevel=full";

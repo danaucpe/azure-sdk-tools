@@ -214,7 +214,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             throw CreateExceptionFromJson(responseMessage.StatusCode, string.Empty);
         }
 
-        public static async Task<CloudGameColletion> ProcessCloudServiceResponse(HttpResponseMessage responseMessage)
+        public static async Task<CloudGameColletion> ProcessCloudServiceResponse(HttpClient httpJsonClient, HttpResponseMessage responseMessage)
         {
             var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
             var encoding = GetEncodingFromResponseMessage(responseMessage);
@@ -237,29 +237,41 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                             continue;
                         }
 
-                        // If there are no intrinsic settings, or the intrinsic setting is null, then create an empty
-                        // CloudGame in the error state.
+                        CloudGame cloudGame;
+
+                        // If there are no intrinsic settings, or the intrinsic setting is null, then attempt to fetch info directly from GSRM.
                         if (resource.IntrinsicSettings == null || 
                             resource.IntrinsicSettings.Length == 0 ||
                             resource.IntrinsicSettings[0] == null)
                         {
-                            response.Add(new CloudGame() { Name = resource.Name, InErrorState = true});
-                            continue;
+                            // Fetch missing info for this game from the GSRM passthrough endpoint
+                            var url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourceInfoPath, resource.Type, resource.Name);
+                            var cloudGameResponseMessage = await httpJsonClient.GetAsync(url).ConfigureAwait(false);
+                            cloudGame = await ProcessJsonResponse<CloudGame>(cloudGameResponseMessage).ConfigureAwait(false);
+                            if (cloudGame == null)
+                            {
+                                // The GSRM does not know about this resource, so attempt to delete it from RDFE silently
+                                url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, resource.Type, resource.Name);
+                                var task = httpJsonClient.DeleteAsync(url);
+                                continue;
+                            }
                         }
-
-                        var cbData = resource.IntrinsicSettings[0] as XmlCDataSection;
-                        var jsonSer = new DataContractJsonSerializer(typeof(CloudGame));
-                        using (var jsonStream = new MemoryStream(UTF8Encoding.UTF8.GetBytes((cbData.Data))))
+                        else
                         {
-                            // Deserialize the result from GSRM
-                            var xblCompute = (CloudGame)jsonSer.ReadObject(jsonStream);
+                            var cbData = resource.IntrinsicSettings[0] as XmlCDataSection;
+                            var jsonSer = new DataContractJsonSerializer(typeof(CloudGame));
+                            using (var jsonStream = new MemoryStream(Encoding.UTF8.GetBytes((cbData.Data))))
+                            {
+                                // Deserialize the result from GSRM
+                                cloudGame = (CloudGame)jsonSer.ReadObject(jsonStream);
 
-                            // Check the error state
-                            xblCompute.InErrorState = resource.OperationStatus.Error != null;
-
-                            // Add the xlbCompute instance to the collection
-                            response.Add(xblCompute);
+                                // Check the error state
+                                cloudGame.InErrorState = resource.OperationStatus.Error != null;
+                            }
                         }
+
+                        // Add the cloud game instance to the collection
+                        response.Add(cloudGame);
                     }
                 }
 

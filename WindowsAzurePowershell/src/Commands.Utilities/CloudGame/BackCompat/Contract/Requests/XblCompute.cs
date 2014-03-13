@@ -48,12 +48,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat.Contrac
         public string Status { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the game can be deployed.
-        /// </summary>
-        [DataMember(Name = "canDeploy")]
-        public bool CanDeploy { get; set; }
-
-        /// <summary>
         /// Gets or sets the subscription id.
         /// </summary>
         [DataMember(Name = "subscriptionId")]

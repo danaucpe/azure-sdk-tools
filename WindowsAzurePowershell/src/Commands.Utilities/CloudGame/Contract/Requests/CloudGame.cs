@@ -15,6 +15,7 @@
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System.Runtime.Serialization;
+    using Common;
 
     /// <summary>
     /// The cloud game definition.
@@ -53,19 +54,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         /// Gets or sets the variant IDs for this game.
         /// </summary>
         [DataMember(Name = "variants")]
-        public string[] gameModeIds { get; set; }
+        public string[] GameModeIds { get; set; }
 
         /// <summary>
         /// Gets or sets the VM package IDs for this game.
         /// </summary>
         [DataMember(Name = "gsiIds")]
-        public string[] vmPackageIds { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the game can be deployed.
-        /// </summary>
-        [DataMember(Name = "canDeploy")]
-        public bool CanDeploy { get; set; }
+        public string[] VmPackageIds { get; set; }
 
         /// <summary>
         /// Gets or sets the subscription Id.
@@ -143,10 +138,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         public int SelectionOrder { get; set; }
 
         /// <summary>
-        /// Gets or sets the platform of the cloud game.
+        /// Gets or sets the cloud game platform resource type.
         /// </summary>
         [DataMember(Name = "platform")]
-        public string Platform
+        public string PlatformResourceType
         {
             get
             {
@@ -156,6 +151,28 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
             set
             {
                 this.platformLower = value == null ? null : value.ToLower();
+            }
+        }
+
+        /// <summary>
+        /// Gets the cloud game platform.
+        /// </summary>
+        /// <value>
+        /// The platform.
+        /// </value>
+        public CloudGamePlatform Platform
+        {
+            get
+            {
+                switch (this.platformLower)
+                {
+                    case CloudGameUriElements.Xbox360ComputeResourceType:
+                        return CloudGamePlatform.Xbox360;
+                    case CloudGameUriElements.PcComputeResourceType:
+                        return CloudGamePlatform.PC;
+                    default:
+                        return CloudGamePlatform.XboxOne;
+                }
             }
         }
 

@@ -789,7 +789,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var cloudGame = new CloudGame()
             {
                 Name = name,
-                Platform = platformResourceString,
+                PlatformResourceType = platformResourceString,
                 ResourceSets = resourceSetIds,
                 Sandboxes = sandboxes,
                 SchemaName = schemaName,
@@ -861,7 +861,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GetCloudServicesResourcePath);
             var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
-            return await ClientHelper.ProcessCloudServiceResponse(message).ConfigureAwait(false);
+            return await ClientHelper.ProcessCloudServiceResponse(_httpClient, message).ConfigureAwait(false);
         }
 
         /// <summary>
