@@ -219,6 +219,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
             var encoding = GetEncodingFromResponseMessage(responseMessage);
             var response = new CloudGameColletion();
+            var deleteTasks = new List<Task>();
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -252,7 +253,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                             {
                                 // The GSRM does not know about this resource, so attempt to delete it from RDFE silently
                                 url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, resource.Type, resource.Name);
-                                var task = httpJsonClient.DeleteAsync(url);
+                                deleteTasks.Add(httpJsonClient.DeleteAsync(url));
                                 continue;
                             }
                         }
@@ -274,6 +275,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                         response.Add(cloudGame);
                     }
                 }
+
+                await TaskEx.WhenAll(deleteTasks);
 
                 return response;
             }

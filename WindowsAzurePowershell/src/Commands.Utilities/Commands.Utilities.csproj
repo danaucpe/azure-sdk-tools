@@ -285,6 +285,7 @@
     <Compile Include="CloudGame\Contract\Requests\AzureResourceProviderContracts.cs" />
     <Compile Include="CloudGame\Contract\Requests\CertificateRequest.cs" />
     <Compile Include="CloudGame\Contract\Requests\CloudGame.cs" />
+    <Compile Include="CloudGame\Contract\Requests\CloudGameConfiguration.cs" />
     <Compile Include="CloudGame\Contract\Requests\CloudGameRequest.cs" />
     <Compile Include="CloudGame\Contract\Requests\CloudServiceResource.cs" />
     <Compile Include="CloudGame\Contract\Requests\CloudServices.cs" />

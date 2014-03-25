@@ -1059,5 +1059,38 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<CounterChartDataResponse>(message).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// Configures the cloud game properties.
+        /// </summary>
+        /// <param name="cloudGameName">The cloud game name.</param>
+        /// <param name="platform">The cloud game platform.</param>
+        /// <param name="resourceSets">The resource set IDs.</param>
+        /// <param name="sandboxes">The sandboxes.</param>
+        /// <returns>
+        /// The task for completion.
+        /// </returns>
+        public async Task<bool> ConfigureCloudGame(string cloudGameName, CloudGamePlatform platform, string[] resourceSets, string[] sandboxes)
+        {
+            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ConfigureGamePath, ClientHelper.GetPlatformString(platform), cloudGameName);
+
+            var configureContract = new CloudGameConfiguration()
+            {
+                ResourceSets = string.Join(",", resourceSets),
+                Sandboxes = string.Join(",", sandboxes)
+            };
+
+            var message = await _httpClient.PutAsJsonAsync(url, configureContract).ConfigureAwait(false);
+            if (!message.IsSuccessStatusCode)
+            {
+                // Error result, so throw an exception
+                throw new ServiceManagementClientException(
+                    message.StatusCode,
+                    new ServiceManagementError { Code = message.StatusCode.ToString() },
+                    string.Empty);
+            }
+
+            return true;
+        }
     }
 }

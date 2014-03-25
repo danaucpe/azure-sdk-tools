@@ -283,6 +283,7 @@
     <Compile Include="CloudGame\RemoveAzureGameServicesGameModeSchemaCommand.cs" />
     <Compile Include="CloudGame\RemoveAzureGameServicesGamePackageCommand.cs" />
     <Compile Include="CloudGame\RemoveAzureGameServicesVmPackageCommand.cs" />
+    <Compile Include="CloudGame\SetAzureGameServicesCloudGamePropertiesCommand.cs" />
     <Compile Include="CloudGame\SetAzureGameServicesGamePackageCommand.cs" />
     <Compile Include="CloudGame\StopAzureGameServicesCloudGameCommand.cs" />
     <Compile Include="CloudService\Development\DisableAzureRemoteDesktop.cs" />
