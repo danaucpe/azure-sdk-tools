@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesAssets"), OutputType(typeof(AssetCollectionResponse))]
     public class GetAzureGameServicesAssetsCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "A cloud game name to filter by.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "An optional cloud game name to filter by.")]
         public Guid? CloudGameId { get; set; }
 
         public ICloudGameClient Client { get; set; }

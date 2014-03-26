@@ -987,8 +987,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <param name="geoRegion">The regiond to enumerate clusters from</param>
-        /// <param name="status">The status to filter on</param>
+        /// <param name="geoRegion">The (optional) region(s) to enumerate clusters from (comma-separated).</param>
+        /// <param name="status">The (optional) status to filter on.</param>
         /// <param name="clusterId">The (optional) cluster ID to query for.</param>
         /// <param name="agentId">The (optional) agent ID to query for.</param>
         /// <returns>
@@ -996,6 +996,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         public async Task<EnumerateClustersResponse> GetClusters(string cloudGameName, CloudGamePlatform platform, string geoRegion, string status, string clusterId, string agentId)
         {
+            const string allQuery = "All";
+            if (string.IsNullOrEmpty(geoRegion))
+            {
+                geoRegion = allQuery;
+            }
+
+            if (string.IsNullOrEmpty(status))
+            {
+                status = allQuery;
+            }
+
             var url = new StringBuilder(_httpClient.BaseAddress +
                 String.Format(CloudGameUriElements.EnumerateClustersPath, ClientHelper.GetPlatformString(platform), cloudGameName, geoRegion, status));
             if (!string.IsNullOrEmpty(clusterId))

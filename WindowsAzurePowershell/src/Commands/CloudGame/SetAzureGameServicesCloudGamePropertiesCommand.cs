@@ -25,11 +25,11 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     [Cmdlet(VerbsCommon.Set, "AzureGameServicesCloudGameProperties"), OutputType(typeof(bool))]
     public class SetAzureGameServicesCloudGamePropertiesCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidateNotNullOrEmpty]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name (does not get set; used purely for looking up).")]
+        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform (does not get set; used purely for looking up).")]
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 

@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     public class NewAzureGameServicesCertificateCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate name.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string CertificateName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate filename.")]

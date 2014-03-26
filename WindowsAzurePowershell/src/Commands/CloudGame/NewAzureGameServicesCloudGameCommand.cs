@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     public class NewAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
@@ -55,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         public Guid? SchemaId { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name for creating a new schema.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string SchemaName { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename for creating a new schema.")]

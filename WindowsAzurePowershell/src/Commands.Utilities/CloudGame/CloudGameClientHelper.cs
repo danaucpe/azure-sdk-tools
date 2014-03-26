@@ -49,6 +49,25 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             { CloudGamePlatform.PC,      CloudGameUriElements.PcComputeResourceType }
         };
 
+        /// <summary>
+        /// The regex used for cloud game names.
+        /// </summary>
+        public const string CloudGameNameRegex = @"^[a-zA-Z0-9._\-]{1,99}$";
+
+        /// <summary>
+        /// The regex used for items like asset names, certificate names, etc.
+        /// </summary>
+        public const string ItemNameRegex = @"^[a-zA-Z0-9]([a-zA-Z0-9._\- ]*[a-zA-Z0-9._\-])?$";
+
+        /// <summary>
+        /// The sandbox regex.
+        /// </summary>
+        public const string SandboxRegex = @"[a-zA-Z0-9 .\-]{1,50}";
+
+        /// <summary>
+        /// Gets the platform resource type string from an enum.
+        /// </summary>
+        /// <param name="platform">The ckoud game platform enum.</param>
         public static string GetPlatformString(CloudGamePlatform platform)
         {
             return PlatformMapping[platform];
@@ -232,7 +251,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
                     foreach (var resource in serviceResponse.Resources)
                     {
-                        if (!CloudGameUriElements.CloudGameResourceTypes.Contains(resource.Type))
+                        if (!CloudGameUriElements.CloudGameResourceTypes.Contains(resource.Type.ToLower()))
                         {
                             // Skip anything that isn't a cloud game
                             continue;

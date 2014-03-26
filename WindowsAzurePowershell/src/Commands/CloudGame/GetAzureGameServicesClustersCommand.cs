@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     public class GetAzureGameServicesClustersCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
@@ -36,11 +36,9 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         public CloudGamePlatform Platform { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region to enumerate.")]
-        [ValidateNotNullOrEmpty]
         public string GeoRegion { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The status of the clusters to query for.")]
-        [ValidateNotNullOrEmpty]
         public string Status { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cluster ID for the game service.")]

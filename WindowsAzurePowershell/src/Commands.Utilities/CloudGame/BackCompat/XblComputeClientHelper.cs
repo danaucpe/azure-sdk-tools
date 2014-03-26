@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
 {
     using System;
@@ -120,11 +122,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
             throw CreateExceptionFromJson(responseMessage.StatusCode, string.Empty);
         }
 
-        public static async Task<XblComputeColletion> ProcessCloudServiceResponse(HttpResponseMessage responseMessage)
+        public static async Task<XblComputeColletion> ProcessCloudServiceResponse(HttpClient httpJsonClient, HttpResponseMessage responseMessage)
         {
             var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
             var encoding = GetEncodingFromResponseMessage(responseMessage);
             var response = new XblComputeColletion();
+            var deleteTasks = new List<Task>();
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -137,31 +140,51 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
 
                     foreach (var resource in serviceResponse.Resources)
                     {
-                        // If there are no intrinsic settings, or the intrinsic setting is null, then create an empty
-                        // XblCompute in the error state.
-                        if (resource.IntrinsicSettings == null || 
-                            resource.IntrinsicSettings.Length == 0 ||
-                            resource.IntrinsicSettings[0] == null)
+                        if (CloudGameUriElements.XboxLiveComputeResourceType != resource.Type.ToLower())
                         {
-                            response.Add(new XblCompute() { Name = resource.Name, InErrorState = true});
+                            // Skip anything that isn't a XB1 cloud game
                             continue;
                         }
 
-                        var cbData = resource.IntrinsicSettings[0] as XmlCDataSection;
-                        var jsonSer = new DataContractJsonSerializer(typeof(XblCompute));
-                        using (var jsonStream = new MemoryStream(UTF8Encoding.UTF8.GetBytes((cbData.Data))))
+                        XblCompute xblCompute = null;
+
+                        // If there are no intrinsic settings, or the intrinsic setting is null, then attempt to fetch info directly from GSRM.
+                        if (resource.IntrinsicSettings == null ||
+                            resource.IntrinsicSettings.Length == 0 ||
+                            resource.IntrinsicSettings[0] == null)
                         {
-                            // Deserialize the result from GSRM
-                            var xblCompute = (XblCompute)jsonSer.ReadObject(jsonStream);
-
-                            // Check the error state
-                            xblCompute.InErrorState = resource.OperationStatus.Error != null;
-
-                            // Add the xlbCompute instance to the collection
-                            response.Add(xblCompute);
+                            // Fetch missing info for this game from the GSRM passthrough endpoint
+                            var url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourceInfoPath, resource.Name);
+                            var cloudGameResponseMessage = await httpJsonClient.GetAsync(url).ConfigureAwait(false);
+                            xblCompute = await ProcessJsonResponse<XblCompute>(cloudGameResponseMessage).ConfigureAwait(false);
+                            if (xblCompute == null)
+                            {
+                                // The GSRM does not know about this resource, so attempt to delete it from RDFE silently
+                                url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, resource.Name);
+                                deleteTasks.Add(httpJsonClient.DeleteAsync(url));
+                                continue;
+                            }
                         }
+                        else
+                        {
+                            var cbData = resource.IntrinsicSettings[0] as XmlCDataSection;
+                            var jsonSer = new DataContractJsonSerializer(typeof(XblCompute));
+                            using (var jsonStream = new MemoryStream(Encoding.UTF8.GetBytes((cbData.Data))))
+                            {
+                                // Deserialize the result from GSRM
+                                xblCompute = (XblCompute)jsonSer.ReadObject(jsonStream);
+
+                                // Check the error state
+                                xblCompute.InErrorState = resource.OperationStatus.Error != null;
+                            }
+                        }
+
+                        // Add the cloud game instance to the collection
+                        response.Add(xblCompute);
                     }
                 }
+
+                await TaskEx.WhenAll(deleteTasks);
 
                 return response;
             }

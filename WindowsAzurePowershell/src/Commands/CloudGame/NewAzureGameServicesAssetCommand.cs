@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     public class NewAzureGameServicesAssetCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the asset.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string AssetName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the asset file.")]

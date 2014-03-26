@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     public class NewAzureGameServicesVmPackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
@@ -35,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         public CloudGamePlatform Platform { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the VM package.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string PackageName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The maximum number of players allowed.")]

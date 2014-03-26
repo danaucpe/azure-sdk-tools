@@ -29,7 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
         public string XblComputeName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the asset.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(Utilities.CloudGame.ClientHelper.ItemNameRegex)]
         public string AssetName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the asset file.")]

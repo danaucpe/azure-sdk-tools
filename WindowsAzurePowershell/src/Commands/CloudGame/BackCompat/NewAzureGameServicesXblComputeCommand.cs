@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     public class NewAzureGameServicesXblComputeCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(Utilities.CloudGame.ClientHelper.CloudGameNameRegex)]
         public string XblComputeName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The title Id.")]
@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
         public string SchemaId { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(Utilities.CloudGame.ClientHelper.ItemNameRegex)]
         public string SchemaName { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename")]

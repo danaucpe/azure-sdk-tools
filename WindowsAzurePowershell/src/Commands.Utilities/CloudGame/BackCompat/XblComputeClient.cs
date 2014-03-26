@@ -800,7 +800,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GetCloudServicesResourcePath);
             var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
-            return await ClientHelper.ProcessCloudServiceResponse(message).ConfigureAwait(false);
+            return await ClientHelper.ProcessCloudServiceResponse(_httpClient, message).ConfigureAwait(false);
         }
 
         /// <summary>

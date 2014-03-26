@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
         public string XblComputeName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the game mode.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(Utilities.CloudGame.ClientHelper.ItemNameRegex)]
         public string GameModeName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the game mode file.")]

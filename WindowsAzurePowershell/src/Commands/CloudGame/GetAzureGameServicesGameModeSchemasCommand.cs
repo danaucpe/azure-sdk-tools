@@ -24,9 +24,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesGameModeSchemas"), OutputType(typeof(GameModeSchemaCollectionResponse))]
     public class GetAzureGameServicesGameModeSchemasCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Fetch child game modes of each schema.")]
-        [ValidateNotNullOrEmpty]
-        public bool IncludeGameModes { get; set; }
+        [Parameter(HelpMessage = "Fetch child game modes of each schema.")]
+        public SwitchParameter IncludeGameModes { get; set; }
 
         public ICloudGameClient Client { get; set; }
 

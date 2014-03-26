@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         public Guid GameModeSchemaId { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the game mode.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string GameModeName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the game mode file.")]

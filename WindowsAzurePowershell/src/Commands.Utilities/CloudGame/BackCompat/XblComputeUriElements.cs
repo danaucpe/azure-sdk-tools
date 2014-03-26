@@ -173,5 +173,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
         /// The get cloud services resource path.
         /// </summary>
         public const string GetCloudServicesResourcePath = "/cloudservices/gameservices?detailLevel=full";
+
+        /// <summary>
+        /// The cloud games resource info path
+        /// </summary>
+        public const string CloudGameResourceInfoPath = "/cloudservices/gameservices/resources/gameservices/~/xboxlivecompute/{0}";
     }
 }

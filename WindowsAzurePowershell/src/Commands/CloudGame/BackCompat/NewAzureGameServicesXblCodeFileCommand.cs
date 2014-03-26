@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
         public string GameServiceId { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the code file")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(Utilities.CloudGame.ClientHelper.ItemNameRegex)]
         public string CodeFileName { get; set; }
         
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original name of the code file file")]

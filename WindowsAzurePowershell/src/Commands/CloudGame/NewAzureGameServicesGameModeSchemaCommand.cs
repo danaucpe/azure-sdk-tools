@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     public class NewAzureGameServicesGameModeSchemaCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name.")]
-        [ValidateNotNullOrEmpty]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string GameModeSchemaName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema filename.")]
