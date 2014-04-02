@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <summary>
         /// The regex used for items like asset names, certificate names, etc.
         /// </summary>
-        public const string ItemNameRegex = @"^[a-zA-Z0-9]([a-zA-Z0-9._\- ]*[a-zA-Z0-9._\-])?$";
+        public const string ItemNameRegex = @"^[a-zA-Z0-9._\-]([a-zA-Z0-9._\- ]{0,97}[a-zA-Z0-9._\-])?$";
 
         /// <summary>
         /// The sandbox regex.

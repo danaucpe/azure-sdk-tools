@@ -35,10 +35,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region to enumerate.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region(s) to enumerate. Comma-separated if more than one. Empty for all.")]
         public string GeoRegion { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The status of the clusters to query for.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The status of the clusters to query for. Empty for all.")]
         public string Status { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cluster ID for the game service.")]
