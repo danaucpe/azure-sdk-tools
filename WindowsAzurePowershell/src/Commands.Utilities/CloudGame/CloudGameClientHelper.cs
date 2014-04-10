@@ -520,14 +520,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         {
             var requestHandler = new WebRequestHandler();
             requestHandler.ClientCertificates.Add(subscription.Certificate);
+            var retryHandler = new RetryHttpHandler(requestHandler);
             var endpoint = new StringBuilder(General.EnsureTrailingSlash(subscription.ServiceEndpoint.ToString()));
             endpoint.Append(subscription.SubscriptionId);
 
-            var client = HttpClientHelper.CreateClient(endpoint.ToString(), handler: requestHandler);
+            var client = HttpClientHelper.CreateClient(endpoint.ToString(), handler: retryHandler);
             client.DefaultRequestHeaders.Add(CloudGameUriElements.XblCorrelationHeader, Guid.NewGuid().ToString());
             client.DefaultRequestHeaders.Add(Constants.VersionHeaderName, "2013-11-01");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
+            client.Timeout = TimeSpan.FromMilliseconds(client.Timeout.TotalMilliseconds * retryHandler.MaxTries);
             return client;
         }
 
