@@ -331,6 +331,7 @@
     <Compile Include="CloudGame\Contract\Responses\VmPackageDeploymentInfo.cs" />
     <Compile Include="CloudGame\Contract\Responses\VmPackagePostResponse.cs" />
     <Compile Include="CloudGame\Contract\Responses\VmPackageResponse.cs" />
+    <Compile Include="CloudGame\HttpClientExtensions.cs" />
     <Compile Include="CloudGame\ICloudGameClient.cs" />
     <Compile Include="CloudService\AzureTools\AzureTool.cs" />
     <Compile Include="CloudService\AzureTools\CsEncrypt.cs" />

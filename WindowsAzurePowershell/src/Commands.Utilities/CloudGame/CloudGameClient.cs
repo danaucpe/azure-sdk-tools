@@ -11,8 +11,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 {
     using Common;
@@ -20,6 +18,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using ServiceManagement;
     using StorageClient;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -94,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<VmPackageCollectionResponse> GetVmPackages(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackagesResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<VmPackageCollectionResponse>(message).ConfigureAwait(false);
         }
 
@@ -149,7 +148,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 multipartFormContent.Add(new StreamContent(cscfgStream), "packageconfig");
 
                 var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackagesResourcePath, platformResourceString, cloudGameName);
-                var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+                var responseMessage = await _httpClient.PostWithRetriesAsync(url, multipartFormContent).ConfigureAwait(false);
                 responseMetadata = await ClientHelper.ProcessJsonResponse<VmPackagePostResponse>(responseMessage).ConfigureAwait(false);
             }
 
@@ -172,7 +171,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             {
                 multipartFormContent.Add(new StringContent(ClientHelper.ToJson(requestMetadata)), "metadata");
                 var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackageResourcePath, platformResourceString, cloudGameName, responseMetadata.VmPackageId);
-                var responseMessage = await _httpClient.PutAsync(url, multipartFormContent).ConfigureAwait(false);
+                var responseMessage = await _httpClient.PutWithRetriesAsync(url, multipartFormContent).ConfigureAwait(false);
                 if (!responseMessage.IsSuccessStatusCode)
                 {
                     // Error result, so throw an exception
@@ -198,7 +197,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveVmPackage(string cloudGameName, CloudGamePlatform platform, Guid vmPackageId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackageResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName, vmPackageId);
-            var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var responseMessage = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
 
             var message = responseMessage;
             if (message.IsSuccessStatusCode)
@@ -221,7 +220,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<GameModeCollectionResponse> GetGameModes(Guid gameModeSchemaId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModesResourcePath, gameModeSchemaId);
-            var responseMessage = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var responseMessage = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<GameModeCollectionResponse>(responseMessage).ConfigureAwait(false);
         }
 
@@ -248,7 +247,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(newGameModeSchema)), "metadata");
                 multipartContent.Add(new StreamContent(schemaStream), "variantSchema");
 
-                var responseMessage = await _httpClient.PostAsync(url, multipartContent).ConfigureAwait(false);
+                var responseMessage = await _httpClient.PostWithRetriesAsync(url, multipartContent).ConfigureAwait(false);
                 return await ClientHelper.ProcessJsonResponse<NewGameModeSchemaResponse>(responseMessage).ConfigureAwait(false);
             }
         }
@@ -263,7 +262,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveGameModeSchema(Guid gameModeSchemaId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeSchemaResourcePath, gameModeSchemaId);
-            var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var responseMessage = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
                 throw new ServiceManagementClientException(
@@ -285,7 +284,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<GameModeSchemaCollectionResponse> GetGameModeSchemas(bool getDetails = false)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeSchemasGetResourcePath, getDetails);
-            var responseMessage = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var responseMessage = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<GameModeSchemaCollectionResponse>(responseMessage).ConfigureAwait(false);
         }
 
@@ -312,7 +311,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(newGameMode)), "metadata");
                 multipartContent.Add(new StreamContent(gameModeStream), "variant");
 
-                var responseMessage = await _httpClient.PostAsync(url, multipartContent).ConfigureAwait(false);
+                var responseMessage = await _httpClient.PostWithRetriesAsync(url, multipartContent).ConfigureAwait(false);
                 return await ClientHelper.ProcessJsonResponse<NewGameModeResponse>(responseMessage).ConfigureAwait(false);
             }
         }
@@ -326,7 +325,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveGameMode(Guid gameModeSchemaId, Guid gameModeId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeResourcePath, gameModeSchemaId, gameModeId);
-            var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var responseMessage = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
                 throw new ServiceManagementClientException(
@@ -350,7 +349,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var url = _httpClient.BaseAddress + (
                 cloudGameId.HasValue ? String.Format(CloudGameUriElements.CertificatesForGameResourcePath, cloudGameId.Value) :
                 String.Format(CloudGameUriElements.CertificatesResourcePath));
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<CertificateCollectionResponse>(message).ConfigureAwait(false);
         }
 
@@ -384,7 +383,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             {
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(certificate)), "metadata");
                 multipartContent.Add(new StreamContent(certificateStream), "certificate");
-                var message = await _httpClient.PostAsync(url, multipartContent).ConfigureAwait(false);
+                var message = await _httpClient.PostWithRetriesAsync(url, multipartContent).ConfigureAwait(false);
                 return await ClientHelper.ProcessJsonResponse<CertificatePostResponse>(message).ConfigureAwait(false);
             }
         }
@@ -397,7 +396,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveCertificate(Guid certificateId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CertificateResourcePath, certificateId);
-            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var message = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
             if (message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
@@ -420,7 +419,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var url = _httpClient.BaseAddress + (
                 cloudGameId.HasValue ? String.Format(CloudGameUriElements.AssetsForGameResourcePath, cloudGameId.Value) :
                 String.Format(CloudGameUriElements.AssetsResourcePath));
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<AssetCollectionResponse>(message).ConfigureAwait(false);
         }
 
@@ -453,7 +452,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             };
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.AssetsResourcePath);
-            var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+            var responseMessage = await _httpClient.PostWithRetriesAsync(url, multipartFormContent).ConfigureAwait(false);
             var postAssetResult = await ClientHelper.ProcessJsonResponse<AssetPostResponse>(responseMessage).ConfigureAwait(false);
 
             try
@@ -478,7 +477,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             };
 
             url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.AssetResourcePath, postAssetResult.AssetId);
-            responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
+            responseMessage = await _httpClient.PutWithRetriesAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -531,7 +530,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             var platformResourceString = ClientHelper.GetPlatformString(platform);
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackagesResourcePath, platformResourceString, cloudGameName, vmPackageId);
-            var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+            var responseMessage = await _httpClient.PostWithRetriesAsync(url, multipartFormContent).ConfigureAwait(false);
             var postGamePackageResult = await ClientHelper.ProcessJsonResponse<GamePackagePostResponse>(responseMessage).ConfigureAwait(false);
 
             try
@@ -556,7 +555,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             };
 
             url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackageResourcePath, platformResourceString, cloudGameName, vmPackageId, postGamePackageResult.GamePackageId);
-            responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
+            responseMessage = await _httpClient.PutWithRetriesAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
                 throw new ServiceManagementClientException(
@@ -606,7 +605,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             };
 
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackageResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName, vmPackageId, gamePackageId);
-            var message = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
+            var message = await _httpClient.PutWithRetriesAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
@@ -632,7 +631,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<GamePackageCollectionResponse> GetGamePackages(string cloudGameName, CloudGamePlatform platform, Guid vmPackageId)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackagesResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName, vmPackageId);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<GamePackageCollectionResponse>(message).ConfigureAwait(false);
         }
 
@@ -649,7 +648,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveGamePackage(string cloudGameName, CloudGamePlatform platform, Guid vmPackageId, Guid gamePackageId)
         {
             string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackageResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName, vmPackageId, gamePackageId);
-            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var message = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
@@ -672,7 +671,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveAsset(Guid assetId)
         {
             string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.AssetResourcePath, assetId);
-            var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var message = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
@@ -694,7 +693,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<DashboardSummary> GetComputeSummaryReport(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DashboardSummaryPath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<DashboardSummary>(message).ConfigureAwait(false);
         }
 
@@ -707,7 +706,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<DeploymentData> GetComputeDeploymentsReport(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DeploymentsReportPath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<DeploymentData>(message).ConfigureAwait(false);
         }
 
@@ -720,7 +719,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<PoolData> GetComputePoolsReport(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ServicepoolsReportPath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<PoolData>(message).ConfigureAwait(false);
         }
 
@@ -830,7 +829,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, platformResourceString, name);
             var initialResponse = await _httpClient.PutAsXmlAsync(url, resource).ConfigureAwait(false);
             var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 2, 30);
-            return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note timeout treated as failure
+            return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note: timeout treated as failure
         }
 
         /// <summary>
@@ -842,7 +841,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var initialResponse = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var initialResponse = await _httpClient.DeleteWithRetriesAsync(url).ConfigureAwait(false);
             if (initialResponse.StatusCode == HttpStatusCode.NotFound)
             {
                 // Already removed
@@ -850,7 +849,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             }
 
             var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 1, 20);
-            return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note timeout treated as failure
+            return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note: timeout treated as failure
         }
 
         /// <summary>
@@ -860,7 +859,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<CloudGameColletion> GetCloudGames()
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GetCloudServicesResourcePath);
-            var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpXmlClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessCloudServiceResponse(_httpClient, message).ConfigureAwait(false);
         }
 
@@ -874,7 +873,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ResourcePropertiesPath);
 
-            var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpXmlClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             var propertyList = await ClientHelper.ProcessXmlResponse<ResourceProviderProperties>(message).ConfigureAwait(false);
 
             if (propertyList == null)
@@ -905,7 +904,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string sandboxes, string geoRegions)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformString(platform), cloudGameName, sandboxes, geoRegions);
-            var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
+            var message = await _httpClient.PutWithRetriesAsync(url, null, 5).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
@@ -927,7 +926,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<bool> StopCloudGame(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.StopCloudGamePath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
+            var message = await _httpClient.PutWithRetriesAsync(url, null, 5).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
@@ -957,7 +956,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 url.AppendFormat("/?geoRegion={0}", geoRegion);
             }
 
-            var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url.ToString(), Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateDiagnosticFilesResponse>(message).ConfigureAwait(false);
         }
 
@@ -978,7 +977,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 url.AppendFormat("/?geoRegion={0}", geoRegion);
             }
 
-            var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url.ToString(), Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateDiagnosticFilesResponse>(message).ConfigureAwait(false);
         }
 
@@ -1019,7 +1018,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 url.AppendFormat("&agentId={0}", agentId);
             }
 
-            var message = await _httpClient.GetAsync(url.ToString(), Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url.ToString(), Logger, 5).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<EnumerateClustersResponse>(message).ConfigureAwait(false);
         }
 
@@ -1032,7 +1031,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<List<string>> GetComputeMonitoringCounters(string cloudGameName, CloudGamePlatform platform)
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.MonitoringCountersPath, ClientHelper.GetPlatformString(platform), cloudGameName);
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<List<string>>(message).ConfigureAwait(false);
         }
 
@@ -1067,7 +1066,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 geoRegionName,
                 counterNamesString);
 
-            var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
+            var message = await _httpClient.GetWithRetriesAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<CounterChartDataResponse>(message).ConfigureAwait(false);
         }
 
@@ -1091,7 +1090,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 Sandboxes = string.Join(",", sandboxes)
             };
 
-            var message = await _httpClient.PutAsJsonAsync(url, configureContract).ConfigureAwait(false);
+            var message = await _httpClient.PutAsJsonWithRetriesAsync(url, configureContract).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
