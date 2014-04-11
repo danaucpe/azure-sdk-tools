@@ -17,19 +17,40 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
     public class RetryHttpHandler : DelegatingHandler
     {
         private const int DefaultMaxTries = 3;
-        private const int DeplayBetweenTriesMs = 600;
+        private const int DefaultDeplayBetweenTriesMs = 600;
+        private readonly Action<string> logger;
 
-        public RetryHttpHandler(HttpMessageHandler innerHandler, int maxTries = DefaultMaxTries)
+        public RetryHttpHandler(
+            HttpMessageHandler innerHandler,
+            int maxTries = DefaultMaxTries,
+            int delayBetweenTriesMs = DefaultDeplayBetweenTriesMs,
+            Action<string> logger = null)
             : base(innerHandler)
         {
             MaxTries = maxTries;
+            DeplayBetweenTriesMs = delayBetweenTriesMs;
+            this.logger = logger;
+        }
+
+        public RetryHttpHandler(
+            HttpMessageHandler innerHandler,
+            Action<string> logger = null)
+            : this(innerHandler, DefaultMaxTries, DefaultDeplayBetweenTriesMs, logger)
+        {
         }
 
         public int MaxTries
+        {
+            get;
+            set;
+        }
+
+        public int DeplayBetweenTriesMs
         {
             get;
             set;
@@ -50,11 +71,26 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                     return resp;
                 }
 
+                // First request and final response are already logged in the Commands.Utilities.Common.HttpClientExtensions methods,
+                // so we just make note of any retries.
+                WriteLog("Request attempt #" + (numTries + 1) + " will be retried due to a bad response:\n"
+                    + General.GetHttpResponseLog(resp.StatusCode.ToString(), resp.Headers, string.Empty));
+
                 resp.Dispose();
+
                 await TaskEx.Delay(DeplayBetweenTriesMs, cancellationToken);
             }
 
             return resp;
+        }
+
+        private void WriteLog(string logEntry)
+        {
+            // Note: Log entries are only shown if $DebugPreference = "Continue"
+            if (logger != null)
+            {
+                logger(logEntry);
+            }
         }
 
     }

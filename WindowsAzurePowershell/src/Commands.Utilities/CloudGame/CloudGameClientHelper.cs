@@ -516,11 +516,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         ///     Creates and initialize and instance of HttpClient for a specific media type
         /// </summary>
         /// <returns></returns>
-        public static HttpClient CreateCloudGameHttpClient(WindowsAzureSubscription subscription, string mediaType)
+        public static HttpClient CreateCloudGameHttpClient(WindowsAzureSubscription subscription, string mediaType, Action<string> logger)
         {
             var requestHandler = new WebRequestHandler();
             requestHandler.ClientCertificates.Add(subscription.Certificate);
-            var retryHandler = new RetryHttpHandler(requestHandler);
+            var retryHandler = new RetryHttpHandler(requestHandler, logger);
             var endpoint = new StringBuilder(General.EnsureTrailingSlash(subscription.ServiceEndpoint.ToString()));
             endpoint.Append(subscription.SubscriptionId);
 
@@ -529,7 +529,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             client.DefaultRequestHeaders.Add(Constants.VersionHeaderName, "2013-11-01");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
-            client.Timeout = TimeSpan.FromMilliseconds(client.Timeout.TotalMilliseconds * retryHandler.MaxTries);
+            client.Timeout = TimeSpan.FromMilliseconds((client.Timeout.TotalMilliseconds + retryHandler.DeplayBetweenTriesMs) * retryHandler.MaxTries);
             return client;
         }
 

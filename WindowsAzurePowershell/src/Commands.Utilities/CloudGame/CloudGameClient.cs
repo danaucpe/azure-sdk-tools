@@ -63,8 +63,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public CloudGameClient(WindowsAzureSubscription subscription, Action<string> logger)
             : this(subscription, 
                    logger, 
-                   ClientHelper.CreateCloudGameHttpClient(subscription, CloudGameUriElements.ApplicationJsonMediaType), 
-                   ClientHelper.CreateCloudGameHttpClient(subscription, CloudGameUriElements.ApplicationXmlMediaType))
+                   ClientHelper.CreateCloudGameHttpClient(subscription, CloudGameUriElements.ApplicationJsonMediaType, logger), 
+                   ClientHelper.CreateCloudGameHttpClient(subscription, CloudGameUriElements.ApplicationXmlMediaType, logger))
         {
         }
 
