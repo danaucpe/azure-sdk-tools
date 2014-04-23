@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using System.IO;
     using System.Management.Automation;
@@ -22,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Create the cloud game asset.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureGameServicesXblAsset"), OutputType(typeof(string))]
+    [Obsolete("This cmdlet is obsolete. Please use New-AzureGameServicesAsset instead.")]
     public class NewAzureGameServicesXblAssetCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

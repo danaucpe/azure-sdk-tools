@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using System.Management.Automation;
     using Utilities.CloudGame.BackCompat;
 
@@ -21,6 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Sets cloud game code file.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "AzureGameServicesXblCodefile"), OutputType(typeof(bool))]
+    [Obsolete("This cmdlet is obsolete. Please use Set-AzureGameServicesGamePackage instead.")]
     public class SetAzureGameServicesXblCodeFileCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

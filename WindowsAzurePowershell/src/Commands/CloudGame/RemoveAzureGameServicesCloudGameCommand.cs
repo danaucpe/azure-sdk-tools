@@ -14,7 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
+    using System.Linq;
     using System.Management.Automation;
+    using Microsoft.WindowsAzure.ServiceManagement;
     using Utilities.CloudGame;
     using Utilities.CloudGame.Common;
 
@@ -39,16 +42,40 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
 
         protected override void Execute()
         {
+            // Show confirmation dialog unless -Force is specified
             ConfirmAction(Force.IsPresent,
-                          string.Format("Cloud game:{0} will be deleted by this action.", CloudGameName),
-                          string.Empty,
-                          string.Empty,
-                          () =>
-                          {
-                              Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
-                              var result = Client.RemoveCloudGame(CloudGameName, Platform).Result;
-                              WriteObject(result);
-                          });
+                string.Format("Cloud game:{0} will be deleted by this action.", CloudGameName),
+                string.Empty,
+                string.Empty,
+                () =>
+                {
+                    Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
+                    bool isDeployedToRetail = false;
+                    bool unableToDetectDeploymentStatus = false;
+                    string promptMsg = string.Format("Cloud game:{0} is currently deployed to RETAIL. Are you positive you want to delete it?", CloudGameName);
+                    try
+                    {
+                        var deploymentReport = Client.GetComputeDeploymentsReport(CloudGameName, Platform).Result; // depends on GSMS
+                        isDeployedToRetail = deploymentReport.IsDeployedToRetail();
+                    }
+                    catch (ServiceManagementClientException)
+                    {
+                        // If we can't verify the deployment status then play it safe and prompt
+                        unableToDetectDeploymentStatus = true;
+                        promptMsg = string.Format("Cloud game:{0} may already be deployed. Are you positive you want to delete it?", CloudGameName);
+                    }
+                    
+                    // Add extra, unskippable prompt if we aren't positive the game is non-RETAIL
+                    ConfirmAction((isDeployedToRetail || unableToDetectDeploymentStatus),
+                        promptMsg,
+                        string.Empty,
+                        string.Empty,
+                        () =>
+                        {
+                            var result = Client.RemoveCloudGame(CloudGameName, Platform).Result;
+                            WriteObject(result);
+                        });
+                });
         }
     }
 }

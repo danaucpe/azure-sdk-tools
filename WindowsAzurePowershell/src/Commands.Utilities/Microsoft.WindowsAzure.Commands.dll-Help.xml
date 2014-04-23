@@ -4332,28 +4332,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
 				<maml:name>Sandboxes</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The sandboxes to deploy to (comma-delimited string).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
 				<maml:name>GeoRegions</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The geo regions to deploy to (comma-delimited string).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -4363,7 +4363,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -4375,7 +4375,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -4387,7 +4387,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
 			<maml:name>Sandboxes</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The sandboxes to deploy to (comma-delimited string).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -4399,7 +4399,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
 			<maml:name>GeoRegions</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The geo regions to deploy to (comma-delimited string).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -6787,7 +6787,7 @@
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CloudGameId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>An optional cloud game ID to filter by.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			</command:parameter>
@@ -6797,7 +6797,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CloudGameId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>An optional cloud game ID to filter by.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			<dev:type>
@@ -6868,7 +6868,7 @@
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CloudGameId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>An optional cloud game ID to filter by.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			</command:parameter>
@@ -6878,7 +6878,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CloudGameId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>An optional cloud game ID to filter by.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			<dev:type>
@@ -7010,42 +7010,42 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GeoRegion</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The geo region(s) to enumerate. Comma-separated if more than one. Empty for all.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>Status</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The status of the clusters to query for. Empty for all.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>ClusterId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cluster ID for the game service.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>AgentId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The agent ID for the game service.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -7055,7 +7055,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7067,7 +7067,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7079,7 +7079,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GeoRegion</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The geo region(s) to enumerate. Comma-separated if more than one. Empty for all.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7091,7 +7091,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>Status</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The status of the clusters to query for. Empty for all.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7103,7 +7103,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>ClusterId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cluster ID for the game service.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7115,7 +7115,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>AgentId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The agent ID for the game service.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7186,14 +7186,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
@@ -7203,7 +7203,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7215,7 +7215,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7286,49 +7286,49 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GeoRegion</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The geographic region.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CounterNames</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The selected counters.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>StartTime</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The start time (expressed in UTC).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[DateTime]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>EndTime</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The end time (expressed in UTC).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[DateTime]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>TimeZoom</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The time zoom (time between data points).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[TimeSpan]</command:parameterValue>
 			</command:parameter>
@@ -7338,7 +7338,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7350,7 +7350,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7362,7 +7362,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GeoRegion</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The geographic region.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7374,7 +7374,7 @@
 		<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CounterNames</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The selected counters.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">String[]</command:parameterValue>
 			<dev:type>
@@ -7386,7 +7386,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>StartTime</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The start time (expressed in UTC).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[DateTime]</command:parameterValue>
 			<dev:type>
@@ -7398,7 +7398,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>EndTime</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The end time (expressed in UTC).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[DateTime]</command:parameterValue>
 			<dev:type>
@@ -7410,7 +7410,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>TimeZoom</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The time zoom (time between data points).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[TimeSpan]</command:parameterValue>
 			<dev:type>
@@ -7481,14 +7481,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
@@ -7498,7 +7498,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7510,7 +7510,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7581,14 +7581,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
@@ -7598,7 +7598,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7610,7 +7610,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7681,14 +7681,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
@@ -7698,7 +7698,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7710,7 +7710,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7781,28 +7781,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>InstanceId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The instance Id to get dumps from.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GeoRegion</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The geo region of the instance (if known). Optional: specified for performance reasons only.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -7812,7 +7812,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7824,7 +7824,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -7836,7 +7836,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>InstanceId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The instance Id to get dumps from.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7848,7 +7848,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GeoRegion</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The geo region of the instance (if known). Optional: specified for performance reasons only.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -7919,7 +7919,7 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>GameModeSchemaId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent game mode schema ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
@@ -7929,7 +7929,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>GameModeSchemaId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent game mode schema ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -8000,7 +8000,7 @@
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>IncludeGameModes</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Fetch child game modes of each schema.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -8010,7 +8010,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>IncludeGameModes</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Fetch child game modes of each schema.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -8081,21 +8081,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
 				<maml:name>VmPackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent VM package Id.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
@@ -8105,7 +8105,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -8117,7 +8117,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -8129,7 +8129,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
 			<maml:name>VmPackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent VM package Id.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -8200,28 +8200,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>InstanceId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The instance Id to get logs from.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GeoRegion</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The geo region of the instance (if known). Optional: specified for performance reasons only.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -8231,7 +8231,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -8243,7 +8243,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -8255,7 +8255,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>InstanceId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The instance Id to get logs from.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -8267,7 +8267,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GeoRegion</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The geo region of the instance (if known). Optional: specified for performance reasons only.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -8399,14 +8399,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
@@ -8416,7 +8416,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -8428,7 +8428,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -18204,21 +18204,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>AssetName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the asset.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>AssetFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The original filename of the asset file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>AssetStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The asset filestream.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
@@ -18228,7 +18228,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>AssetName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the asset.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18240,7 +18240,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>AssetFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The original filename of the asset file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18252,7 +18252,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>AssetStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The asset filestream.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -18323,28 +18323,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CertificateName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The certificate name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CertificateFilename</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The certificate filename.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CertificatePassword</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The certificate password.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CertificateStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The certificate filestream.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
@@ -18354,7 +18354,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CertificateName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The certificate name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18366,7 +18366,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CertificateFilename</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The certificate filename.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18378,7 +18378,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CertificatePassword</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The certificate password.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18390,7 +18390,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CertificateStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The certificate filestream.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -18461,70 +18461,70 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>TitleId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud title ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>SelectionOrder</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The selection order to use.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>Sandboxes</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The sandboxes to use (comma seperated list).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>ResourceSetIds</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The resourceSetIds to use (comma seperated list).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>SchemaId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>An existing game mode schema ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>SchemaName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema name for creating a new schema.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>SchemaFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema local filename for creating a new schema.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>SchemaStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema file stream for creating a new schema.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
@@ -18534,7 +18534,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18546,7 +18546,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -18558,7 +18558,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>TitleId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud title ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18570,7 +18570,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>SelectionOrder</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The selection order to use.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			<dev:type>
@@ -18582,7 +18582,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>Sandboxes</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The sandboxes to use (comma seperated list).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18594,7 +18594,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>ResourceSetIds</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The resourceSetIds to use (comma seperated list).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18606,7 +18606,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>SchemaId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>An existing game mode schema ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			<dev:type>
@@ -18618,7 +18618,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>SchemaName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema name for creating a new schema.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18630,7 +18630,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>SchemaFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema local filename for creating a new schema.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18642,7 +18642,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>SchemaStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema file stream for creating a new schema.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -18713,28 +18713,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>GameModeSchemaId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent game mode schema ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the game mode.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The original filename of the game mode file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode content stream.&quot;</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
@@ -18744,7 +18744,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>GameModeSchemaId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent game mode schema ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -18756,7 +18756,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the game mode.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18768,7 +18768,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The original filename of the game mode file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18780,7 +18780,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode content stream.&quot;</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -18851,21 +18851,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeSchemaName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeSchemaFilename</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema filename.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeSchemaStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema stream.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
@@ -18875,7 +18875,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeSchemaName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18887,7 +18887,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeSchemaFilename</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema filename.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -18899,7 +18899,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeSchemaStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema stream.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -18970,49 +18970,49 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>VmPackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent VM package Id.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the game package.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The original name of the game package file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game package file stream.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>IsActive</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Whether this game package should be activated.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
 			</command:parameter>
@@ -19022,7 +19022,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19034,7 +19034,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -19046,7 +19046,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>VmPackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent VM package Id.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -19058,7 +19058,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the game package.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19070,7 +19070,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The original name of the game package file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19082,7 +19082,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game package file stream.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -19094,7 +19094,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>IsActive</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Whether this game package should be activated.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
 			<dev:type>
@@ -19165,70 +19165,70 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>PackageName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the VM package.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>MaxPlayers</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The maximum number of players allowed.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CertificateIds</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The IDs of the certificates to use.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Guid[]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>AssetId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The ID of the asset file to use.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CspkgFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the local cspkg file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CspkgStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The CSPKG file stream.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CscfgFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the local cscfg file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CscfgStream</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The CSCFG file stream.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			</command:parameter>
@@ -19238,7 +19238,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19250,7 +19250,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -19262,7 +19262,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>PackageName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the VM package.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19274,7 +19274,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>MaxPlayers</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The maximum number of players allowed.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
 			<dev:type>
@@ -19286,7 +19286,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CertificateIds</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The IDs of the certificates to use.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Guid[]</command:parameterValue>
 			<dev:type>
@@ -19298,7 +19298,7 @@
 		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>AssetId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The ID of the asset file to use.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="true">Nullable`1[Guid]</command:parameterValue>
 			<dev:type>
@@ -19310,7 +19310,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CspkgFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the local cspkg file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19322,7 +19322,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CspkgStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The CSPKG file stream.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -19334,7 +19334,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CscfgFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the local cscfg file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -19346,7 +19346,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CscfgStream</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The CSCFG file stream.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Stream</command:parameterValue>
 			<dev:type>
@@ -30504,14 +30504,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>AssetId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The asset ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of asset.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -30521,7 +30521,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>AssetId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The asset ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -30533,7 +30533,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of asset.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -30604,14 +30604,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>CertificateId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The certificate Id.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of certificate.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -30621,7 +30621,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>CertificateId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The certificate Id.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -30633,7 +30633,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of certificate.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -30704,21 +30704,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of cloud game instance.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -30728,7 +30728,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -30740,7 +30740,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -30752,7 +30752,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of cloud game instance.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -30823,21 +30823,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeSchemaId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent game mode schema ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of game mode.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -30847,7 +30847,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeSchemaId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent game mode schema ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -30859,7 +30859,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -30871,7 +30871,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of game mode.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -30942,14 +30942,14 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GameModeSchemaId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game mode schema Id.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of game mode schema.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -30959,7 +30959,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GameModeSchemaId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game mode schema Id.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -30971,7 +30971,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of game mode schema.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -31042,35 +31042,35 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
 				<maml:name>VmPackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent VM package Id.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game package Id.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of game package.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -31080,7 +31080,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -31092,7 +31092,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -31104,7 +31104,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
 			<maml:name>VmPackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent VM package Id.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -31116,7 +31116,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game package Id.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -31128,7 +31128,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of game package.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -31199,28 +31199,28 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>VmPackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The VM package ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Do not confirm deletion of VM package.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -31230,7 +31230,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -31242,7 +31242,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -31254,7 +31254,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>VmPackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The VM package ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -31266,7 +31266,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Force</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Do not confirm deletion of VM package.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -39147,28 +39147,28 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name (does not get set; used purely for looking up).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform (does not get set; used purely for looking up).</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>ResourceSets</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>A comma-delimited list of resource set IDs.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>Sandboxes</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>A comma-delimited list of sandboxes.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -39178,7 +39178,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name (does not get set; used purely for looking up).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -39190,7 +39190,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform (does not get set; used purely for looking up).</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -39202,7 +39202,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>ResourceSets</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>A comma-delimited list of resource set IDs.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -39214,7 +39214,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>Sandboxes</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>A comma-delimited list of sandboxes.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -39285,49 +39285,49 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>VmPackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The parent VM package ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageId</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The game package ID.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The name of the game package.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>GamePackageFileName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The original name of the game package file.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>IsActive</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>Whether this game package should be activated.</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
 			</command:parameter>
@@ -39337,7 +39337,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -39349,7 +39349,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>
@@ -39361,7 +39361,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>VmPackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The parent VM package ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -39373,7 +39373,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageId</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The game package ID.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
 			<dev:type>
@@ -39385,7 +39385,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The name of the game package.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -39397,7 +39397,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>GamePackageFileName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The original name of the game package file.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -39409,7 +39409,7 @@ PS C:\&gt; Resume-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>IsActive</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>Whether this game package should be activated.</maml:para>
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
 			<dev:type>
@@ -47034,14 +47034,14 @@ PS C:\&gt; Start-WAPackVM -VM $vm</dev:code>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 				<maml:name>CloudGameName</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game name.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 				<maml:name>Platform</maml:name>
 				<maml:description>
-					<maml:para></maml:para>
+					<maml:para>The cloud game platform.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			</command:parameter>
@@ -47051,7 +47051,7 @@ PS C:\&gt; Start-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
 			<maml:name>CloudGameName</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game name.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -47063,7 +47063,7 @@ PS C:\&gt; Start-WAPackVM -VM $vm</dev:code>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
 			<maml:name>Platform</maml:name>
 			<maml:description>
-				<maml:para></maml:para>
+				<maml:para>The cloud game platform.</maml:para>
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">CloudGamePlatform</command:parameterValue>
 			<dev:type>

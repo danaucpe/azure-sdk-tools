@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using System.Management.Automation;
     using Utilities.CloudGame.BackCompat;
 
@@ -21,6 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Remove a CloudGame instance.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureGameServicesXblCompute"), OutputType(typeof(bool))]
+    [Obsolete("This cmdlet is obsolete. Please use Remove-AzureGameServicesCloudGame instead.")]
     public class RemoveAzureGameServicesXblComputeCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using Utilities.CloudGame.BackCompat.Contract;
     using System.Management.Automation;
@@ -22,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Get a list of clusters in the regions and matching the status specified in the request.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesXblClusters"), OutputType(typeof(XblEnumerateClustersResponse))]
+    [Obsolete("This cmdlet is obsolete. Please use Get-AzureGameServicesClusters instead.")]
     public class GetAzureGameServicesXblClustersCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

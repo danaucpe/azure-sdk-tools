@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using System.Management.Automation;
 
@@ -21,6 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Remove the cloud game certificate.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureGameServicesXblCertificate"), OutputType(typeof(bool))]
+    [Obsolete("This cmdlet is obsolete. Please use Remove-AzureGameServicesCertificate instead.")]
     public class RemoveAzureGameServicesXblCertificateCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

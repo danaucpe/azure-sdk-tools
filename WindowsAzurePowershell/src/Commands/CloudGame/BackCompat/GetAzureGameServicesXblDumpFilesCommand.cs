@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using Utilities.CloudGame.BackCompat.Contract;
     using System.Management.Automation;
@@ -22,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Get dump file from an instances.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesXblDumpFiles"), OutputType(typeof(XblEnumerateDiagnosticFilesResponse))]
+    [Obsolete("This cmdlet is obsolete. Please use Get-AzureGameServicesDumpFiles instead.")]
     public class GetAzureGameServicesXblDumpFilesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

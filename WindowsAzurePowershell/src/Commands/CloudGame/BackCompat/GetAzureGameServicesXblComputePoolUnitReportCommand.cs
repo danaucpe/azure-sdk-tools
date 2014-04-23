@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using Utilities.CloudGame.BackCompat.Contract;
     using System.Management.Automation;
@@ -22,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Get the game service pool unit report
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesXblComputePoolUnitReport"), OutputType(typeof(XblComputePoolData))]
+    [Obsolete("This cmdlet is obsolete. Please use Get-AzureGameServicesComputePoolUnitReport instead.")]
     public class GetAzureGameServicesXblComputePoolUnitReportCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

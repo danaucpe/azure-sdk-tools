@@ -164,15 +164,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         {
             get
             {
-                switch (this.platformLower)
-                {
-                    case CloudGameUriElements.Xbox360ComputeResourceType:
-                        return CloudGamePlatform.Xbox360;
-                    case CloudGameUriElements.PcComputeResourceType:
-                        return CloudGamePlatform.PC;
-                    default:
-                        return CloudGamePlatform.XboxOne;
-                }
+                return ClientHelper.GetPlatformEnum(this.platformLower);
             }
         }
 

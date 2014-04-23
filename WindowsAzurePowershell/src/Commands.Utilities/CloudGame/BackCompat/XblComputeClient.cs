@@ -140,8 +140,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
                 var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameImagesResourcePath, xblComputeName);
                 var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
                 responseMetadata = await ClientHelper.ProcessJsonResponse<XblPackagePostResponse>(responseMessage).ConfigureAwait(false);
-           }
+            }
 
+            bool uploadSuccess;
             try
             {
                 // Use the pre-auth URL received in the response to upload the cspkg file. Wait for it to complete
@@ -150,9 +151,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
                     (callback, state) => cloudblob.BeginUploadFromStream(cspkgStream, callback, state),
                     cloudblob.EndUploadFromStream,
                     TaskCreationOptions.None).ConfigureAwait(false);
+                uploadSuccess = true;
             }
             catch (StorageException)
             {
+                // workaround because await cannot be used in a "catch" block
+                uploadSuccess = false;
+            }
+
+            if (!uploadSuccess)
+            {
+                // Attempt to clean up first
+                await this.RemoveXblPackage(xblComputeName, Guid.Parse(responseMetadata.GsiId));
+
                 var errorMessage = string.Format("Failed to upload cspkg for cloud game. gameId {0} cspkgName {1}", xblComputeName, cspkgFileName);
                 throw ClientHelper.CreateExceptionFromJson(HttpStatusCode.Ambiguous, errorMessage);
             }
@@ -377,6 +388,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
             var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
             var postAssetResult = await ClientHelper.ProcessJsonResponse<XblAssetPostResponse>(responseMessage).ConfigureAwait(false);
 
+            bool uploadSuccess;
             try
             {
                 var cloudblob = new CloudBlob(postAssetResult.AssetPreAuthUrl);
@@ -384,9 +396,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
                     (callback, state) => cloudblob.BeginUploadFromStream(xblAssetStream, callback, state),
                     cloudblob.EndUploadFromStream,
                     TaskCreationOptions.None).ConfigureAwait(false);
+                uploadSuccess = true;
             }
             catch (StorageException)
             {
+                // workaround because await cannot be used in a "catch" block
+                uploadSuccess = false;
+            }
+
+            if (!uploadSuccess)
+            {
+                // Attempt to clean up first
+                await this.RemoveXblAsset(xblComputeName, Guid.Parse(postAssetResult.AssetId));
+
                 var errorMessage = string.Format("Failed to upload asset file for XblCompute instance to azure storage. gameId {0}, assetId {1}", xblComputeName, postAssetResult.AssetId);
                 throw ClientHelper.CreateExceptionFromJson(HttpStatusCode.Ambiguous, errorMessage);
             }
@@ -474,6 +496,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
             var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
             var postCodeFileResult = await ClientHelper.ProcessJsonResponse<XblCodeFilePostResponse>(responseMessage).ConfigureAwait(false);
 
+            bool uploadSuccess;
             try
             {
                 var cloudblob = new CloudBlob(postCodeFileResult.CodeFilePreAuthUrl);
@@ -481,9 +504,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
                     (callback, state) => cloudblob.BeginUploadFromStream(xblCodeFileStream, callback, state),
                     cloudblob.EndUploadFromStream,
                     TaskCreationOptions.None).ConfigureAwait(false);
+                uploadSuccess = true;
             }
             catch (StorageException)
             {
+                // workaround because await cannot be used in a "catch" block
+                uploadSuccess = false;
+            }
+
+            if (!uploadSuccess)
+            {
+                // Attempt to clean up first
+                await this.RemoveXblCodeFile(xblComputeName, xblGameServiceId, postCodeFileResult.CodeFileId);
+
                 var errorMessage = string.Format("Failed to upload code file file for XblCompute instance to azure storage. gameId {0}, gsiId, {1} CodeFileId {2}", xblComputeName, xblGameServiceId, postCodeFileResult.CodeFileId);
                 throw ClientHelper.CreateExceptionFromJson(HttpStatusCode.Ambiguous, errorMessage);
             }

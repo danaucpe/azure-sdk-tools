@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using Utilities.CloudGame.BackCompat.Contract;
     using System.Management.Automation;
@@ -22,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Get the collection of GameModes for the selected CloudGame instance
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesXblGameModes"), OutputType(typeof(XblGameModeCollectionResponse))]
+    [Obsolete("This cmdlet is obsolete. Please use Get-AzureGameServicesGameModes instead.")]
     public class GetAzureGameServicesXblGameModesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

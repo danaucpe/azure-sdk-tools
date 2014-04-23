@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using Utilities.CloudGame.BackCompat.Contract;
     using System.IO;
@@ -23,6 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Create the cloud game certificate.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureGameServicesXblCertificate"), OutputType(typeof(XblCertificatePostResponse))]
+    [Obsolete("This cmdlet is obsolete. Please use New-AzureGameServicesCertificate instead.")]
     public class NewAzureGameServicesXblCertificateCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Xbox Live compute instance name.")]

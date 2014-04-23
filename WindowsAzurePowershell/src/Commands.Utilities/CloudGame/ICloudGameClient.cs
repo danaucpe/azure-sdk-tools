@@ -312,6 +312,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         Task<CloudGameColletion> GetCloudGames();
 
         /// <summary>
+        ///     Gets a cloud game.
+        /// </summary>
+        /// <param name="cloudGameName">Name of the cloud game.</param>
+        /// <param name="platform">The cloud game platform.</param>
+        /// <returns></returns>
+        Task<CloudGame> GetCloudGame(string cloudGameName, CloudGamePlatform platform);
+
+        /// <summary>
         ///     Gets the AzureGameServicesProperties for the current subscription
         /// </summary>
         /// <returns>The task for completion.</returns>

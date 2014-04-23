@@ -14,7 +14,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
 
     [DataContract]
@@ -43,5 +45,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         /// </summary>
         [DataMember(Name = "deployments")]
         public List<VmPackageDeploymentInfo> Deployments { get; set; }
+
+        /// <summary>
+        /// Determines whether the cloud game is currently deployed to retail.
+        /// </summary>
+        public bool IsDeployedToRetail()
+        {
+            return Deployments.Any(vmPackageDeploymentInfo =>
+                string.Equals(vmPackageDeploymentInfo.Sandbox, "RETAIL", StringComparison.OrdinalIgnoreCase)
+                && vmPackageDeploymentInfo.TotalActive > 0);
+        }
     }
 }

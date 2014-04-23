@@ -281,6 +281,7 @@
     <Compile Include="CloudGame\CloudGameClientHelper.cs" />
     <Compile Include="CloudGame\CloudGameUriElements.cs" />
     <Compile Include="CloudGame\Common\CloudGamePlatform.cs" />
+    <Compile Include="CloudGame\Common\UnknownCloudGamePlatformException.cs" />
     <Compile Include="CloudGame\Contract\Requests\AssetRequest.cs" />
     <Compile Include="CloudGame\Contract\Requests\AzureResourceProviderContracts.cs" />
     <Compile Include="CloudGame\Contract\Requests\CertificateRequest.cs" />

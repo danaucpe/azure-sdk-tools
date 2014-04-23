@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
 {
+    using System;
     using Utilities.CloudGame.BackCompat;
     using Utilities.CloudGame.BackCompat.Contract;
     using System.Management.Automation;
@@ -22,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame.BackCompat
     /// Gets cloud game service.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesXblComputeInstances"), OutputType(typeof(XblComputeColletion))]
+    [Obsolete("This cmdlet is obsolete. Please use Get-AzureGameServicesCloudGames instead.")]
     public class GetAzureGameServicesXblComputeInstances : AzureGameServicesHttpClientCommandBase
     {
         public IXblComputeClient Client { get; set; }

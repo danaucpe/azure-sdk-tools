@@ -23,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Net.Http.Headers;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Json;
+    using System.Security.AccessControl;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -49,6 +50,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             { CloudGamePlatform.PC,      CloudGameUriElements.PcComputeResourceType }
         };
 
+        private static readonly Dictionary<string, CloudGamePlatform> ReversePlatformMapping = PlatformMapping.ToDictionary(x => x.Value, x => x.Key); 
+
         /// <summary>
         /// The regex used for cloud game names.
         /// </summary>
@@ -67,10 +70,27 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <summary>
         /// Gets the platform resource type string from an enum.
         /// </summary>
-        /// <param name="platform">The ckoud game platform enum.</param>
-        public static string GetPlatformString(CloudGamePlatform platform)
+        /// <param name="platform">The cloud game platform enum.</param>
+        /// <returns>The resource type string.</returns>
+        public static string GetPlatformResourceTypeString(CloudGamePlatform platform)
         {
             return PlatformMapping[platform];
+        }
+
+        /// <summary>
+        /// Gets the platform from a cloud game resource type string.
+        /// </summary>
+        /// <param name="cloudGameResourceType">Cloud game resource type string.</param>
+        /// <returns>The cloud game platform enum.</returns>
+        public static CloudGamePlatform GetPlatformEnum(string cloudGameResourceType)
+        {
+            var resourceType = cloudGameResourceType.ToLower();
+            if (ReversePlatformMapping.ContainsKey(resourceType))
+            {
+                return ReversePlatformMapping[resourceType];
+            }
+
+            throw new UnknownCloudGamePlatformException(resourceType);
         }
 
         public static async Task RegisterAndCreateContainerResourceIfNeeded(HttpClient httpJsonClient, HttpClient httpXmlClient)
@@ -233,7 +253,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             throw CreateExceptionFromJson(responseMessage.StatusCode, string.Empty);
         }
 
-        public static async Task<CloudGameColletion> ProcessCloudServiceResponse(HttpClient httpJsonClient, HttpResponseMessage responseMessage)
+        public static async Task<CloudGameColletion> ProcessCloudServiceResponse(ICloudGameClient client, HttpResponseMessage responseMessage)
         {
             var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
             var encoding = GetEncodingFromResponseMessage(responseMessage);
@@ -265,14 +285,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                             resource.IntrinsicSettings[0] == null)
                         {
                             // Fetch missing info for this game from the GSRM passthrough endpoint
-                            var url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourceInfoPath, resource.Type, resource.Name);
-                            var cloudGameResponseMessage = await httpJsonClient.GetAsync(url).ConfigureAwait(false);
-                            cloudGame = await ProcessJsonResponse<CloudGame>(cloudGameResponseMessage).ConfigureAwait(false);
+                            cloudGame = await client.GetCloudGame(resource.Name, GetPlatformEnum(resource.Type));
                             if (cloudGame == null)
                             {
                                 // The GSRM does not know about this resource, so attempt to delete it from RDFE silently
-                                url = httpJsonClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, resource.Type, resource.Name);
-                                deleteTasks.Add(httpJsonClient.DeleteAsync(url));
+                                deleteTasks.Add(client.RemoveCloudGame(resource.Name, GetPlatformEnum(resource.Type)));
                                 continue;
                             }
                         }
