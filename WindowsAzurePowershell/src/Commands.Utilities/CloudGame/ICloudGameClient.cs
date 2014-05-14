@@ -27,6 +27,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     public interface ICloudGameClient
     {
         /// <summary>
+        /// Gets general information about the cloud game client.
+        /// </summary>
+        /// <returns></returns>
+        GameServicesCmdletsInfo Info { get; }
+
+        /// <summary>
         /// Gets the VM packages.
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>

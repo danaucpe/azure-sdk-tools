@@ -280,6 +280,7 @@
     <Compile Include="CloudGame\CloudGameClient.cs" />
     <Compile Include="CloudGame\CloudGameClientHelper.cs" />
     <Compile Include="CloudGame\CloudGameUriElements.cs" />
+    <Compile Include="CloudGame\Common\GameServicesCmdletsInfo.cs" />
     <Compile Include="CloudGame\Common\CloudGamePlatform.cs" />
     <Compile Include="CloudGame\Common\UnknownCloudGamePlatformException.cs" />
     <Compile Include="CloudGame\Contract\Requests\AssetRequest.cs" />

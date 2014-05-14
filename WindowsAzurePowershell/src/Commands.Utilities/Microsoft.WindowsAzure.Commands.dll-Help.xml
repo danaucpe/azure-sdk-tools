@@ -1103,39 +1103,11 @@
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ProbePort</maml:name>
+				<maml:name>DefaultProbe</maml:name>
 				<maml:description>
 					<maml:para></maml:para>
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ProbeProtocol</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ProbePath</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ProbeIntervalInSeconds</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="true">Nullable`1[Int32]</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ProbeTimeoutInSeconds</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="true">Nullable`1[Int32]</command:parameterValue>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
 				<maml:name>VM</maml:name>
@@ -1263,11 +1235,39 @@
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DefaultProbe</maml:name>
+				<maml:name>ProbePort</maml:name>
 				<maml:description>
 					<maml:para></maml:para>
 				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>ProbeProtocol</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>ProbePath</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+				<maml:name>ProbeIntervalInSeconds</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="true">Nullable`1[Int32]</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+				<maml:name>ProbeTimeoutInSeconds</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="true">Nullable`1[Int32]</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
 				<maml:name>VM</maml:name>
@@ -1376,6 +1376,30 @@
 			<dev:defaultValue></dev:defaultValue>
 		</command:parameter>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>DefaultProbe</maml:name>
+			<maml:description>
+				<maml:para></maml:para>
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+			<maml:name>NoProbe</maml:name>
+			<maml:description>
+				<maml:para></maml:para>
+			</maml:description>
+			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			<dev:type>
+				<maml:name>SwitchParameter</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>ProbePort</maml:name>
 			<maml:description>
 				<maml:para></maml:para>
@@ -1431,30 +1455,6 @@
 			<command:parameterValue required="true" variableLength="true">Nullable`1[Int32]</command:parameterValue>
 			<dev:type>
 				<maml:name>Nullable`1[Int32]</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>NoProbe</maml:name>
-			<maml:description>
-				<maml:para></maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DefaultProbe</maml:name>
-			<maml:description>
-				<maml:para></maml:para>
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -7155,6 +7155,67 @@
 		<maml:title></maml:title>
 		<maml:alert>
 			<maml:para>List can be filtered with the optional geo region and status parameters.</maml:para>
+		</maml:alert>
+	</maml:alertSet>
+	<command:examples>
+	</command:examples>
+	<maml:relatedLinks>
+	</maml:relatedLinks>
+</command:command>
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+<!--Generated by PS Cmdlet Help Editor-->
+	<command:details>
+		<command:name>Get-AzureGameServicesCmdletsInfo</command:name>
+		<maml:description>
+			<maml:para>Displays information about the Azure Game Services Cmdlets (such as version number).</maml:para>
+		</maml:description>
+		<maml:copyright>
+			<maml:para />
+		</maml:copyright>
+		<command:verb>Get</command:verb>
+		<command:noun>AzureGameServicesCmdletsInfo</command:noun>
+		<dev:version />
+	</command:details>
+	<maml:description>
+	<!--This is the Description section-->
+		<maml:para></maml:para>
+	</maml:description>
+	<command:syntax>
+		<command:syntaxItem>
+			<maml:name>Get-AzureGameServicesCmdletsInfo</maml:name>
+		</command:syntaxItem>
+	</command:syntax>
+	<command:parameters>	</command:parameters>
+	<command:inputTypes>
+		<command:inputType>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri/>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+			</dev:type>
+			<maml:description></maml:description>
+		</command:inputType>
+	</command:inputTypes>
+	<command:returnValues>
+		<command:returnValue>
+			<dev:type>
+				<maml:name></maml:name>
+				<maml:uri/>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+			</dev:type>
+			<maml:description></maml:description>
+	</command:returnValue>
+		</command:returnValues>
+	<command:terminatingErrors></command:terminatingErrors>
+	<command:nonTerminatingErrors></command:nonTerminatingErrors>
+	<maml:alertSet>
+		<maml:title></maml:title>
+		<maml:alert>
+			<maml:para></maml:para>
 		</maml:alert>
 	</maml:alertSet>
 	<command:examples>
@@ -24895,18 +24956,11 @@
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
-				<maml:name>UseSubscription</maml:name>
+				<maml:name>Credential</maml:name>
 				<maml:description>
 					<maml:para></maml:para>
 				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
-				<maml:name>SubscriptionName</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
 			</command:parameter>
 		</command:syntaxItem>
 		<command:syntaxItem>
@@ -24919,11 +24973,18 @@
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
-				<maml:name>Credential</maml:name>
+				<maml:name>UseSubscription</maml:name>
 				<maml:description>
 					<maml:para></maml:para>
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
+				<maml:name>SubscriptionName</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 		</command:syntaxItem>
 	</command:syntax>
@@ -28797,7 +28858,7 @@
 	</maml:alertSet>
 	<command:examples>
 		<command:example>
-			<maml:title>--------------------------    --------------------------</maml:title>
+			<maml:title>--------------------------  Unknown  --------------------------</maml:title>
 			<maml:introduction>
 				<maml:para></maml:para>
 			</maml:introduction>
@@ -28888,37 +28949,6 @@
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>VNet</maml:name>
-				<maml:description>
-					<maml:para>Specifies The Vnetwork to which the virtual machine should be connected.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">VMNetwork</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>OSDisk</maml:name>
-				<maml:description>
-					<maml:para>Specifies a os disk object.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">VirtualHardDisk</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>VMSizeProfile</maml:name>
-				<maml:description>
-					<maml:para>Specifies a vmsizeprofile object.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">HardwareProfile</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-		<command:syntaxItem>
-			<maml:name>New-WAPackVM</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>Name</maml:name>
-				<maml:description>
-					<maml:para>The virtual machine Name.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>Template</maml:name>
 				<maml:description>
@@ -28953,6 +28983,37 @@
 					<maml:para>The Administrator SSH Key.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>New-WAPackVM</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+				<maml:name>Name</maml:name>
+				<maml:description>
+					<maml:para>The virtual machine Name.</maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+				<maml:name>VNet</maml:name>
+				<maml:description>
+					<maml:para>Specifies The Vnetwork to which the virtual machine should be connected.</maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">VMNetwork</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+				<maml:name>OSDisk</maml:name>
+				<maml:description>
+					<maml:para>Specifies a os disk object.</maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">VirtualHardDisk</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+				<maml:name>VMSizeProfile</maml:name>
+				<maml:description>
+					<maml:para>Specifies a vmsizeprofile object.</maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">HardwareProfile</command:parameterValue>
 			</command:parameter>
 		</command:syntaxItem>
 	</command:syntax>
@@ -29030,30 +29091,6 @@
 			<dev:defaultValue></dev:defaultValue>
 		</command:parameter>
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-			<maml:name>OSDisk</maml:name>
-			<maml:description>
-				<maml:para>Specifies a os disk object.</maml:para>
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">VirtualHardDisk</command:parameterValue>
-			<dev:type>
-				<maml:name>VirtualHardDisk</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-			<maml:name>VMSizeProfile</maml:name>
-			<maml:description>
-				<maml:para>Specifies a vmsizeprofile object.</maml:para>
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">HardwareProfile</command:parameterValue>
-			<dev:type>
-				<maml:name>HardwareProfile</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>Linux</maml:name>
 			<maml:description>
 				<maml:para>Create a Linux vm.</maml:para>
@@ -29073,6 +29110,30 @@
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
 				<maml:name>String</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+			<maml:name>OSDisk</maml:name>
+			<maml:description>
+				<maml:para>Specifies a os disk object.</maml:para>
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">VirtualHardDisk</command:parameterValue>
+			<dev:type>
+				<maml:name>VirtualHardDisk</maml:name>
+				<maml:uri/>
+			</dev:type>
+			<dev:defaultValue></dev:defaultValue>
+		</command:parameter>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+			<maml:name>VMSizeProfile</maml:name>
+			<maml:description>
+				<maml:para>Specifies a vmsizeprofile object.</maml:para>
+			</maml:description>
+			<command:parameterValue required="true" variableLength="false">HardwareProfile</command:parameterValue>
+			<dev:type>
+				<maml:name>HardwareProfile</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -33278,12 +33339,12 @@
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">IServerDataServiceContext</command:parameterValue>
 			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-				<maml:name>Database</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+				<maml:name>DatabaseName</maml:name>
 				<maml:description>
 					<maml:para></maml:para>
 				</maml:description>
-				<command:parameterValue required="true" variableLength="false">Database</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
@@ -33316,44 +33377,6 @@
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">IServerDataServiceContext</command:parameterValue>
 			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
-				<maml:name>DatabaseName</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Force</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>WhatIf</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Confirm</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-		<command:syntaxItem>
-			<maml:name>Remove-AzureSqlDatabase</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
-				<maml:name>ServerName</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-			</command:parameter>
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
 				<maml:name>Database</maml:name>
 				<maml:description>
@@ -33398,6 +33421,44 @@
 					<maml:para></maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Force</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>WhatIf</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Confirm</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+		</command:syntaxItem>
+		<command:syntaxItem>
+			<maml:name>Remove-AzureSqlDatabase</maml:name>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="0">
+				<maml:name>ServerName</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+				<maml:name>Database</maml:name>
+				<maml:description>
+					<maml:para></maml:para>
+				</maml:description>
+				<command:parameterValue required="true" variableLength="false">Database</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Force</maml:name>
@@ -33435,14 +33496,14 @@
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
 		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
-			<maml:name>Database</maml:name>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
+			<maml:name>DatabaseName</maml:name>
 			<maml:description>
 				<maml:para></maml:para>
 			</maml:description>
-			<command:parameterValue required="true" variableLength="false">Database</command:parameterValue>
+			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
-				<maml:name>Database</maml:name>
+				<maml:name>String</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -33483,14 +33544,14 @@
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
 		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
-			<maml:name>DatabaseName</maml:name>
+		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="1">
+			<maml:name>Database</maml:name>
 			<maml:description>
 				<maml:para></maml:para>
 			</maml:description>
-			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+			<command:parameterValue required="true" variableLength="false">Database</command:parameterValue>
 			<dev:type>
-				<maml:name>String</maml:name>
+				<maml:name>Database</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -48216,7 +48277,7 @@ PS C:\&gt; Start-WAPackVM -VM $vm</dev:code>
 	</maml:alertSet>
 	<command:examples>
 		<command:example>
-			<maml:title>--------------------------    --------------------------</maml:title>
+			<maml:title>--------------------------  Unknown  --------------------------</maml:title>
 			<maml:introduction>
 				<maml:para></maml:para>
 			</maml:introduction>
@@ -48231,7 +48292,7 @@ PS C:\&gt; Start-WAPackVM -VM $vm</dev:code>
 			</command:commandLines>
 		</command:example>
 		<command:example>
-			<maml:title>--------------------------    --------------------------</maml:title>
+			<maml:title>--------------------------  Unknown  --------------------------</maml:title>
 			<maml:introduction>
 				<maml:para></maml:para>
 			</maml:introduction>
@@ -48346,7 +48407,7 @@ PS C:\&gt; Start-WAPackVM -VM $vm</dev:code>
 	</maml:alertSet>
 	<command:examples>
 		<command:example>
-			<maml:title>--------------------------    --------------------------</maml:title>
+			<maml:title>--------------------------  Unknown  --------------------------</maml:title>
 			<maml:introduction>
 				<maml:para></maml:para>
 			</maml:introduction>

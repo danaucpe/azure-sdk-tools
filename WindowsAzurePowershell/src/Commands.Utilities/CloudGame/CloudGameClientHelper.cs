@@ -43,6 +43,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     /// </summary>
     public class ClientHelper
     {
+        /// <summary>
+        /// The general information about the game services cmdlets.
+        /// </summary>
+        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_05_v1");
+
         private static readonly Dictionary<CloudGamePlatform, string> PlatformMapping = new Dictionary<CloudGamePlatform, string>
         {
             { CloudGamePlatform.XboxOne, CloudGameUriElements.XboxOneComputeResourceType },
@@ -50,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             { CloudGamePlatform.PC,      CloudGameUriElements.PcComputeResourceType }
         };
 
-        private static readonly Dictionary<string, CloudGamePlatform> ReversePlatformMapping = PlatformMapping.ToDictionary(x => x.Value, x => x.Key); 
+        private static readonly Dictionary<string, CloudGamePlatform> ReversePlatformMapping = PlatformMapping.ToDictionary(x => x.Value, x => x.Key);
 
         /// <summary>
         /// The regex used for cloud game names.
@@ -543,6 +548,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             var client = HttpClientHelper.CreateClient(endpoint.ToString(), handler: retryHandler);
             client.DefaultRequestHeaders.Add(CloudGameUriElements.XblCorrelationHeader, Guid.NewGuid().ToString());
+            client.DefaultRequestHeaders.Add(CloudGameUriElements.GameServicesCmdletVersionHeader, Info.Version);
             client.DefaultRequestHeaders.Add(Constants.VersionHeaderName, "2013-11-01");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));

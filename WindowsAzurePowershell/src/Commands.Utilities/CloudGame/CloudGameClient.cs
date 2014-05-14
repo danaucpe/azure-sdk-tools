@@ -34,10 +34,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     /// </summary>
     public class CloudGameClient : ICloudGameClient
     {
-        public const string CloudGameVersion = "2013-09-01";
+        public const string CloudGameResourceProviderApiVersion = "2013-09-01";
         private readonly HttpClient _httpClient;
         private readonly HttpClient _httpXmlClient;
         private readonly string _subscriptionId;
+        private readonly GameServicesCmdletsInfo _info;
 
         /// <summary>
         ///     Creates new CloudGameClient.
@@ -53,6 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             Logger = logger;
             _httpClient = httpClient;
             _httpXmlClient = httpXmlClient;
+            _info = ClientHelper.Info;
         }
 
         /// <summary>
@@ -83,6 +85,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         ///     The logger.
         /// </value>
         public Action<string> Logger { get; set; }
+
+        /// <summary>
+        ///     Gets general information about the cloud game client.
+        /// </summary>
+        /// <returns></returns>
+        public GameServicesCmdletsInfo Info
+        {
+            get { return _info; }
+        }
 
         /// <summary>
         /// Gets the VM packages.

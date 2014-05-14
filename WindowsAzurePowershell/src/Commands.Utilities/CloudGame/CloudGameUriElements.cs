@@ -30,6 +30,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public const string ApplicationXmlMediaType = "application/xml";
 
         /// <summary>
+        /// The game services cmdlet version header.
+        /// </summary>
+        public const string GameServicesCmdletVersionHeader = "X-GameServicesCmdletVersion";
+
+        /// <summary>
         /// The XBL correlation header
         /// </summary>
         public const string XblCorrelationHeader = "X-XblCorrelationId";
