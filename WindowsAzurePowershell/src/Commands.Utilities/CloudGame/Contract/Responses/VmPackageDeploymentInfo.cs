@@ -18,6 +18,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
     public class VmPackageDeploymentInfo
     {
         /// <summary>
+        /// Gets or sets the VM package name.
+        /// </summary>
+        [DataMember(Name = "gameServerImageName")]
+        public string VmPackageName { get; set; }
+
+        /// <summary>
         /// Gets or sets the VM package Id.
         /// </summary>
         [DataMember(Name = "gameServerImageId")]

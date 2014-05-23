@@ -23,9 +23,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
     using System.Threading.Tasks;
     using System.Xml;
     using Contract;
+    using Microsoft.WindowsAzure.Storage;
     using ServiceManagement;
-    using StorageClient;
     using Utilities.Common;
+    using Microsoft.WindowsAzure.Storage.Blob;
 
     /// <summary>
     ///     Implements ICloudGameClient to use HttpClient for communication
@@ -146,7 +147,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
             try
             {
                 // Use the pre-auth URL received in the response to upload the cspkg file. Wait for it to complete
-                var cloudblob = new CloudBlob(responseMetadata.CspkgPreAuthUrl);
+                var cloudblob = new CloudBlockBlob(new Uri(responseMetadata.CspkgPreAuthUrl));
                 await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(cspkgStream, callback, state),
                     cloudblob.EndUploadFromStream,
@@ -391,7 +392,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
             bool uploadSuccess;
             try
             {
-                var cloudblob = new CloudBlob(postAssetResult.AssetPreAuthUrl);
+                var cloudblob = new CloudBlockBlob(new Uri(postAssetResult.AssetPreAuthUrl));
                 await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(xblAssetStream, callback, state),
                     cloudblob.EndUploadFromStream,
@@ -499,7 +500,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat
             bool uploadSuccess;
             try
             {
-                var cloudblob = new CloudBlob(postCodeFileResult.CodeFilePreAuthUrl);
+                var cloudblob = new CloudBlockBlob(new Uri(postCodeFileResult.CodeFilePreAuthUrl));
                 await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(xblCodeFileStream, callback, state),
                     cloudblob.EndUploadFromStream,

@@ -15,8 +15,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 {
     using Common;
     using Contract;
+    using Microsoft.WindowsAzure.Storage;
     using ServiceManagement;
-    using StorageClient;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -28,6 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Threading;
     using System.Xml;
     using Utilities.Common;
+    using Microsoft.WindowsAzure.Storage.Blob;
 
     /// <summary>
     ///     Implements ICloudGameClient to use HttpClient for communication
@@ -173,7 +174,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             try
             {
                 // Use the pre-auth URL received in the response to upload the cspkg file. Wait for it to complete
-                var cloudblob = new CloudBlob(responseMetadata.CspkgPreAuthUrl);
+                var cloudblob = new CloudBlockBlob(new Uri(responseMetadata.CspkgPreAuthUrl));
                 await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(cspkgStream, callback, state),
                     cloudblob.EndUploadFromStream,
@@ -193,7 +194,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 await this.RemoveVmPackage(cloudGameName, platform, Guid.Parse(responseMetadata.VmPackageId));
 
                 var errorMessage = string.Format("Failed to upload cspkg for cloud game. gameId {0} platform {1} cspkgName {2}", cloudGameName, platformResourceString, cspkgFileName);
-                throw ClientHelper.CreateExceptionFromJson(exception.StatusCode, errorMessage + "\nException: " + exception);
+                throw ClientHelper.CreateExceptionFromJson((HttpStatusCode)exception.RequestInformation.HttpStatusCode, errorMessage + "\nException: " + exception);
             }
 
             using (var multipartFormContent = new MultipartFormDataContent())
@@ -441,7 +442,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         {
             var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CertificateResourcePath, certificateId);
             var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
-            if (message.IsSuccessStatusCode)
+            if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
                 throw new ServiceManagementClientException(
@@ -508,7 +509,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             StorageException exception = null;
             try
             {
-                var cloudblob = new CloudBlob(postAssetResult.AssetPreAuthUrl);
+                var cloudblob = new CloudBlockBlob(new Uri(postAssetResult.AssetPreAuthUrl));
                 await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(assetStream, callback, state),
                     cloudblob.EndUploadFromStream,
@@ -528,7 +529,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 await this.RemoveAsset(Guid.Parse(postAssetResult.AssetId));
 
                 var errorMessage = string.Format("Failed to upload asset file for CloudGame instance to azure storage. assetId {0}", postAssetResult.AssetId);
-                throw ClientHelper.CreateExceptionFromJson(exception.StatusCode, errorMessage + "\nException: " + exception);
+                throw ClientHelper.CreateExceptionFromJson((HttpStatusCode)exception.RequestInformation.HttpStatusCode, errorMessage + "\nException: " + exception);
             }
 
             var multpartFormContentMetadata = new MultipartFormDataContent
@@ -604,7 +605,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             StorageException exception = null;
             try
             {
-                var cloudblob = new CloudBlob(postGamePackageResult.GamePackagePreAuthUrl);
+                var cloudblob = new CloudBlockBlob(new Uri(postGamePackageResult.GamePackagePreAuthUrl));
                 await Task.Factory.FromAsync(
                     (callback, state) => cloudblob.BeginUploadFromStream(fileStream, callback, state),
                     cloudblob.EndUploadFromStream,
@@ -624,7 +625,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 await this.RemoveGamePackage(cloudGameName, platform, vmPackageId, Guid.Parse(postGamePackageResult.GamePackageId));
 
                 var errorMessage = string.Format("Failed to upload game package file for cloud game instance to azure storage. gameId {0}, platform {1}, vmPackageId, {2} GamePackageId {3}", cloudGameName, platformResourceString, vmPackageId, postGamePackageResult.GamePackageId);
-                throw ClientHelper.CreateExceptionFromJson(exception.StatusCode, errorMessage + "\nException: " + exception);
+                throw ClientHelper.CreateExceptionFromJson((HttpStatusCode)exception.RequestInformation.HttpStatusCode, errorMessage + "\nException: " + exception);
             }
 
             var multpartFormContentMetadata = new MultipartFormDataContent
