@@ -304,12 +304,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             Stream schemaStream);
 
         /// <summary>
-        ///     Removes a cloud game instance.
+        /// Removes a cloud game instance.
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
+        /// <param name="checkStateFirst">if set to <c>true</c> check state first.</param>
         /// <returns></returns>
-        Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform);
+        Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform, bool checkStateFirst = true);
 
         /// <summary>
         ///     Gets the cloud game instances for the Azure Game Services resource in the current subscription

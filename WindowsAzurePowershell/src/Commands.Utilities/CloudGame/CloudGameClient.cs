@@ -918,9 +918,35 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
+        /// <param name="checkStateFirst">if set to <c>true</c> check state first.</param>
         /// <returns></returns>
-        public async Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform)
+        /// <exception cref="ServiceManagementClientException">Invalid cloud game status. Cloud game may not be Deploying/Stopping or Deployed.</exception>
+        public async Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform, bool checkStateFirst = true)
         {
+            if (checkStateFirst)
+            {
+                CloudGame gameInfo = null;
+                try
+                {
+                    gameInfo = this.GetCloudGame(cloudGameName, platform).Result;
+                }
+                catch (ServiceManagementClientException)
+                {
+                    // 404s will be caught when we talk with RDFE, so no need to do anything here
+                }
+
+                if (gameInfo != null &&
+                       (string.Equals(gameInfo.Status, "Deployed", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(gameInfo.Status, "Deploying", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(gameInfo.Status, "Stopping", StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new ServiceManagementClientException(
+                        HttpStatusCode.Conflict,
+                        new ServiceManagementError { Message = "Invalid cloud game status. Cloud game may not be Deploying/Stopping or Deployed." },
+                        string.Empty);
+                }
+            }
+
             var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.CloudGameResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var initialResponse = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (initialResponse.StatusCode == HttpStatusCode.NotFound)

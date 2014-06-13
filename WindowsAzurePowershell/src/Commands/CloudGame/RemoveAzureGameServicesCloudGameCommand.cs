@@ -56,7 +56,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                     try
                     {
                         var deploymentReport = Client.GetComputeDeploymentsReport(CloudGameName, Platform).Result; // depends on GSMS
-                        isDeployedToRetail = deploymentReport.IsDeployedToRetail();
+                        if (deploymentReport != null)
+                        {
+                            isDeployedToRetail = deploymentReport.IsDeployedToRetail();
+                        }
                     }
                     catch (ServiceManagementClientException)
                     {

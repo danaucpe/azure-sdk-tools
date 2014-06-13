@@ -294,7 +294,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                             if (cloudGame == null)
                             {
                                 // The GSRM does not know about this resource, so attempt to delete it from RDFE silently
-                                deleteTasks.Add(client.RemoveCloudGame(resource.Name, GetPlatformEnum(resource.Type)));
+                                deleteTasks.Add(client.RemoveCloudGame(resource.Name, GetPlatformEnum(resource.Type), false));
                                 continue;
                             }
                         }
@@ -318,7 +318,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                     }
                 }
 
-                await TaskEx.WhenAll(deleteTasks);
+                try
+                {
+                    await TaskEx.WhenAll(deleteTasks);
+                }
+                catch (ServiceManagementClientException)
+                {
+                }
 
                 return response;
             }

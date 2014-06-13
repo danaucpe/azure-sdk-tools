@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         /// </summary>
         public bool IsDeployedToRetail()
         {
-            return Deployments.Any(vmPackageDeploymentInfo =>
+            return Deployments != null && Deployments.Any(vmPackageDeploymentInfo =>
                 string.Equals(vmPackageDeploymentInfo.Sandbox, "RETAIL", StringComparison.OrdinalIgnoreCase)
                 && vmPackageDeploymentInfo.TotalActive > 0);
         }
