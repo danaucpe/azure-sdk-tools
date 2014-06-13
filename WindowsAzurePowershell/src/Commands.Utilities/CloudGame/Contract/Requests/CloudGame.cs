@@ -197,6 +197,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
         /// <summary>
         /// Gets or sets the InErrorState
         /// </summary>
-        public bool InErrorState { get; set; }
+        public ResourceErrorInfo Error { get; set; }
     }
 }

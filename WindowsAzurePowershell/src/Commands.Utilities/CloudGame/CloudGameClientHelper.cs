@@ -307,8 +307,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                                 // Deserialize the result from GSRM
                                 cloudGame = (CloudGame)jsonSer.ReadObject(jsonStream);
 
-                                // Check the error state
-                                cloudGame.InErrorState = resource.OperationStatus.Error != null;
+                                // Set the error state if applicable
+                                cloudGame.Error = resource.OperationStatus.Error;
+
                             }
                         }
 
@@ -395,14 +396,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="httpXmlClient">The XML HTTP client.</param>
         /// <param name="pollIntervalInSeconds">The poll interval in seconds.</param>
         /// <param name="timeoutInSeconds">The timeout in seconds.</param>
+        /// <param name="logger">The logger.</param>
         /// <returns>
         /// The task for completion.
         /// </returns>
+        /// <exception cref="ServiceManagementClientException">If the initial response code is not 202 Accepted.</exception>
+        /// <exception cref="System.ArgumentException">If there is no request ID header found in initial response</exception>
         public static async Task<ComputeOperationStatusResponse> PollOperationStatus(
             HttpResponseMessage initialHttpResponse,
             HttpClient httpXmlClient,
             int pollIntervalInSeconds,
-            int timeoutInSeconds)
+            int timeoutInSeconds,
+            Action<string> logger = null)
         {
             if (initialHttpResponse.StatusCode != HttpStatusCode.Accepted)
             {
@@ -415,14 +420,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             if (!initialHttpResponse.Headers.Contains(CloudGameUriElements.RequestIdHeader))
             {
-                throw new ServiceManagementClientException(
-                    HttpStatusCode.BadRequest,
-                    new ServiceManagementError
-                    {
-                        Code = HttpStatusCode.BadRequest.ToString(),
-                        Message = "No request ID header found in response"
-                    },
-                    string.Empty);
+                throw new ArgumentException("PollOperationStatus: No request ID header found in initial response");
             }
 
             var requestId = initialHttpResponse.Headers.GetValues(CloudGameUriElements.RequestIdHeader).FirstOrDefault();
@@ -472,6 +470,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
                 if (!done && DateTime.UtcNow > endPollTime)
                 {
+                    if (logger != null)
+                    {
+                        logger("Operation status polling timed out after " + timeoutInSeconds + " seconds");
+                    }
+
                     done = true;
                 }
             }
@@ -540,6 +543,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public static HttpClient CreateCloudGameHttpClient(WindowsAzureSubscription subscription, string mediaType, Action<string> logger)
         {
+            if (subscription.Certificate == null)
+            {
+                throw new ArgumentException("The selected Azure Subscription must have an associated certificate in order to authenticate");
+            }
+
             var requestHandler = new WebRequestHandler();
             requestHandler.ClientCertificates.Add(subscription.Certificate);
             var retryHandler = new RetryHttpHandler(requestHandler, logger);

@@ -195,7 +195,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             LogResponse(response.StatusCode.ToString(), response.Headers, content, logger);
         }
 
-        public static Task<HttpResponseMessage> GetAsync(this HttpClient client, string requestUri, Action<string> Logger)
+        public static Task<HttpResponseMessage> GetAsync(this HttpClient client, string requestUri, Action<string> logger)
         {
             AddUserAgent(client);
             LogRequest(
@@ -203,7 +203,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 requestUri,
                 client.DefaultRequestHeaders,
                 string.Empty,
-                Logger);
+                logger);
             return client.GetAsync(requestUri);
         }
 

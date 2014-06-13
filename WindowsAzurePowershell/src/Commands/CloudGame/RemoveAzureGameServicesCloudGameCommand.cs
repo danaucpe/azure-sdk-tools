@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                 {
                     Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
                     bool isDeployedToRetail = false;
-                    bool unableToDetectDeploymentStatus = false;
+                    bool knownDeploymentStatus = true;
                     string promptMsg = string.Format("Cloud game:{0} is currently deployed to RETAIL. Are you positive you want to delete it?", CloudGameName);
                     try
                     {
@@ -61,12 +61,12 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                     catch (ServiceManagementClientException)
                     {
                         // If we can't verify the deployment status then play it safe and prompt
-                        unableToDetectDeploymentStatus = true;
+                        knownDeploymentStatus = false;
                         promptMsg = string.Format("Cloud game:{0} may already be deployed. Are you positive you want to delete it?", CloudGameName);
                     }
                     
                     // Add extra, unskippable prompt if we aren't positive the game is non-RETAIL
-                    ConfirmAction((isDeployedToRetail || unableToDetectDeploymentStatus),
+                    ConfirmAction((!isDeployedToRetail && knownDeploymentStatus),
                         promptMsg,
                         string.Empty,
                         string.Empty,

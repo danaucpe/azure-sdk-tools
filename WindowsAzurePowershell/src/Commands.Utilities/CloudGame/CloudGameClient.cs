@@ -104,7 +104,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<VmPackageCollectionResponse> GetVmPackages(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackagesResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.VmPackagesResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<VmPackageCollectionResponse>(message).ConfigureAwait(false);
         }
@@ -164,7 +164,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 multipartFormContent.Add(new StringContent(ClientHelper.ToJson(requestMetadata)), "metadata");
                 multipartFormContent.Add(new StreamContent(cscfgStream), "packageconfig");
 
-                var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackagesResourcePath, platformResourceString, cloudGameName);
+                var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.VmPackagesResourcePath, platformResourceString, cloudGameName);
                 var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
                 responseMetadata = await ClientHelper.ProcessJsonResponse<VmPackagePostResponse>(responseMessage).ConfigureAwait(false);
             }
@@ -200,7 +200,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             using (var multipartFormContent = new MultipartFormDataContent())
             {
                 multipartFormContent.Add(new StringContent(ClientHelper.ToJson(requestMetadata)), "metadata");
-                var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackageResourcePath, platformResourceString, cloudGameName, responseMetadata.VmPackageId);
+                var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.VmPackageResourcePath, platformResourceString, cloudGameName, responseMetadata.VmPackageId);
                 var responseMessage = await _httpClient.PutAsync(url, multipartFormContent).ConfigureAwait(false);
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -226,7 +226,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<bool> RemoveVmPackage(string cloudGameName, CloudGamePlatform platform, Guid vmPackageId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.VmPackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.VmPackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId);
             var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
 
             var message = responseMessage;
@@ -249,7 +249,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<GameModeCollectionResponse> GetGameModes(Guid gameModeSchemaId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModesResourcePath, gameModeSchemaId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GameModesResourcePath, gameModeSchemaId);
             var responseMessage = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<GameModeCollectionResponse>(responseMessage).ConfigureAwait(false);
         }
@@ -271,7 +271,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             // Idempotent call to do a first time registration of the subscription-level wrapping container.
             await ClientHelper.RegisterAndCreateContainerResourceIfNeeded(_httpClient, _httpXmlClient).ConfigureAwait(false);
 
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeSchemasResourcePath);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GameModeSchemasResourcePath);
             using (var multipartContent = new MultipartFormDataContent())
             {
                 var newGameModeSchema = new GameModeSchema()
@@ -296,7 +296,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <exception cref="ServiceManagementError"></exception>
         public async Task<bool> RemoveGameModeSchema(Guid gameModeSchemaId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeSchemaResourcePath, gameModeSchemaId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GameModeSchemaResourcePath, gameModeSchemaId);
             var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -318,7 +318,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<GameModeSchemaCollectionResponse> GetGameModeSchemas(bool getDetails = false)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeSchemasGetResourcePath, getDetails);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GameModeSchemasGetResourcePath, getDetails);
             var responseMessage = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<GameModeSchemaCollectionResponse>(responseMessage).ConfigureAwait(false);
         }
@@ -340,7 +340,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             // Container resource should already be created if the (required) game mode schema exists,
             // so no need to check that again.
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModesResourcePath, gameModeSchemaId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GameModesResourcePath, gameModeSchemaId);
             using (var multipartContent = new MultipartFormDataContent())
             {
                 var newGameMode = new GameMode()
@@ -364,7 +364,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<bool> RemoveGameMode(Guid gameModeSchemaId, Guid gameModeId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GameModeResourcePath, gameModeSchemaId, gameModeId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GameModeResourcePath, gameModeSchemaId, gameModeId);
             var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -387,8 +387,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<CertificateCollectionResponse> GetCertificates(Guid? cloudGameId)
         {
             var url = _httpClient.BaseAddress + (
-                cloudGameId.HasValue ? String.Format(CloudGameUriElements.CertificatesForGameResourcePath, cloudGameId.Value) :
-                String.Format(CloudGameUriElements.CertificatesResourcePath));
+                cloudGameId.HasValue ? string.Format(CloudGameUriElements.CertificatesForGameResourcePath, cloudGameId.Value) :
+                string.Format(CloudGameUriElements.CertificatesResourcePath));
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<CertificateCollectionResponse>(message).ConfigureAwait(false);
         }
@@ -415,7 +415,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             // Idempotent call to do a first time registration of the subscription-level wrapping container.
             await ClientHelper.RegisterAndCreateContainerResourceIfNeeded(_httpClient, _httpXmlClient).ConfigureAwait(false);
 
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CertificatesResourcePath);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.CertificatesResourcePath);
 
             var certificate = new CertificateRequest()
             {
@@ -440,7 +440,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<bool> RemoveCertificate(Guid certificateId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CertificateResourcePath, certificateId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.CertificateResourcePath, certificateId);
             var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -462,8 +462,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<AssetCollectionResponse> GetAssets(Guid? cloudGameId)
         {
             var url = _httpClient.BaseAddress + (
-                cloudGameId.HasValue ? String.Format(CloudGameUriElements.AssetsForGameResourcePath, cloudGameId.Value) :
-                String.Format(CloudGameUriElements.AssetsResourcePath));
+                cloudGameId.HasValue ? string.Format(CloudGameUriElements.AssetsForGameResourcePath, cloudGameId.Value) :
+                string.Format(CloudGameUriElements.AssetsResourcePath));
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<AssetCollectionResponse>(message).ConfigureAwait(false);
         }
@@ -501,7 +501,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 }
             };
 
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.AssetsResourcePath);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.AssetsResourcePath);
             var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
             var postAssetResult = await ClientHelper.ProcessJsonResponse<AssetPostResponse>(responseMessage).ConfigureAwait(false);
 
@@ -539,7 +539,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 }
             };
 
-            url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.AssetResourcePath, postAssetResult.AssetId);
+            url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.AssetResourcePath, postAssetResult.AssetId);
             responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -597,7 +597,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             };
 
             var platformResourceString = ClientHelper.GetPlatformResourceTypeString(platform);
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackagesResourcePath, platformResourceString, cloudGameName, vmPackageId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GamePackagesResourcePath, platformResourceString, cloudGameName, vmPackageId);
             var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
             var postGamePackageResult = await ClientHelper.ProcessJsonResponse<GamePackagePostResponse>(responseMessage).ConfigureAwait(false);
 
@@ -635,7 +635,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 }
             };
 
-            url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackageResourcePath, platformResourceString, cloudGameName, vmPackageId, postGamePackageResult.GamePackageId);
+            url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GamePackageResourcePath, platformResourceString, cloudGameName, vmPackageId, postGamePackageResult.GamePackageId);
             responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -685,7 +685,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 }
             };
 
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId, gamePackageId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GamePackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId, gamePackageId);
             var message = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -711,7 +711,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         public async Task<GamePackageCollectionResponse> GetGamePackages(string cloudGameName, CloudGamePlatform platform, Guid vmPackageId)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackagesResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GamePackagesResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId);
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<GamePackageCollectionResponse>(message).ConfigureAwait(false);
         }
@@ -728,7 +728,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         public async Task<bool> RemoveGamePackage(string cloudGameName, CloudGamePlatform platform, Guid vmPackageId, Guid gamePackageId)
         {
-            string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GamePackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId, gamePackageId);
+            string url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.GamePackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId, gamePackageId);
             var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -751,7 +751,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <exception cref="ServiceManagementError"></exception>
         public async Task<bool> RemoveAsset(Guid assetId)
         {
-            string url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.AssetResourcePath, assetId);
+            string url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.AssetResourcePath, assetId);
             var message = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -773,7 +773,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<DashboardSummary> GetComputeSummaryReport(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DashboardSummaryPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DashboardSummaryPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<DashboardSummary>(message).ConfigureAwait(false);
         }
@@ -786,7 +786,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<DeploymentData> GetComputeDeploymentsReport(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DeploymentsReportPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DeploymentsReportPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<DeploymentData>(message).ConfigureAwait(false);
         }
@@ -799,7 +799,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<PoolData> GetComputePoolsReport(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ServicepoolsReportPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.ServicepoolsReportPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<PoolData>(message).ConfigureAwait(false);
         }
@@ -841,7 +841,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!schemaId.HasValue)
             {
                 // Schema ID not provided, so must have schemaName, etc.
-                if (String.IsNullOrEmpty(schemaName) || String.IsNullOrEmpty(schemaFileName) || schemaStream == null || schemaStream.Length == 0)
+                if (string.IsNullOrEmpty(schemaName) || string.IsNullOrEmpty(schemaFileName) || schemaStream == null || schemaStream.Length == 0)
                 {
                     throw new ServiceManagementClientException(HttpStatusCode.BadRequest,
                         new ServiceManagementError { Code = HttpStatusCode.BadRequest.ToString() },
@@ -907,9 +907,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 }
             };
 
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, platformResourceString, name);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.CloudGameResourcePath, platformResourceString, name);
             var initialResponse = await _httpClient.PutAsXmlAsync(url, resource).ConfigureAwait(false);
-            var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 2, 30);
+            var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 2, 30, Logger);
             return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note: timeout treated as failure
         }
 
@@ -921,7 +921,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.CloudGameResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var initialResponse = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (initialResponse.StatusCode == HttpStatusCode.NotFound)
             {
@@ -929,7 +929,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 return true;
             }
 
-            var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 1, 20);
+            var opStatus = await ClientHelper.PollOperationStatus(initialResponse, _httpXmlClient, 1, 20, Logger);
             return opStatus.Status == Management.Compute.Models.OperationStatus.Succeeded; // Note: timeout treated as failure
         }
 
@@ -939,7 +939,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<CloudGameColletion> GetCloudGames()
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.GetCloudServicesResourcePath);
+            var url = _httpClient.BaseAddress + CloudGameUriElements.GetCloudServicesResourcePath;
             var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessCloudServiceResponse(this, message).ConfigureAwait(false);
         }
@@ -952,7 +952,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<CloudGame> GetCloudGame(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.CloudGameResourceInfoPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.CloudGameResourceInfoPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var cloudGameResponseMessage = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<CloudGame>(cloudGameResponseMessage).ConfigureAwait(false);
         }
@@ -965,7 +965,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         public async Task<AzureGameServicesPropertiesResponse> GetAzureGameServicesProperties()
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ResourcePropertiesPath);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.ResourcePropertiesPath);
 
             var message = await _httpXmlClient.GetAsync(url, Logger).ConfigureAwait(false);
             var propertyList = await ClientHelper.ProcessXmlResponse<ResourceProviderProperties>(message).ConfigureAwait(false);
@@ -997,7 +997,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         public async Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string sandboxes, string geoRegions)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sandboxes, geoRegions);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sandboxes, geoRegions);
             var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -1019,7 +1019,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns></returns>
         public async Task<bool> StopCloudGame(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.StopCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.StopCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -1044,7 +1044,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<EnumerateDiagnosticFilesResponse> GetLogFiles(string cloudGameName, CloudGamePlatform platform, string instanceId, string geoRegion)
         {
             var platformString = ClientHelper.GetPlatformResourceTypeString(platform);
-            var url = new StringBuilder(_httpClient.BaseAddress + String.Format(CloudGameUriElements.LogFilePath, platformString, cloudGameName, instanceId));
+            var url = new StringBuilder(_httpClient.BaseAddress + string.Format(CloudGameUriElements.LogFilePath, platformString, cloudGameName, instanceId));
             if (!string.IsNullOrEmpty(geoRegion))
             {
                 url.AppendFormat("/?geoRegion={0}", geoRegion);
@@ -1065,7 +1065,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         public async Task<EnumerateDiagnosticFilesResponse> GetDumpFiles(string cloudGameName, CloudGamePlatform platform, string instanceId, string geoRegion)
         {
             var platformString = ClientHelper.GetPlatformResourceTypeString(platform);
-            var url = new StringBuilder(_httpClient.BaseAddress + String.Format(CloudGameUriElements.DumpFilePath, platformString, cloudGameName, instanceId));
+            var url = new StringBuilder(_httpClient.BaseAddress + string.Format(CloudGameUriElements.DumpFilePath, platformString, cloudGameName, instanceId));
             if (!string.IsNullOrEmpty(geoRegion))
             {
                 url.AppendFormat("/?geoRegion={0}", geoRegion);
@@ -1101,7 +1101,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             }
 
             var url = new StringBuilder(_httpClient.BaseAddress +
-                String.Format(CloudGameUriElements.EnumerateClustersPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, geoRegion, status));
+                string.Format(CloudGameUriElements.EnumerateClustersPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, geoRegion, status));
             if (!string.IsNullOrEmpty(clusterId))
             {
                 url.AppendFormat("&clusterId={0}", clusterId);
@@ -1124,7 +1124,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <returns>A list of monitoring counter names.</returns>
         public async Task<List<string>> GetComputeMonitoringCounters(string cloudGameName, CloudGamePlatform platform)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.MonitoringCountersPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.MonitoringCountersPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
             var message = await _httpClient.GetAsync(url, Logger).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<List<string>>(message).ConfigureAwait(false);
         }
@@ -1150,7 +1150,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             string[] counterNames)
         {
             var counterNamesString = string.Join(",", counterNames);
-            var url = _httpClient.BaseAddress + String.Format(
+            var url = _httpClient.BaseAddress + string.Format(
                 CloudGameUriElements.MonitoringCounterDataPath,
                 ClientHelper.GetPlatformResourceTypeString(platform),
                 cloudGameName,
@@ -1176,7 +1176,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         public async Task<bool> ConfigureCloudGame(string cloudGameName, CloudGamePlatform platform, string[] resourceSets, string[] sandboxes)
         {
-            var url = _httpClient.BaseAddress + String.Format(CloudGameUriElements.ConfigureGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.ConfigureGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
 
             var configureContract = new CloudGameConfiguration()
             {
