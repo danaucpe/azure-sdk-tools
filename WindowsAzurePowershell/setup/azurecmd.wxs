@@ -20,7 +20,7 @@
     <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
 
     <MajorUpgrade AllowSameVersionUpgrades="yes"
-                  DowngradeErrorMessage="A later version of Windows Azure PowerShell is already installed. Setup will now exit." />
+                  DowngradeErrorMessage="A later version of Windows Azure PowerShell is already installed (the Xbox Live Compute version is a fork and will conflict). Either uninstall existing version first or run the cmdlets directly from the DLLs. Setup will now exit." />
 
     <Icon Id="icon.ico" SourceFile="media\WAIcon.ico"/>
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
