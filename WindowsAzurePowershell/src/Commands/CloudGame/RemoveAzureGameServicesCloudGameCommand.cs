@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                             isDeployedToRetail = deploymentReport.IsDeployedToRetail();
                         }
                     }
-                    catch (ServiceManagementClientException)
+                    catch (Exception)
                     {
                         // If we can't verify the deployment status then play it safe and prompt
                         knownDeploymentStatus = false;

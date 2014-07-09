@@ -26,6 +26,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     [Cmdlet(VerbsCommon.New, "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
     public class NewAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
+        private int selectionOrder = 1;
+
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
@@ -38,9 +40,19 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public string TitleId { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The selection order to use.")]
-        [ValidateNotNullOrEmpty]
-        public int SelectionOrder { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The selection order to use (default value of 1).")]
+        [ValidateRange(1, int.MaxValue)]
+        public int SelectionOrder
+        {
+            get
+            {
+                return selectionOrder;
+            }
+            set
+            {
+                selectionOrder = value;
+            }
+        }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The sandboxes to use (comma seperated list).")]
         [ValidateNotNullOrEmpty]

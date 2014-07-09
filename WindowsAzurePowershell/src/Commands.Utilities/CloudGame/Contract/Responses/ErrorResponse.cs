@@ -12,44 +12,29 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.BackCompat.Contract
+namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract
 {
     using System.Runtime.Serialization;
 
-    [DataContract(Namespace = "")]
-    public class XblCertificateRequest
+    [DataContract]
+    public class ErrorResponse
     {
-        /// <summary>
-        /// Gets or sets the filename.
-        /// </summary>
-        /// <value>
-        /// The filename.
-        /// </value>
-        [DataMember(Name = "fileName")]
-        public string Filename
+        [DataMember]
+        public int HttpCode
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
-        /// </value>
-        [DataMember(Name = "password")]
-        public string Password
+        [DataMember]
+        public string Message
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        [DataMember(Name = "name")]
-        public string Name
+        [DataMember]
+        public string ExtendedCode
         {
             get;
             set;

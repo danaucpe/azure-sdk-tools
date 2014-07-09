@@ -53,10 +53,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <param name="cspkgStream">The cspkg file stream.</param>
         /// <param name="cscfgFileName">The name of the local cscfg file name.</param>
         /// <param name="cscfgStream">The game cscfg file stream.</param>
-        /// <returns>
-        /// True if successful.
-        /// </returns>
-        Task<bool> NewVmPackage(
+        /// <returns></returns>
+        Task<VmPackagePostResponse> NewVmPackage(
             string cloudGameName,
             CloudGamePlatform platform,
             string packageName,

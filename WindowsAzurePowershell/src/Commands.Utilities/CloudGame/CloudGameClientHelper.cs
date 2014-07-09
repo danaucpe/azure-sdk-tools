@@ -23,7 +23,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using System.Net.Http.Headers;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Json;
-    using System.Security.AccessControl;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -46,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <summary>
         /// The general information about the game services cmdlets.
         /// </summary>
-        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_06_v1");
+        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_07_v1");
 
         private static readonly Dictionary<CloudGamePlatform, string> PlatformMapping = new Dictionary<CloudGamePlatform, string>
         {
@@ -244,7 +243,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 return default(T); // returns null for objects, 0 for int, '\0' for char
             }
 
-            throw CreateExceptionFromJson(responseMessage.StatusCode, content);
+            throw CreateExceptionFromJson(responseMessage);
         }
 
         public static bool ProcessBooleanJsonResponseAllowConflict(HttpResponseMessage responseMessage)
@@ -255,7 +254,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             }
 
             // Error
-            throw CreateExceptionFromJson(responseMessage.StatusCode, string.Empty);
+            throw CreateExceptionFromJson(responseMessage);
         }
 
         public static async Task<CloudGameColletion> ProcessCloudServiceResponse(ICloudGameClient client, HttpResponseMessage responseMessage)
@@ -381,16 +380,64 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// <summary>
         ///     Unwraps error message and creates ServiceManagementClientException.
         /// </summary>
-        public static ServiceManagementClientException CreateExceptionFromJson(HttpStatusCode statusCode, string content)
+        public static ServiceManagementClientException CreateExceptionFromJson(HttpStatusCode statusCode, string message)
         {
             var exception = new ServiceManagementClientException(
                 statusCode,
                 new ServiceManagementError
                 {
                     Code = statusCode.ToString(),
-                    Message = content
+                    Message = message
                 },
                 string.Empty);
+
+            return exception;
+        }
+
+        /// <summary>
+        ///     Unwraps error message and creates ServiceManagementClientException.
+        /// </summary>
+        public static ServiceManagementClientException CreateExceptionFromJson(HttpResponseMessage httpResponse)
+        {
+            // See if there is any detailed information we can extract from the HTTP response object to aid the user in determining the cause
+            string contentString;
+            ErrorResponse messageDetails;
+
+            try
+            {
+                contentString = httpResponse.Content != null ? (httpResponse.Content.ReadAsAsync<string>().Result) : null;
+            }
+            catch (Exception ex)
+            {
+                // Defensively parse in case this data is missing/malformed
+                if ((ex is AggregateException && ex.InnerException is XmlException) || ex is XmlException)
+                {
+                    contentString = null;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            try
+            {
+                messageDetails = contentString != null ? (JsonConvert.DeserializeObject(contentString, typeof (ErrorResponse)) as ErrorResponse) : null;
+            }
+            catch (JsonReaderException)
+            {
+                messageDetails = null;
+            }
+
+            var exception = new ServiceManagementClientException(
+                httpResponse.StatusCode,
+                new ServiceManagementError
+                {
+                    Code = httpResponse.ReasonPhrase,
+                    Message = messageDetails != null ? messageDetails.ExtendedCode : string.Empty
+                },
+                string.Empty);
+
             return exception;
         }
 

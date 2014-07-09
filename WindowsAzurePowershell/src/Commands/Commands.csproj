@@ -224,33 +224,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudGame\BackCompat\DeployAzureGameServicesXblComputeCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblAssetsCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblCertificatesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblClustersCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblCodeFilesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblComputeDeploymentReportCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblComputeInstancesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblComputePoolUnitReportCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblComputeSummaryReportCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblDumpFilesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblGameModesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblLogFilesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\GetAzureGameServicesXblPackagesCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\NewAzureGameServicesXblAssetCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\NewAzureGameServicesXblCertificateCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\NewAzureGameServicesXblCodeFileCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\NewAzureGameServicesXblComputeCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\NewAzureGameServicesXblGameModeCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\NewAzureGameServicesXblPackageCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\RemoveAzureGameServicesXblAssetCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\RemoveAzureGameServicesXblCertificateCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\RemoveAzureGameServicesXblCodeFileCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\RemoveAzureGameServicesXblCompute.cs" />
-    <Compile Include="CloudGame\BackCompat\RemoveAzureGameServicesXblGameModeCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\RemoveAzureGameServicesXblPackageCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\SetAzureGameServicesXblCodeFileCommand.cs" />
-    <Compile Include="CloudGame\BackCompat\StopAzureGameServicesXblComputeCommand.cs" />
+    <Compile Include="CloudGame\ActivateAzureGameServicesGamePackageCommand.cs" />
     <Compile Include="CloudGame\AzureGameServicesHttpClientCommandBase.cs" />
     <Compile Include="CloudGame\DeployAzureGameServicesCloudGameCommand.cs" />
     <Compile Include="CloudGame\GetAzureGameServicesAssetsCommand.cs" />

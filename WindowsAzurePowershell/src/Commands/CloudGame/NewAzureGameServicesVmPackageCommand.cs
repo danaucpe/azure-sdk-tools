@@ -17,13 +17,14 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     using System;
     using System.IO;
     using System.Management.Automation;
+    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Contract;
     using Utilities.CloudGame;
     using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Create cloud game package.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesVmPackage"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesVmPackage"), OutputType(typeof(VmPackagePostResponse))]
     public class NewAzureGameServicesVmPackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -70,16 +71,16 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
             var result = Client.NewVmPackage(
-                        CloudGameName,
-                        Platform,
-                        PackageName,
-                        MaxPlayers,
-                        AssetId,
-                        CertificateIds,
-                        CspkgFileName,
-                        CspkgStream,
-                        CscfgFileName,
-                        CscfgStream).Result;
+                CloudGameName,
+                Platform,
+                PackageName,
+                MaxPlayers,
+                AssetId,
+                CertificateIds,
+                CspkgFileName,
+                CspkgStream,
+                CscfgFileName,
+                CscfgStream).Result;
             WriteObject(result);
         }
     }

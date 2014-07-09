@@ -16,6 +16,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
     using Common;
     using Contract;
     using Microsoft.WindowsAzure.Storage;
+    using Newtonsoft.Json;
     using ServiceManagement;
     using System;
     using System.Collections.Generic;
@@ -127,7 +128,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
         /// </returns>
         /// <exception cref="ServiceManagementClientException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
-        public async Task<bool> NewVmPackage(
+        public async Task<VmPackagePostResponse> NewVmPackage(
             string cloudGameName,
             CloudGamePlatform platform,
             string packageName,
@@ -205,16 +206,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 if (!responseMessage.IsSuccessStatusCode)
                 {
                     // Error result, so throw an exception
-                    throw new ServiceManagementClientException(responseMessage.StatusCode,
-                        new ServiceManagementError
-                        {
-                            Code = responseMessage.StatusCode.ToString()
-                        },
-                        string.Empty);
+                    if (responseMessage.StatusCode == HttpStatusCode.Conflict)
+                    {
+                        throw ClientHelper.CreateExceptionFromJson(responseMessage.StatusCode, "Unable to create VM package. Ensure no other VM packages for this cloud game have the same 'MaxPlayers' value");
+                    }
+                    throw ClientHelper.CreateExceptionFromJson(responseMessage);
                 }
             }
 
-            return true;
+            return responseMetadata;
         }
 
         /// <summary>
@@ -229,17 +229,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.VmPackageResourcePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, vmPackageId);
             var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
 
-            var message = responseMessage;
-            if (message.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 return true;
             }
 
             // Error result, so throw an exception
-            throw new ServiceManagementClientException(
-                message.StatusCode,
-                new ServiceManagementError { Code = message.StatusCode.ToString() },
-                string.Empty);
+            if (responseMessage.StatusCode == HttpStatusCode.Conflict)
+            {
+                throw ClientHelper.CreateExceptionFromJson(responseMessage.StatusCode, "Unable to remove VM package. Ensure VM package is not currently deployed");
+            }
+            throw ClientHelper.CreateExceptionFromJson(responseMessage);
         }
 
         /// <summary>
@@ -300,14 +300,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new ServiceManagementClientException(
-                responseMessage.StatusCode,
-                new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
-                string.Empty);
-
+                // Error result, so throw an exception
+                if (responseMessage.StatusCode == HttpStatusCode.Conflict)
+                {
+                    throw ClientHelper.CreateExceptionFromJson(responseMessage.StatusCode,
+                        "Unable to remove game mode schema. Ensure game mode schema is not currently referenced by any cloud games");
+                }
+                throw ClientHelper.CreateExceptionFromJson(responseMessage);
             }
 
-            // Error result, so throw an exception
             return true;
         }
 
@@ -368,14 +369,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new ServiceManagementClientException(
-                responseMessage.StatusCode,
-                new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
-                string.Empty);
-
+                // Error result, so throw an exception
+                throw ClientHelper.CreateExceptionFromJson(responseMessage);
             }
 
-            // Error result, so throw an exception
             return true;
         }
 
@@ -445,10 +442,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
+                if (message.StatusCode == HttpStatusCode.Conflict)
+                {
+                    throw ClientHelper.CreateExceptionFromJson(message.StatusCode, "Unable to remove certificate. Ensure certificate is not currently referenced by any cloud games");
+                }
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
@@ -545,10 +543,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!responseMessage.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    responseMessage.StatusCode,
-                    new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
-                    string.Empty);
+                throw ClientHelper.CreateExceptionFromJson(responseMessage);
             }
 
             // Return the Asset info
@@ -639,10 +634,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             responseMessage = await _httpClient.PutAsync(url, multpartFormContentMetadata).ConfigureAwait(false);
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new ServiceManagementClientException(
-                    responseMessage.StatusCode,
-                    new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
-                    string.Empty);
+                // Error result, so throw an exception
+                throw ClientHelper.CreateExceptionFromJson(responseMessage);
             }
 
             // Return the CodeFile info
@@ -690,11 +683,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
-
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
@@ -733,10 +722,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
+                if (message.StatusCode == HttpStatusCode.Conflict)
+                {
+                    throw ClientHelper.CreateExceptionFromJson(message.StatusCode, "Unable to remove game package. Ensure game package is not currently in use by any cloud games");
+                }
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
@@ -756,10 +746,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
+                if (message.StatusCode == HttpStatusCode.Conflict)
+                {
+                    throw ClientHelper.CreateExceptionFromJson(message.StatusCode, "Unable to remove asset. Ensure asset is not currently referenced by any cloud games");
+                }
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
@@ -844,8 +835,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 if (string.IsNullOrEmpty(schemaName) || string.IsNullOrEmpty(schemaFileName) || schemaStream == null || schemaStream.Length == 0)
                 {
                     throw new ServiceManagementClientException(HttpStatusCode.BadRequest,
-                        new ServiceManagementError { Code = HttpStatusCode.BadRequest.ToString() },
-                        "Invalid Game Mode Schema values provided.");
+                        new ServiceManagementError { Code = HttpStatusCode.BadRequest.ToString(), Message = "Invalid Game Mode Schema values provided." },
+                        string.Empty);
                 }
 
                 string schemaContent;
@@ -938,11 +929,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 if (gameInfo != null &&
                        (string.Equals(gameInfo.Status, "Deployed", StringComparison.OrdinalIgnoreCase) ||
                         string.Equals(gameInfo.Status, "Deploying", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(gameInfo.Status, "Stopping", StringComparison.OrdinalIgnoreCase)))
+                        string.Equals(gameInfo.Status, "Stopping", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(gameInfo.Status, "Failed", StringComparison.OrdinalIgnoreCase)))
                 {
                     throw new ServiceManagementClientException(
                         HttpStatusCode.Conflict,
-                        new ServiceManagementError { Message = "Invalid cloud game status. Cloud game may not be Deploying/Stopping or Deployed." },
+                        new ServiceManagementError { Message = "Invalid cloud game status. Cloud game may not be Deploying, Stopping, Deployed, or Failed. Try stopping the cloud game first." },
                         string.Empty);
                 }
             }
@@ -1028,10 +1020,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
@@ -1050,10 +1039,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
+                if (message.StatusCode == HttpStatusCode.Conflict)
+                {
+                    throw ClientHelper.CreateExceptionFromJson(message.StatusCode,
+                        "Unable to stop cloud game. Cloud game must be in the Deployed, Deploying, Stopping, or Failed state to stop");
+                }
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
@@ -1214,10 +1205,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             if (!message.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError { Code = message.StatusCode.ToString() },
-                    string.Empty);
+                throw ClientHelper.CreateExceptionFromJson(message);
             }
 
             return true;
