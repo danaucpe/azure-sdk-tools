@@ -60,6 +60,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                     return;
                 }
             }
+
             var notFound = new ServiceManagementClientException(HttpStatusCode.NotFound,
                 new ServiceManagementError { Code = HttpStatusCode.NotFound.ToString() },
                 string.Empty);

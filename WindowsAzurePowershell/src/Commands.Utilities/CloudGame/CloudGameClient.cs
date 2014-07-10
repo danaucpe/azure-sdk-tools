@@ -210,6 +210,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                     {
                         throw ClientHelper.CreateExceptionFromJson(responseMessage.StatusCode, "Unable to create VM package. Ensure no other VM packages for this cloud game have the same 'MaxPlayers' value");
                     }
+
                     throw ClientHelper.CreateExceptionFromJson(responseMessage);
                 }
             }
@@ -239,6 +240,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             {
                 throw ClientHelper.CreateExceptionFromJson(responseMessage.StatusCode, "Unable to remove VM package. Ensure VM package is not currently deployed");
             }
+
             throw ClientHelper.CreateExceptionFromJson(responseMessage);
         }
 
@@ -306,6 +308,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                     throw ClientHelper.CreateExceptionFromJson(responseMessage.StatusCode,
                         "Unable to remove game mode schema. Ensure game mode schema is not currently referenced by any cloud games");
                 }
+
                 throw ClientHelper.CreateExceptionFromJson(responseMessage);
             }
 
@@ -446,6 +449,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 {
                     throw ClientHelper.CreateExceptionFromJson(message.StatusCode, "Unable to remove certificate. Ensure certificate is not currently referenced by any cloud games");
                 }
+
                 throw ClientHelper.CreateExceptionFromJson(message);
             }
 
@@ -726,6 +730,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 {
                     throw ClientHelper.CreateExceptionFromJson(message.StatusCode, "Unable to remove game package. Ensure game package is not currently in use by any cloud games");
                 }
+
                 throw ClientHelper.CreateExceptionFromJson(message);
             }
 
@@ -750,6 +755,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                 {
                     throw ClientHelper.CreateExceptionFromJson(message.StatusCode, "Unable to remove asset. Ensure asset is not currently referenced by any cloud games");
                 }
+
                 throw ClientHelper.CreateExceptionFromJson(message);
             }
 
@@ -1044,6 +1050,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
                     throw ClientHelper.CreateExceptionFromJson(message.StatusCode,
                         "Unable to stop cloud game. Cloud game must be in the Deployed, Deploying, Stopping, or Failed state to stop");
                 }
+
                 throw ClientHelper.CreateExceptionFromJson(message);
             }
 
