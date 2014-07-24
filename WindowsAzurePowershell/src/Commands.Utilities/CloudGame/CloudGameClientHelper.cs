@@ -410,7 +410,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             catch (Exception ex)
             {
                 // Defensively parse in case this data is missing/malformed
-                if ((ex is AggregateException && ex.InnerException is XmlException) || ex is XmlException)
+                if (ex is AggregateException && (ex.InnerException is SerializationException || ex.InnerException is XmlException))
                 {
                     contentString = null;
                 }
@@ -424,7 +424,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
             {
                 messageDetails = contentString != null ? (JsonConvert.DeserializeObject(contentString, typeof (ErrorResponse)) as ErrorResponse) : null;
             }
-            catch (JsonReaderException)
+            catch (JsonSerializationException)
             {
                 messageDetails = null;
             }
