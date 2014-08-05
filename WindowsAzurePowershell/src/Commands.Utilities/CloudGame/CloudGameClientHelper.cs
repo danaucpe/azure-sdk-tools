@@ -422,7 +422,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame
 
             try
             {
-                messageDetails = contentString != null ? (JsonConvert.DeserializeObject(contentString, typeof (ErrorResponse)) as ErrorResponse) : null;
+                messageDetails = contentString != null ? JsonConvert.DeserializeObject<ErrorResponse>(contentString) : null;
             }
             catch (JsonSerializationException)
             {
