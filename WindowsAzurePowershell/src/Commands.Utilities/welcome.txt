@@ -1,2 +1,0 @@
-﻿For a list of all Xbox Live Compute cmdlets type 'Get-Command *AzureGameServices*'.
-For more detailed information about a specific cmdlet type 'help <cmd name> -Detailed'

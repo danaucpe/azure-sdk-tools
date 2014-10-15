@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1131198B-C055-4D83-91BB-4A5431496CCD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.WindowsAzure.Commands.GameServices</RootNamespace>
+    <AssemblyName>Microsoft.WindowsAzure.Commands.GameServices</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Package\Debug\ServiceManagement\Azure\GameServices\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Azure.Management.Automation">
+      <HintPath>..\..\..\packages\Microsoft.Azure.Management.Automation.0.11.0-preview\lib\net40\Microsoft.Azure.Management.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Data.OData.5.6.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Data.Services.Client.5.6.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Common">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Common.1.3.0\lib\net45\Microsoft.WindowsAzure.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Common.NetFramework">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Common.1.3.0\lib\net45\Microsoft.WindowsAzure.Common.NetFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\WindowsAzure.Storage.4.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Spatial, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Spatial.5.6.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cmdlet\ActivateAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\AzureGameServicesHttpClientCommandBase.cs" />
+    <Compile Include="Cmdlet\DeployAzureGameServicesCloudGameCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesAssetsCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesCertificatesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesCloudGamesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesClustersCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesCmdletsInfoCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesComputeDeploymentReportCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesComputeMonitoringCounterDataCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesComputeMonitoringCountersCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesComputePoolUnitReportCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesComputeSummaryReportCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesDumpFilesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesGameModeSchemasCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesGameModesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesGamePackagesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesLogFilesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesPropertiesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesVmPackagesCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesAssetCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesCertificateCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesCloudGameCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesGameModeCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesGameModeSchemaCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesVmPackageCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesAssetCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesCertificateCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesCloudGameCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesGameModeCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesGameModeSchemaCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesVmPackageCommand.cs" />
+    <Compile Include="Cmdlet\RepairAzureGameServicesSessionHostCommand.cs" />
+    <Compile Include="Cmdlet\SetAzureGameServicesCloudGamePropertiesCommand.cs" />
+    <Compile Include="Cmdlet\SetAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\StopAzureGameServicesCloudGameCommand.cs" />
+    <Compile Include="Model\CloudGameClient.cs" />
+    <Compile Include="Model\CloudGameClientHelper.cs" />
+    <Compile Include="Model\CloudGameUriElements.cs" />
+    <Compile Include="Model\Common\CloudGamePlatform.cs" />
+    <Compile Include="Model\Common\GameServicesCmdletsInfo.cs" />
+    <Compile Include="Model\Common\UnknownCloudGamePlatformException.cs" />
+    <Compile Include="Model\Contract\Requests\AssetRequest.cs" />
+    <Compile Include="Model\Contract\Requests\AzureResourceProviderContracts.cs" />
+    <Compile Include="Model\Contract\Requests\CertificateRequest.cs" />
+    <Compile Include="Model\Contract\Requests\CloudGame.cs" />
+    <Compile Include="Model\Contract\Requests\CloudGameConfiguration.cs" />
+    <Compile Include="Model\Contract\Requests\CloudGameRequest.cs" />
+    <Compile Include="Model\Contract\Requests\CloudServiceResource.cs" />
+    <Compile Include="Model\Contract\Requests\CloudServices.cs" />
+    <Compile Include="Model\Contract\Requests\EntityTypeConstants.cs" />
+    <Compile Include="Model\Contract\Requests\GameMode.cs" />
+    <Compile Include="Model\Contract\Requests\GameModeRequest.cs" />
+    <Compile Include="Model\Contract\Requests\GameModeSchema.cs" />
+    <Compile Include="Model\Contract\Requests\GameModeSchemaRequest.cs" />
+    <Compile Include="Model\Contract\Requests\GamePackage.cs" />
+    <Compile Include="Model\Contract\Requests\GamePackageRequest.cs" />
+    <Compile Include="Model\Contract\Requests\VmPackage.cs" />
+    <Compile Include="Model\Contract\Requests\VmPackageRequest.cs" />
+    <Compile Include="Model\Contract\Responses\AssetCollectionResponse.cs" />
+    <Compile Include="Model\Contract\Responses\AssetPostResponse.cs" />
+    <Compile Include="Model\Contract\Responses\AssetResponse.cs" />
+    <Compile Include="Model\Contract\Responses\AzureGameServicesPropertiesResponse.cs" />
+    <Compile Include="Model\Contract\Responses\AzureGameServicesProperty.cs" />
+    <Compile Include="Model\Contract\Responses\AzureGameServicesResourceSet.cs" />
+    <Compile Include="Model\Contract\Responses\CertificateCollectionResponse.cs" />
+    <Compile Include="Model\Contract\Responses\CertificatePostResponse.cs" />
+    <Compile Include="Model\Contract\Responses\CertificateResponse.cs" />
+    <Compile Include="Model\Contract\Responses\ChartData.cs" />
+    <Compile Include="Model\Contract\Responses\CounterChartData.cs" />
+    <Compile Include="Model\Contract\Responses\CounterChartDataResponse.cs" />
+    <Compile Include="Model\Contract\Responses\DashboardSummary.cs" />
+    <Compile Include="Model\Contract\Responses\DeploymentData.cs" />
+    <Compile Include="Model\Contract\Responses\EnumerateClustersResponse.cs" />
+    <Compile Include="Model\Contract\Responses\EnumerateDiagnosticFilesResponse.cs" />
+    <Compile Include="Model\Contract\Responses\ErrorResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GameModeCollectionResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GameModePostResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GameModeResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GameModeSchemaCollectionResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GameModeSchemaResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GamePackageCollectionResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GamePackagePostResponse.cs" />
+    <Compile Include="Model\Contract\Responses\GeoRegionDeploymentInfo.cs" />
+    <Compile Include="Model\Contract\Responses\GeoRegionPoolInfo.cs" />
+    <Compile Include="Model\Contract\Responses\NewGameModeResponse.cs" />
+    <Compile Include="Model\Contract\Responses\NewGameModeSchemaResponse.cs" />
+    <Compile Include="Model\Contract\Responses\PoolData.cs" />
+    <Compile Include="Model\Contract\Responses\UsageData.cs" />
+    <Compile Include="Model\Contract\Responses\VmPackageCollectionResponse.cs" />
+    <Compile Include="Model\Contract\Responses\VmPackageDeploymentInfo.cs" />
+    <Compile Include="Model\Contract\Responses\VmPackagePostResponse.cs" />
+    <Compile Include="Model\Contract\Responses\VmPackageResponse.cs" />
+    <Compile Include="Model\ICloudGameClient.cs" />
+    <Compile Include="Model\LoggingHttpHandler.cs" />
+    <Compile Include="Model\RetryHttpHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Commands.Common\Commands.Common.csproj">
+      <Project>{5ee72c53-1720-4309-b54b-5fb79703195f}</Project>
+      <Name>Commands.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\Commands.Utilities\Commands.Utilities.csproj">
+      <Project>{4900EC4E-8DEB-4412-9108-0BC52F81D457}</Project>
+      <Name>Commands.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
