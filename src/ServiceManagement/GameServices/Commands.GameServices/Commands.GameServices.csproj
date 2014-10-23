@@ -196,6 +196,7 @@
     <Compile Include="Model\ICloudGameClient.cs" />
     <Compile Include="Model\LoggingHttpHandler.cs" />
     <Compile Include="Model\RetryHttpHandler.cs" />
+    <Compile Include="Model\ServiceResponseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

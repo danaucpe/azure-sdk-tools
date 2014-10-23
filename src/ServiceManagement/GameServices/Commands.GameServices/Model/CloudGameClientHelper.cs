@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <summary>
         /// The general information about the game services cmdlets.
         /// </summary>
-        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_07_v1");
+        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_10_v1");
 
         private static readonly Dictionary<CloudGamePlatform, string> PlatformMapping = new Dictionary<CloudGamePlatform, string>
         {
@@ -137,12 +137,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                     responseMessage.StatusCode != HttpStatusCode.BadRequest)
                 {
                     // Error result, so throw an exception
-                    throw new ServiceManagementClientException(responseMessage.StatusCode,
-                        new ServiceManagementError
-                        {
-                            Code = responseMessage.StatusCode.ToString()
-                        },
-                        string.Empty);
+                    throw new ServiceResponseException(responseMessage.StatusCode, string.Empty);
                 }
             }
         }
@@ -160,12 +155,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 }
 
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(responseMessage.StatusCode,
-                    new ServiceManagementError
-                    {
-                        Code = responseMessage.StatusCode.ToString()
-                    },
-                    string.Empty);
+                throw new ServiceResponseException(responseMessage.StatusCode, string.Empty);
             }
 
             var nameAvailability = await ProcessXmlResponse<ResourceNameAvailabilityResponse>(responseMessage).ConfigureAwait(false);
@@ -195,12 +185,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             else if (responseMessage.StatusCode != HttpStatusCode.NotFound)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(responseMessage.StatusCode,
-                    new ServiceManagementError
-                    {
-                        Code = responseMessage.StatusCode.ToString()
-                    },
-                    string.Empty);
+                throw new ServiceResponseException(responseMessage.StatusCode, string.Empty);
             }
 
             // If the cloud service exists, and it has the DefaultServiceName, then no more work is needed
@@ -222,9 +207,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             if (!responseMessage.IsSuccessStatusCode)
             {
                 // Error result, so throw an exception
-                throw new ServiceManagementClientException(
+                throw new ServiceResponseException(
                     responseMessage.StatusCode,
-                    new ServiceManagementError { Code = responseMessage.StatusCode.ToString() },
                     string.Empty);
             }
         }
@@ -235,7 +219,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <typeparam name="T"></typeparam>
         /// <param name="responseMessage">The response message.</param>
         /// <returns></returns>
-        /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceManagementClientException"></exception>
+        /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceResponseException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
         public static async Task<T> ProcessJsonResponse<T>(HttpResponseMessage responseMessage)
         {
@@ -329,7 +313,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 {
                     await TaskEx.WhenAll(deleteTasks);
                 }
-                catch (ServiceManagementClientException)
+                catch (ServiceResponseException)
                 {
                 }
 
@@ -365,7 +349,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             return encoding;
         }
 
-        public static ServiceManagementClientException CreateExceptionFromXml(string content, HttpResponseMessage message)
+        public static ServiceResponseException CreateExceptionFromXml(string content, HttpResponseMessage message)
         {
             var encoding = GetEncodingFromResponseMessage(message);
 
@@ -374,82 +358,72 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 stream.Position = 0;
                 var serializer = new XmlSerializer(typeof(ServiceError));
                 var serviceError = (ServiceError)serializer.Deserialize(stream);
-                return new ServiceManagementClientException(
-                    message.StatusCode,
-                    new ServiceManagementError
-                    {
-                        Code = message.StatusCode.ToString(),
-                        Message = serviceError.Message
-                    },
-                    string.Empty);
+                return new ServiceResponseException(message.StatusCode, serviceError.Message);
             }
         }
 
         /// <summary>
-        ///     Unwraps error message and creates ServiceManagementClientException.
+        ///     Unwraps error message and creates ServiceResponseException.
         /// </summary>
-        public static ServiceManagementClientException CreateExceptionFromJson(HttpStatusCode statusCode, string message)
+        public static ServiceResponseException CreateExceptionFromJson(HttpStatusCode statusCode, string message)
         {
-            var exception = new ServiceManagementClientException(
-                statusCode,
-                new ServiceManagementError
-                {
-                    Code = statusCode.ToString(),
-                    Message = message
-                },
-                string.Empty);
-
+            var exception = new ServiceResponseException(statusCode, message);
             return exception;
         }
 
         /// <summary>
-        ///     Unwraps error message and creates ServiceManagementClientException.
+        ///     Unwraps error message and creates ServiceResponseException.
         /// </summary>
-        public static ServiceManagementClientException CreateExceptionFromJson(HttpResponseMessage httpResponse)
+        public static ServiceResponseException CreateExceptionFromJson(HttpResponseMessage httpResponse)
         {
             // See if there is any detailed information we can extract from the HTTP response object to aid the user in determining the cause
-            string contentString = null;
-            ErrorResponse messageDetails;
+            string errorMessage = string.Empty;
 
-            try
+            if (httpResponse.Content != null)
             {
-                if (httpResponse.Content != null)
+                var contentString = httpResponse.Content.ReadAsStringAsync().Result;
+                var doc = new XmlDocument();
+                try
                 {
-                    contentString = httpResponse.Content.ReadAsStringAsync().Result;
+                    doc.LoadXml(contentString);
+                    var root = doc.FirstChild;
+                    if (root.ChildNodes.Count == 1)
+                    {
+                        contentString = root.InnerText;
+                        try
+                        {
+                            var messageDetails = JsonConvert.DeserializeObject<ErrorResponse>(contentString);
+                            errorMessage = messageDetails.ExtendedCode;
+                        }
+                        catch (JsonSerializationException)
+                        {
+                            errorMessage = contentString;
+                        }
+                    }
+                    else
+                    {
+                        var nsmgr = new XmlNamespaceManager(doc.NameTable);
+                        nsmgr.AddNamespace("azure", "http://schemas.microsoft.com/windowsazure");
+                        var message = root.SelectSingleNode("azure:Message", nsmgr);
+                        errorMessage = message != null ? message.InnerText : root.InnerText;
+                    }
                 }
-                
-            }
-            catch (Exception ex)
-            {
-                // Defensively parse in case this data is missing/malformed
-                if (ex is AggregateException && (ex.InnerException is SerializationException || ex.InnerException is XmlException))
+                catch (Exception ex)
                 {
-                    contentString = null;
+                    // Defensively parse in case this data is missing/malformed
+                    ex = ex is AggregateException ? ex.InnerException : ex;
+                    if (ex is SerializationException || ex is XmlException)
+                    {
+                        errorMessage = contentString;
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-                else
-                {
-                    throw;
-                }
             }
 
-            try
-            {
-                messageDetails = contentString != null ? JsonConvert.DeserializeObject<ErrorResponse>(contentString) : null;
-            }
-            catch (JsonSerializationException)
-            {
-                messageDetails = null;
-            }
-
-            var exception = new ServiceManagementClientException(
-                httpResponse.StatusCode,
-                new ServiceManagementError
-                {
-                    Code = httpResponse.ReasonPhrase,
-                    Message = messageDetails != null ? messageDetails.ExtendedCode : string.Empty
-                },
-                string.Empty);
-
+            var exception = new ServiceResponseException(httpResponse.StatusCode, errorMessage);
             return exception;
         }
 
@@ -465,7 +439,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <returns>
         /// The task for completion.
         /// </returns>
-        /// <exception cref="ServiceManagementClientException">If the initial response code is not 202 Accepted.</exception>
+        /// <exception cref="ServiceResponseException">If the initial response code is not 202 Accepted.</exception>
         /// <exception cref="System.ArgumentException">If there is no request ID header found in initial response</exception>
         public static async Task<OperationStatusResponse> PollOperationStatus(
             HttpResponseMessage initialHttpResponse,
@@ -479,14 +453,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 if (initialHttpResponse.StatusCode != HttpStatusCode.Accepted)
                 {
                     // Unexpected result, so throw an exception
-                    throw new ServiceManagementClientException(
-                        initialHttpResponse.StatusCode,
-                        new ServiceManagementError
-                        {
-                            Code = initialHttpResponse.StatusCode.ToString(),
-                            Message = "Unexpected status code. Should be 202 Accepted."
-                        },
-                        string.Empty);
+                    throw new ServiceResponseException(initialHttpResponse.StatusCode, "Unexpected status code. Should be 202 Accepted.");
                 }
 
                 if (!initialHttpResponse.Headers.Contains(CloudGameUriElements.RequestIdHeader))
@@ -528,14 +495,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                                 break;
 
                             case WindowsAzure.OperationStatus.Failed:
-                                throw new ServiceManagementClientException(
-                                    result.HttpStatusCode,
-                                    new ServiceManagementError
-                                    {
-                                        Code = result.Error.Code,
-                                        Message = result.Error.Message
-                                    },
-                                    string.Empty);
+                                throw new ServiceResponseException(result.HttpStatusCode, result.Error.Message);
 
                             case WindowsAzure.OperationStatus.Succeeded:
                                 done = true;

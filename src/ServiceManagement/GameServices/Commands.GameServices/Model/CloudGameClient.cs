@@ -123,7 +123,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <returns>
         /// True if successful.
         /// </returns>
-        /// <exception cref="ServiceManagementClientException"></exception>
+        /// <exception cref="ServiceResponseException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
         public async Task<VmPackagePostResponse> NewVmPackage(
             string cloudGameName,
@@ -291,7 +291,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// </summary>
         /// <param name="gameModeSchemaId">The game mode schema ID.</param>
         /// <returns></returns>
-        /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceManagementClientException"></exception>
+        /// <exception cref="ServiceResponseException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
         public async Task<bool> RemoveGameModeSchema(Guid gameModeSchemaId)
         {
@@ -474,7 +474,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="assetFileName">The asset filename.</param>
         /// <param name="assetStream">The asset filestream.</param>
         /// <returns></returns>
-        /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceManagementClientException"></exception>
+        /// <exception cref="ServiceResponseException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
         public async Task<string> NewAsset(string assetName, string assetFileName, Stream assetStream)
         {
@@ -739,7 +739,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// </summary>
         /// <param name="assetId">The ID of the asset to be removed.</param>
         /// <returns></returns>
-        /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceManagementClientException"></exception>
+        /// <exception cref="ServiceResponseException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
         public async Task<bool> RemoveAsset(Guid assetId)
         {
@@ -837,9 +837,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 // Schema ID not provided, so must have schemaName, etc.
                 if (string.IsNullOrEmpty(schemaName) || string.IsNullOrEmpty(schemaFileName) || schemaStream == null || schemaStream.Length == 0)
                 {
-                    throw new ServiceManagementClientException(HttpStatusCode.BadRequest,
-                        new ServiceManagementError { Code = HttpStatusCode.BadRequest.ToString(), Message = "Invalid Game Mode Schema values provided." },
-                        string.Empty);
+                    throw new ServiceResponseException(HttpStatusCode.BadRequest, "Invalid Game Mode Schema values provided.");
                 }
 
                 string schemaContent;
@@ -914,7 +912,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="platform">The cloud game platform.</param>
         /// <param name="checkStateFirst">if set to <c>true</c> check state first.</param>
         /// <returns></returns>
-        /// <exception cref="ServiceManagementClientException">Invalid cloud game status. Cloud game may not be Deploying/Stopping or Deployed.</exception>
+        /// <exception cref="ServiceResponseException">Invalid cloud game status. Cloud game may not be Deploying/Stopping or Deployed.</exception>
         public async Task<bool> RemoveCloudGame(string cloudGameName, CloudGamePlatform platform, bool checkStateFirst = true)
         {
             if (checkStateFirst)
@@ -924,7 +922,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 {
                     gameInfo = this.GetCloudGame(cloudGameName, platform).Result;
                 }
-                catch (ServiceManagementClientException)
+                catch (ServiceResponseException)
                 {
                     // 404s will be caught when we talk with RDFE, so no need to do anything here
                 }
@@ -935,10 +933,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                         string.Equals(gameInfo.Status, "Stopping", StringComparison.OrdinalIgnoreCase) ||
                         string.Equals(gameInfo.Status, "Failed", StringComparison.OrdinalIgnoreCase)))
                 {
-                    throw new ServiceManagementClientException(
-                        HttpStatusCode.Conflict,
-                        new ServiceManagementError { Message = "Invalid cloud game status. Cloud game may not be Deploying, Stopping, Deployed, or Failed. Try stopping the cloud game first." },
-                        string.Empty);
+                    throw new ServiceResponseException(HttpStatusCode.Conflict, "Invalid cloud game status. Cloud game may not be Deploying, Stopping, Deployed, or Failed. Try stopping the cloud game first.");
                 }
             }
 
