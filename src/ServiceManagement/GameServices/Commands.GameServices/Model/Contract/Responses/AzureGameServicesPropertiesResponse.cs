@@ -81,12 +81,12 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
         public bool PartialResults { get; set; }
 
         /// <summary>
-        /// Gets or sets the package version.
+        /// Gets or sets the GSMS version.
         /// </summary>
         /// <value>
         /// The package version.
         /// </value>
-        [DataMember(Name = "packageVersion")]
-        public string PackageVersion { get; set; }
+        [DataMember(Name = "managementService")]
+        public string ManagementService { get; set; }
     }
 }
