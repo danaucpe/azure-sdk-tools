@@ -409,6 +409,20 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 throw new ArgumentException("File stream must not be empty.");
             }
 
+            if (!certificateFileName.EndsWith(".cer", StringComparison.OrdinalIgnoreCase))
+            {
+                certificateFileName = certificateFileName.EndsWith(".pfx", StringComparison.OrdinalIgnoreCase)
+                    ? certificateFileName
+                    : certificateFileName + ".pfx";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(certificatePassword))
+                {
+                    throw new ArgumentException(".cer certificates cannot include a password");
+                }
+            }
+
             // Idempotent call to do a first time registration of the subscription-level wrapping container.
             await ClientHelper.RegisterAndCreateContainerResourceIfNeeded(_httpClient, _httpXmlClient).ConfigureAwait(false);
 
