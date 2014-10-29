@@ -417,7 +417,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             }
             else
             {
-                if (string.IsNullOrEmpty(certificatePassword))
+                if (!string.IsNullOrEmpty(certificatePassword))
                 {
                     throw new ArgumentException(".cer certificates cannot include a password");
                 }
