@@ -12,26 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common
+namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
+    using System.Management.Automation;
+
     /// <summary>
-    ///     The cloud game platforms.
+    /// Gets the resource properties.
     /// </summary>
-    public enum CloudGamePlatform
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesProperties"), OutputType(typeof(AzureGameServicesPropertiesResponse))]
+    public class GetAzureGameServicesPropertiesCommand : AzureGameServicesHttpClientCommandBase
     {
-        /// <summary>
-        /// The Xbox One compute platform (default)
-        /// </summary>
-        XboxOne = 0,
-        
-        /// <summary>
-        /// The Xbox 360 compute platform
-        /// </summary>
-        Xbox360,
-        
-        /// <summary>
-        /// The PC compute platform
-        /// </summary>
-        PC
+        public ICloudGameClient Client { get; set; }
+
+        protected override void Execute()
+        {
+            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
+            var result = Client.GetAzureGameServicesProperties().Result;
+            WriteObject(result);
+        }
     }
 }

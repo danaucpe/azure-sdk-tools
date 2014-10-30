@@ -832,8 +832,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             CloudGamePlatform platform,
             string titleId,
             int selectionOrder,
-            string sandboxes,
-            string resourceSetIds,
+            string[] sandboxes,
+            string[] resourceSetIds,
             string name,
             Guid? schemaId,
             string schemaName,
@@ -876,8 +876,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             {
                 Name = name,
                 PlatformResourceType = platformResourceString,
-                ResourceSets = resourceSetIds,
-                Sandboxes = sandboxes,
+                ResourceSets = string.Join(",", resourceSetIds),
+                Sandboxes = string.Join(",", sandboxes),
                 SchemaName = schemaName,
                 TitleId = titleId,
                 SelectionOrder = selectionOrder
@@ -1025,9 +1025,11 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <returns>
         /// The task for completion.
         /// </returns>
-        public async Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string sandboxes, string geoRegions)
+        public async Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string[] sandboxes, string[] geoRegions)
         {
-            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sandboxes, geoRegions);
+            var sandboxesStr = string.Join(",", sandboxes);
+            var regionsStr = string.Join(",", geoRegions);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sandboxesStr, regionsStr);
             var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {

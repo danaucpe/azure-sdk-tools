@@ -14,16 +14,16 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get the cloud game package.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesVmPackages"), OutputType(typeof(VmPackageCollectionResponse))]
+    public class GetAzureGameServicesPackagesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.GetVmPackages(CloudGameName, Platform).Result;
             WriteObject(result);
         }
     }

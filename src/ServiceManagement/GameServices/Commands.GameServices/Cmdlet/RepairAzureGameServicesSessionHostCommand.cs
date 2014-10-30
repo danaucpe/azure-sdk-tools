@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 

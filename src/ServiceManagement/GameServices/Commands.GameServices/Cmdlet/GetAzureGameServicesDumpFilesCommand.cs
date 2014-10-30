@@ -14,16 +14,16 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
-    using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using Utilities.CloudGame.Common;
+    using System.Management.Automation;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get dump files from an instance.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesDumpFiles"), OutputType(typeof(EnumerateDiagnosticFilesResponse))]
+    public class GetAzureGameServicesDumpFilesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
@@ -33,12 +33,19 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The instance Id to get dumps from.")]
+        [ValidateNotNullOrEmpty]
+        public string InstanceId { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region of the instance (if known).")]
+        public string GeoRegion { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.GetDumpFiles(CloudGameName, Platform, InstanceId, GeoRegion).Result;
             WriteObject(result);
         }
     }

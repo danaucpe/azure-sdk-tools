@@ -14,31 +14,25 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using Utilities.CloudGame;
+    using Utilities.CloudGame.Contract;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get the game mode schemas.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesGameModeSchemas"), OutputType(typeof(GameModeSchemaCollectionResponse))]
+    public class GetAzureGameServicesGameModeSchemasCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
-        public string CloudGameName { get; set; }
-
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
-        [ValidateNotNullOrEmpty]
-        public CloudGamePlatform Platform { get; set; }
+        [Parameter(HelpMessage = "Fetch child game modes of each schema.")]
+        public SwitchParameter IncludeGameModes { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.GetGameModeSchemas(IncludeGameModes).Result;
             WriteObject(result);
         }
     }

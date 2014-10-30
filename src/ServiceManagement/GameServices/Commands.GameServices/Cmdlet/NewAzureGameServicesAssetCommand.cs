@@ -14,31 +14,34 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Create the cloud game asset.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesAsset"), OutputType(typeof(string))]
+    public class NewAzureGameServicesAssetCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
-        public string CloudGameName { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the asset.")]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
+        public string AssetName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the asset file.")]
         [ValidateNotNullOrEmpty]
-        public CloudGamePlatform Platform { get; set; }
+        public string AssetFileName { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The asset filestream.")]
+        [ValidateNotNullOrEmpty]
+        public Stream AssetStream { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.NewAsset(AssetName, AssetFileName, AssetStream).Result;
             WriteObject(result);
         }
     }

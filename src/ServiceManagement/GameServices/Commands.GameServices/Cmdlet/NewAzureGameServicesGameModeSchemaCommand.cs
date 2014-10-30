@@ -14,31 +14,38 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Create the certificate.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesGameModeSchema"), OutputType(typeof(NewGameModeSchemaResponse))]
+    public class NewAzureGameServicesGameModeSchemaCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
-        public string CloudGameName { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name.")]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
+        public string GameModeSchemaName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema filename.")]
         [ValidateNotNullOrEmpty]
-        public CloudGamePlatform Platform { get; set; }
+        public string GameModeSchemaFilename { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema stream.")]
+        [ValidateNotNullOrEmpty]
+        public Stream GameModeSchemaStream { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.NewGameModeSchema(
+                GameModeSchemaName,
+                GameModeSchemaFilename,
+                GameModeSchemaStream).Result;
             WriteObject(result);
         }
     }

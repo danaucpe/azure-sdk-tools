@@ -14,31 +14,26 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get the cloud game certificates.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesCertificates"), OutputType(typeof(CertificateCollectionResponse))]
+    public class GetAzureGameServicesCertificatesCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
-        public string CloudGameName { get; set; }
-
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
-        [ValidateNotNullOrEmpty]
-        public CloudGamePlatform Platform { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "An optional cloud game ID to filter by.")]
+        public Guid? CloudGameId { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.GetCertificates(CloudGameId).Result;
             WriteObject(result);
         }
     }

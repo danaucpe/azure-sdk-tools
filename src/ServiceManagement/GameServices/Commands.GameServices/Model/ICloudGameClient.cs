@@ -293,8 +293,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             CloudGamePlatform platform,
             string titleId,
             int selectionOrder,
-            string sandboxes,
-            string resourceSetIds,
+            string[] sandboxes,
+            string[] resourceSetIds,
             string name,
             Guid? schemaId,
             string schemaName,
@@ -338,7 +338,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="sandboxes">Optional, comma-delimitted list of sandboxes to deploy to.</param>
         /// <param name="geoRegions">Optional, comma-delimitted list of geo regions to deploy to.</param>
         /// <returns>The task for completion.</returns>
-        Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string sandboxes, string geoRegions);
+        Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string[] sandboxes, string[] geoRegions);
 
         /// <summary>
         ///     Stops the cloud game.

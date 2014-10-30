@@ -14,22 +14,22 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Utilities.CloudGame;
+    using Utilities.CloudGame.Contract;
     using Utilities.CloudGame.Common;
+    using System.Management.Automation;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get the game service summary report
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesComputeSummaryReport"), OutputType(typeof(DashboardSummary))]
+    public class GetAzureGameServicesComputeSummaryReportCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
@@ -37,8 +37,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.GetComputeSummaryReport(CloudGameName, Platform).Result;
             WriteObject(result);
         }
     }

@@ -12,18 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
-    using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using Utilities.CloudGame.Common;
+    using System.Management.Automation;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get a list of clusters in the regions and matching the status specified in the request.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesClusters"), OutputType(typeof(EnumerateClustersResponse))]
+    public class GetAzureGameServicesClustersCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
@@ -33,12 +35,24 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The geo region(s) to enumerate. Comma-separated if more than one. Empty for all.")]
+        public string GeoRegion { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The status of the clusters to query for. Empty for all.")]
+        public string Status { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cluster ID for the game service.")]
+        public string ClusterId { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The agent ID for the game service.")]
+        public string AgentId { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.GetClusters(CloudGameName, Platform, GeoRegion, Status, ClusterId, AgentId).Result;
             WriteObject(result);
         }
     }

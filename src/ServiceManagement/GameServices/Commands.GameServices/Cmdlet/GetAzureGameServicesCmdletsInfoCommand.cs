@@ -12,26 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common
+namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
+    using System.Linq;
+    using System.Management.Automation;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Utilities.CloudGame.Common;
+
     /// <summary>
-    ///     The cloud game platforms.
+    /// Get info about the GameServices cmdlets.
     /// </summary>
-    public enum CloudGamePlatform
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesCmdletsInfo"), OutputType(typeof(GameServicesCmdletsInfo))]
+    public class GetAzureGameServicesCmdletsInfoCommand : AzurePSCmdlet
     {
-        /// <summary>
-        /// The Xbox One compute platform (default)
-        /// </summary>
-        XboxOne = 0,
-        
-        /// <summary>
-        /// The Xbox 360 compute platform
-        /// </summary>
-        Xbox360,
-        
-        /// <summary>
-        /// The PC compute platform
-        /// </summary>
-        PC
+        public ICloudGameClient Client { get; set; }
+
+        public override void ExecuteCmdlet()
+        {
+            Client = Client ?? new CloudGameClient(CurrentContext, null);
+            WriteObject(Client.Info);
+        }
     }
 }

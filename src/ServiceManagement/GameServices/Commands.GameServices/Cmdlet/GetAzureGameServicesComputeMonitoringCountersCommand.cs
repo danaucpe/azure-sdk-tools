@@ -14,16 +14,16 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System.Collections.Generic;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Gets the monitoring counter names.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesComputeMonitoringCounters"), OutputType(typeof(List<string>))]
+    public class GetAzureGameServicesComputeMonitoringCountersCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.GetComputeMonitoringCounters(CloudGameName, Platform).Result;
             WriteObject(result);
         }
     }

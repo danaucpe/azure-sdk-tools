@@ -14,32 +14,37 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Remove the asset package.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesAsset"), OutputType(typeof(bool))]
+    public class RemoveAzureGameServicesAssetCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
-        public string CloudGameName { get; set; }
-
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The asset ID.")]
         [ValidateNotNullOrEmpty]
-        public CloudGamePlatform Platform { get; set; }
+        public Guid AssetId { get; set; }
+
+        [Parameter(HelpMessage = "Do not confirm deletion of asset.")]
+        public SwitchParameter Force { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
-            WriteObject(result);
+            ConfirmAction(Force.IsPresent,
+                          string.Format("AssetId:{0} will be deleted by this action.", AssetId),
+                          string.Empty,
+                          string.Empty,
+                          () =>
+                          {
+                              Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
+                              var result = Client.RemoveAsset(AssetId).Result;
+                              WriteObject(result);
+                          });
         }
     }
 }

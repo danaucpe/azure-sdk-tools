@@ -17,8 +17,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     using System;
     using System.Management.Automation;
     using System.Net;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+    using Microsoft.WindowsAzure.ServiceManagement;
+    using Utilities.CloudGame;
     using Utilities.CloudGame.Common;
 
     /// <summary>
@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
+            Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
             var result = Client.GetGamePackages(CloudGameName, Platform, VmPackageId).Result;
             if (result != null && result.GamePackages != null)
             {

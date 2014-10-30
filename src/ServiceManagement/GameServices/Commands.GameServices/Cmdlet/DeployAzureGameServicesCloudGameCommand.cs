@@ -14,17 +14,20 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System.Linq;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Gets cloud game service.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet("Deploy", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
+    public class DeployAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
+        private string[] sandboxes = new string[0];
+        private string[] geoRegions = new string[0];
+
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
@@ -33,12 +36,43 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The sandboxes to deploy to.")]
+        [ValidateNotNullOrEmpty]
+        public string[] Sandboxes
+        {
+            get { return this.sandboxes; }
+            set
+            {
+                if (value.Length == 1)
+                {
+                    // For back-compat
+                    this.sandboxes = value[0].Split(',');
+                }
+            }
+        }
+
+        [Parameter(Position = 3, Mandatory = false, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The geographic regions to deploy to.")]
+        [ValidateNotNullOrEmpty]
+        public string[] GeoRegions
+        {
+            get { return this.geoRegions; }
+            set
+            {
+                if (value.Length == 1)
+                {
+                    // For back-compat
+                    this.geoRegions = value[0].Split(',');
+                }
+            }
+        }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.DeployCloudGame(CloudGameName, Platform, Sandboxes, GeoRegions).Result;
             WriteObject(result);
         }
     }

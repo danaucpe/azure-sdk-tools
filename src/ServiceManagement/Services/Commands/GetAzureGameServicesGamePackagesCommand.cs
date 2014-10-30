@@ -14,31 +14,36 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Utilities.CloudGame;
+    using Utilities.CloudGame.Contract;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Get the cloud game asset.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesGamePackages"), OutputType(typeof(GamePackageCollectionResponse))]
+    public class GetAzureGameServicesGamePackagesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
+
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent VM package Id.")]
+        [ValidateNotNullOrEmpty]
+        public Guid VmPackageId { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.GetGamePackages(CloudGameName, Platform, VmPackageId).Result;
             WriteObject(result);
         }
     }

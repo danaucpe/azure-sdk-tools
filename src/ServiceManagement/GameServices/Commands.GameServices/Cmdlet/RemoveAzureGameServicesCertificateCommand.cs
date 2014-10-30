@@ -14,32 +14,37 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Remove the certificate.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesCertificate"), OutputType(typeof(bool))]
+    public class RemoveAzureGameServicesCertificateCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
-        [ValidatePattern(ClientHelper.CloudGameNameRegex)]
-        public string CloudGameName { get; set; }
-
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate Id.")]
         [ValidateNotNullOrEmpty]
-        public CloudGamePlatform Platform { get; set; }
+        public Guid CertificateId { get; set; }
+
+        [Parameter(HelpMessage = "Do not confirm deletion of certificate.")]
+        public SwitchParameter Force { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
-            WriteObject(result);
+            ConfirmAction(Force.IsPresent,
+                          string.Format("CertificateId:{0} will be deleted by this action.", CertificateId),
+                          string.Empty,
+                          string.Empty,
+                          () =>
+                          {
+                              Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
+                              var result = Client.RemoveCertificate(CertificateId).Result;
+                              WriteObject(result);
+                          });
         }
     }
 }

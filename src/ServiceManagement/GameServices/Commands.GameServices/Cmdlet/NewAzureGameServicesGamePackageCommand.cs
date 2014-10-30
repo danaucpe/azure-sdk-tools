@@ -14,16 +14,17 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
+    using System.IO;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Create cloud game package.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesGamePackage"), OutputType(typeof(bool))]
+    public class NewAzureGameServicesGamePackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
@@ -33,12 +34,39 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent VM package Id.")]
+        [ValidateNotNullOrEmpty]
+        public Guid VmPackageId { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the game package.")]
+        [ValidatePattern(ClientHelper.ItemNameRegex)]
+        public string GamePackageName { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original name of the game package file.")]
+        [ValidateNotNullOrEmpty]
+        public string GamePackageFileName { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game package file stream.")]
+        [ValidateNotNullOrEmpty]
+        public Stream GamePackageStream { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Whether this game package should be activated.")]
+        [ValidateNotNullOrEmpty]
+        public bool IsActive { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.NewGamePackage(
+                        CloudGameName,
+                        Platform,
+                        VmPackageId,
+                        GamePackageName,
+                        GamePackageFileName,
+                        IsActive,
+                        GamePackageStream).Result;
             WriteObject(result);
         }
     }

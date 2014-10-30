@@ -14,16 +14,16 @@
 
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
+    using System;
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Remove the cloud game package.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesVmPackage"), OutputType(typeof(bool))]
+    public class RemoveAzureGameServicesVmPackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
@@ -33,13 +33,27 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The VM package ID.")]
+        [ValidateNotNullOrEmpty]
+        public Guid VmPackageId { get; set; }
+
+        [Parameter(HelpMessage = "Do not confirm deletion of VM package.")]
+        public SwitchParameter Force { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
-            WriteObject(result);
+            ConfirmAction(Force.IsPresent,
+                          string.Format("VmPackageId:{0} will be deleted by this action.", VmPackageId),
+                          string.Empty,
+                          string.Empty,
+                          () =>
+                          {
+                              Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
+                              var result = Client.RemoveVmPackage(CloudGameName, Platform, VmPackageId).Result;
+                              WriteObject(result);
+                          });
         }
     }
 }

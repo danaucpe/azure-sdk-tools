@@ -15,30 +15,37 @@
 namespace Microsoft.WindowsAzure.Commands.CloudGame
 {
     using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Utilities.CloudGame;
     using Utilities.CloudGame.Common;
 
     /// <summary>
-    /// Stops a cloud game.
+    /// Gets cloud game service.
     /// </summary>
-    [Cmdlet("Stop", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
-    public class StopAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet("Deploy", "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
+    public class DeployAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game platform.")]
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
+
+        [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The sandboxes to deploy to.")]
+        [ValidateNotNullOrEmpty]
+        public string Sandboxes { get; set; }
+
+        [Parameter(Position = 3, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The geographic regions to deploy to.")]
+        [ValidateNotNullOrEmpty]
+        public string GeoRegions { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
-            Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            Client = Client ?? new CloudGameClient(CurrentSubscription, WriteDebugLog);
+            var result = Client.DeployCloudGame(CloudGameName, Platform, Sandboxes ?? string.Empty, GeoRegions ?? string.Empty).Result;
             WriteObject(result);
         }
     }
