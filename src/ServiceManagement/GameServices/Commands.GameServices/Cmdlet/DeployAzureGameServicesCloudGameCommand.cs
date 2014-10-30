@@ -67,12 +67,15 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
             }
         }
 
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "Only publish the game (do not attempt to deploy).")]
+        public SwitchParameter PublishOnly { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.DeployCloudGame(CloudGameName, Platform, Sandboxes, GeoRegions).Result;
+            var result = Client.DeployCloudGame(CloudGameName, Platform, Sandboxes, GeoRegions, PublishOnly.ToBool()).Result;
             WriteObject(result);
         }
     }

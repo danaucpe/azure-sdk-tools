@@ -128,12 +128,12 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <summary>
         /// The deploy cloud game path.
         /// </summary>
-        public const string DeployCloudGamePath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}?operation=publish&sandboxes={2}&geoRegion={3}";
+        public const string DeployCloudGamePath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}?operation=publish&sandboxes={2}&geoRegion={3}&deploy={4}";
 
         /// <summary>
         /// The stop cloud game path.
         /// </summary>
-        public const string StopCloudGamePath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}?operation=unpublish";
+        public const string StopCloudGamePath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}?operation=unpublish&destroy={2}";
 
         /// <summary>
         /// The configure cloud game path.

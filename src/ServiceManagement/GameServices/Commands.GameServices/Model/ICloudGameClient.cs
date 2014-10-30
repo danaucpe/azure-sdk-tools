@@ -331,22 +331,28 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         Task<AzureGameServicesPropertiesResponse> GetAzureGameServicesProperties();
 
         /// <summary>
-        ///     Publishes the cloud game.
+        /// Publishes the cloud game.
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
         /// <param name="sandboxes">Optional, comma-delimitted list of sandboxes to deploy to.</param>
         /// <param name="geoRegions">Optional, comma-delimitted list of geo regions to deploy to.</param>
-        /// <returns>The task for completion.</returns>
-        Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string[] sandboxes, string[] geoRegions);
+        /// <param name="publishOnly">if set to <c>true</c> publish only, and do not deploy.</param>
+        /// <returns>
+        /// The task for completion.
+        /// </returns>
+        Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string[] sandboxes, string[] geoRegions, bool publishOnly);
 
         /// <summary>
-        ///     Stops the cloud game.
+        /// Stops the cloud game.
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <returns>The task for completion.</returns>
-        Task<bool> StopCloudGame(string cloudGameName, CloudGamePlatform platform);
+        /// <param name="unpublishOnly">if set to <c>true</c> unpublish only, and do not attempt to destroy pools.</param>
+        /// <returns>
+        /// The task for completion.
+        /// </returns>
+        Task<bool> StopCloudGame(string cloudGameName, CloudGamePlatform platform, bool unpublishOnly);
 
         /// <summary>
         ///     Gets the list of available diagnostic log files for the specific instance.

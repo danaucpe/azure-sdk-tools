@@ -33,12 +33,15 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = false, HelpMessage = "Only unpublish the game (do not tear down the deployment).")]
+        public SwitchParameter UnpublishOnly { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.StopCloudGame(CloudGameName, Platform).Result;
+            var result = Client.StopCloudGame(CloudGameName, Platform, UnpublishOnly.ToBool()).Result;
             WriteObject(result);
         }
     }

@@ -1022,14 +1022,15 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="platform">The cloud game platform.</param>
         /// <param name="sandboxes">Optional, string delimitted list of sandboxes to deploy to</param>
         /// <param name="geoRegions">Optional, string delimitted list of geo regions to deploy to</param>
+        /// <param name="publishOnly">if set to <c>true</c> publish only, and do not deploy.</param>
         /// <returns>
         /// The task for completion.
         /// </returns>
-        public async Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string[] sandboxes, string[] geoRegions)
+        public async Task<bool> DeployCloudGame(string cloudGameName, CloudGamePlatform platform, string[] sandboxes, string[] geoRegions, bool publishOnly)
         {
             var sandboxesStr = string.Join(",", sandboxes);
             var regionsStr = string.Join(",", geoRegions);
-            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sandboxesStr, regionsStr);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.DeployCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sandboxesStr, regionsStr, !publishOnly);
             var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
@@ -1045,10 +1046,13 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// </summary>
         /// <param name="cloudGameName">The cloud game name.</param>
         /// <param name="platform">The cloud game platform.</param>
-        /// <returns></returns>
-        public async Task<bool> StopCloudGame(string cloudGameName, CloudGamePlatform platform)
+        /// <param name="unpublishOnly">if set to <c>true</c> unpublish only, and do not attempt to destroy pools.</param>
+        /// <returns>
+        /// The task for completion.
+        /// </returns>
+        public async Task<bool> StopCloudGame(string cloudGameName, CloudGamePlatform platform, bool unpublishOnly)
         {
-            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.StopCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName);
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.StopCloudGamePath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, !unpublishOnly);
             var message = await _httpClient.PutAsync(url, null).ConfigureAwait(false);
             if (!message.IsSuccessStatusCode)
             {
