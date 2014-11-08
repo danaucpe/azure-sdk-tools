@@ -1237,7 +1237,6 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="platform">The platform.</param>
         /// <param name="sessionHostId">The session host identifier.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public async Task<bool> RepairSessionHost(string cloudGameName, CloudGamePlatform platform, string sessionHostId)
         {
             var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.RepairSessionHostPath, ClientHelper.GetPlatformResourceTypeString(platform), cloudGameName, sessionHostId);
@@ -1250,6 +1249,83 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Creates a new Insights configuration item.
+        /// </summary>
+        /// <param name="targetName">Name of the target.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns></returns>
+        public async Task<bool> NewInsightsConfigItem(string targetName, string targetType, string connectionString)
+        {
+            // Idempotent call to do a first time registration of the subscription-level wrapping container.
+            await ClientHelper.RegisterAndCreateContainerResourceIfNeeded(_httpClient, _httpXmlClient).ConfigureAwait(false);
+
+            var newInsightsConfigRequest = new InsightsConfigItem()
+            {
+                TargetName = targetName,
+                TargetType = targetType,
+                ConnectionString = connectionString
+            };
+
+            var multipartFormContent = new MultipartFormDataContent
+            {
+                {
+                    new StringContent(ClientHelper.ToJson(newInsightsConfigRequest)), "metadata"
+                }
+            };
+
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.InsightsResourcePath);
+            var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
+            return ClientHelper.ProcessBooleanJsonResponse(responseMessage);
+        }
+
+        /// <summary>
+        /// Sets the Insights configuration item.
+        /// </summary>
+        /// <param name="targetName">Name of the target.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns></returns>
+        public async Task<bool> SetInsightsConfigItem(string targetName, string targetType, string connectionString)
+        {
+            // Idempotent call to do a first time registration of the subscription-level wrapping container.
+            await ClientHelper.RegisterAndCreateContainerResourceIfNeeded(_httpClient, _httpXmlClient).ConfigureAwait(false);
+
+            var newInsightsConfigRequest = new InsightsConfigItem()
+            {
+                TargetName = targetName,
+                TargetType = targetType,
+                ConnectionString = connectionString
+            };
+
+            var multipartFormContent = new MultipartFormDataContent
+            {
+                {
+                    new StringContent(ClientHelper.ToJson(newInsightsConfigRequest)), "metadata"
+                }
+            };
+
+            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.InsightsItemResourcePath, targetName);
+            var responseMessage = await _httpClient.PutAsync(url, multipartFormContent).ConfigureAwait(false);
+            return ClientHelper.ProcessBooleanJsonResponse(responseMessage);
+        }
+
+        /// <summary>
+        /// Removes the Insights configuration item.
+        /// </summary>
+        /// <param name="targetName">Name of the target.</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveInsightsConfigItem(string targetName)
+        {
+            // Idempotent call to do a first time registration of the subscription-level wrapping container.
+            await ClientHelper.RegisterAndCreateContainerResourceIfNeeded(_httpClient, _httpXmlClient).ConfigureAwait(false);
+
+            string url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.InsightsItemResourcePath, targetName);
+            var responseMessage = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
+            return ClientHelper.ProcessBooleanJsonResponse(responseMessage);
         }
     }
 }

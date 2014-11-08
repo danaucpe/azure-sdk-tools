@@ -15,8 +15,10 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
 {
     using System;
     using System.Net;
+    using System.Runtime.Serialization;
     using System.Text;
-
+    
+    [Serializable]
     public class ServiceResponseException : Exception
     {
         private static string ErrorString(HttpStatusCode? statusCode, string message)
@@ -47,6 +49,11 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         {
             this.StatusCode = code;
             this.ErrorMessage = error;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

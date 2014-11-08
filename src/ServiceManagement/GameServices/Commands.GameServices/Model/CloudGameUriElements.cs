@@ -201,6 +201,16 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         public const string RepairSessionHostPath = "/cloudservices/gameservices/resources/gameservices/~/{0}/{1}/sessionhosts/{2}?operation=repair";
 
         /// <summary>
+        /// The assets resource path.
+        /// </summary>
+        public const string InsightsResourcePath = "/cloudservices/gameservices/resources/gameservices/~/" + ContainerResourceType + "/" + DefaultContainerName + "/insights";
+
+        /// <summary>
+        /// The assets resource path.
+        /// </summary>
+        public const string InsightsItemResourcePath = "/cloudservices/gameservices/resources/gameservices/~/" + ContainerResourceType + "/" + DefaultContainerName + "/insights/{0}";
+
+        /// <summary>
         /// The put cloud service resource path.
         /// </summary>
         public const string CloudServiceResourcePath = "/cloudservices/gameservices";

@@ -434,5 +434,30 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="sessionHostId">The session host identifier.</param>
         /// <returns></returns>
         Task<bool> RepairSessionHost(string cloudGameName, CloudGamePlatform platform, string sessionHostId);
+
+        /// <summary>
+        /// Creates a new Insights configuration item.
+        /// </summary>
+        /// <param name="targetName">Name of the target.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns></returns>
+        Task<bool> NewInsightsConfigItem(string targetName, string targetType, string connectionString);
+
+        /// <summary>
+        /// Sets the Insights configuration item.
+        /// </summary>
+        /// <param name="targetName">Name of the target.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns></returns>
+        Task<bool> SetInsightsConfigItem(string targetName, string targetType, string connectionString);
+
+        /// <summary>
+        /// Removes the Insights configuration item.
+        /// </summary>
+        /// <param name="targetName">Name of the target.</param>
+        /// <returns></returns>
+        Task<bool> RemoveInsightsConfigItem(string targetName);
     }
 }

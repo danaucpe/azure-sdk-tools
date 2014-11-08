@@ -124,6 +124,7 @@
     <Compile Include="Cmdlet\NewAzureGameServicesGameModeCommand.cs" />
     <Compile Include="Cmdlet\NewAzureGameServicesGameModeSchemaCommand.cs" />
     <Compile Include="Cmdlet\NewAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\NewAzureGameServicesInsightsConfigItemCommand.cs" />
     <Compile Include="Cmdlet\NewAzureGameServicesVmPackageCommand.cs" />
     <Compile Include="Cmdlet\RemoveAzureGameServicesAssetCommand.cs" />
     <Compile Include="Cmdlet\RemoveAzureGameServicesCertificateCommand.cs" />
@@ -131,10 +132,12 @@
     <Compile Include="Cmdlet\RemoveAzureGameServicesGameModeCommand.cs" />
     <Compile Include="Cmdlet\RemoveAzureGameServicesGameModeSchemaCommand.cs" />
     <Compile Include="Cmdlet\RemoveAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\RemoveAzureGameServicesInsightsConfigItemCommand.cs" />
     <Compile Include="Cmdlet\RemoveAzureGameServicesVmPackageCommand.cs" />
     <Compile Include="Cmdlet\RepairAzureGameServicesSessionHostCommand.cs" />
     <Compile Include="Cmdlet\SetAzureGameServicesCloudGamePropertiesCommand.cs" />
     <Compile Include="Cmdlet\SetAzureGameServicesGamePackageCommand.cs" />
+    <Compile Include="Cmdlet\SetAzureGameServicesInsightsConfigItemCommand.cs" />
     <Compile Include="Cmdlet\StopAzureGameServicesCloudGameCommand.cs" />
     <Compile Include="Model\CloudGameClient.cs" />
     <Compile Include="Model\CloudGameClientHelper.cs" />
@@ -157,6 +160,7 @@
     <Compile Include="Model\Contract\Requests\GameModeSchemaRequest.cs" />
     <Compile Include="Model\Contract\Requests\GamePackage.cs" />
     <Compile Include="Model\Contract\Requests\GamePackageRequest.cs" />
+    <Compile Include="Model\Contract\Requests\InsightsConfigItem.cs" />
     <Compile Include="Model\Contract\Requests\VmPackage.cs" />
     <Compile Include="Model\Contract\Requests\VmPackageRequest.cs" />
     <Compile Include="Model\Contract\Responses\AssetCollectionResponse.cs" />
@@ -185,6 +189,7 @@
     <Compile Include="Model\Contract\Responses\GamePackagePostResponse.cs" />
     <Compile Include="Model\Contract\Responses\GeoRegionDeploymentInfo.cs" />
     <Compile Include="Model\Contract\Responses\GeoRegionPoolInfo.cs" />
+    <Compile Include="Model\Contract\Responses\InsightsConfigItemsResponse.cs" />
     <Compile Include="Model\Contract\Responses\NewGameModeResponse.cs" />
     <Compile Include="Model\Contract\Responses\NewGameModeSchemaResponse.cs" />
     <Compile Include="Model\Contract\Responses\PoolData.cs" />

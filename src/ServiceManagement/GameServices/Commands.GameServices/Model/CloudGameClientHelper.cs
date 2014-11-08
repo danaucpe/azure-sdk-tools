@@ -238,6 +238,17 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             throw CreateExceptionFromJson(responseMessage);
         }
 
+        public static bool ProcessBooleanJsonResponse(HttpResponseMessage responseMessage)
+        {
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return true;
+            }
+
+            // Error
+            throw CreateExceptionFromJson(responseMessage);
+        }
+
         public static bool ProcessBooleanJsonResponseAllowConflict(HttpResponseMessage responseMessage)
         {
             if (responseMessage.IsSuccessStatusCode || (responseMessage.StatusCode == HttpStatusCode.Conflict))
