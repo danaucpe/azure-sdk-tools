@@ -115,6 +115,7 @@
     <Compile Include="Cmdlet\GetAzureGameServicesGameModeSchemasCommand.cs" />
     <Compile Include="Cmdlet\GetAzureGameServicesGameModesCommand.cs" />
     <Compile Include="Cmdlet\GetAzureGameServicesGamePackagesCommand.cs" />
+    <Compile Include="Cmdlet\GetAzureGameServicesInsightsConfigItemsCommand.cs" />
     <Compile Include="Cmdlet\GetAzureGameServicesLogFilesCommand.cs" />
     <Compile Include="Cmdlet\GetAzureGameServicesPropertiesCommand.cs" />
     <Compile Include="Cmdlet\GetAzureGameServicesVmPackagesCommand.cs" />

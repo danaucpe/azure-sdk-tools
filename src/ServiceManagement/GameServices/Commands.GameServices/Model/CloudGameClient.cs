@@ -385,7 +385,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         {
             var url = _httpClient.BaseAddress + (
                 cloudGameId.HasValue ? string.Format(CloudGameUriElements.CertificatesForGameResourcePath, cloudGameId.Value) :
-                string.Format(CloudGameUriElements.CertificatesResourcePath));
+                CloudGameUriElements.CertificatesResourcePath);
             var message = await _httpClient.GetAsync(url).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<CertificateCollectionResponse>(message).ConfigureAwait(false);
         }
@@ -476,7 +476,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         {
             var url = _httpClient.BaseAddress + (
                 cloudGameId.HasValue ? string.Format(CloudGameUriElements.AssetsForGameResourcePath, cloudGameId.Value) :
-                string.Format(CloudGameUriElements.AssetsResourcePath));
+                CloudGameUriElements.AssetsResourcePath);
             var message = await _httpClient.GetAsync(url).ConfigureAwait(false);
             return await ClientHelper.ProcessJsonResponse<AssetCollectionResponse>(message).ConfigureAwait(false);
         }
@@ -1277,9 +1277,20 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 }
             };
 
-            var url = _httpClient.BaseAddress + string.Format(CloudGameUriElements.InsightsResourcePath);
+            var url = _httpClient.BaseAddress + CloudGameUriElements.InsightsResourcePath;
             var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
             return ClientHelper.ProcessBooleanJsonResponse(responseMessage);
+        }
+
+        /// <summary>
+        /// Gets the insights configuration items.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<InsightsConfigItemsResponse> GetInsightsConfigItems()
+        {
+            var url = _httpClient.BaseAddress + CloudGameUriElements.InsightsResourcePath;
+            var message = await _httpClient.GetAsync(url).ConfigureAwait(false);
+            return await ClientHelper.ProcessJsonResponse<InsightsConfigItemsResponse>(message).ConfigureAwait(false);
         }
 
         /// <summary>

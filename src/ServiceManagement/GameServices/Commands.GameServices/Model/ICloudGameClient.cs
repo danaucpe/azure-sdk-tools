@@ -445,6 +445,12 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         Task<bool> NewInsightsConfigItem(string targetName, string targetType, string connectionString);
 
         /// <summary>
+        /// Gets the insights configuration items.
+        /// </summary>
+        /// <returns></returns>
+        Task<InsightsConfigItemsResponse> GetInsightsConfigItems();
+
+        /// <summary>
         /// Sets the Insights configuration item.
         /// </summary>
         /// <param name="targetName">Name of the target.</param>

@@ -17,31 +17,20 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
 
     /// <summary>
-    /// Remove the config item.
+    /// Get the cloud game assets.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesInsightsConfigItem"), OutputType(typeof(bool))]
-    public class NewAzureGameServicesInsightsConfigItemCommand : AzureGameServicesHttpClientCommandBase
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesInsightsConfigItems"), OutputType(typeof(InsightsConfigItemsResponse))]
+    public class GetAzureGameServicesInsightsConfigItemsCommand : AzureGameServicesHttpClientCommandBase
     {
-        [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "The unique target name.")]
-        [ValidateNotNullOrEmpty]
-        public string TargetName { get; set; }
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The target type.")]
-        [ValidateNotNullOrEmpty]
-        public string TargetType { get; set; }
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The connection string.")]
-        [ValidateNotNullOrEmpty]
-        public string ConnectionString { get; set; }
-
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.NewInsightsConfigItem(TargetName, TargetType, ConnectionString).Result;
+            var result = Client.GetInsightsConfigItems().Result;
             WriteObject(result);
         }
     }

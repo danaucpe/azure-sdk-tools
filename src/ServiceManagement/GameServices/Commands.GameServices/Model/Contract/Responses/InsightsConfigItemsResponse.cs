@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract.Responses
+namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     [DataContract(Namespace = "")]
-    internal sealed class InsightsConfigItemsResponse
+    public sealed class InsightsConfigItemsResponse
     {
         /// <summary>
         /// Gets or sets the insights configuration items.
