@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 
         protected override void Execute()
         {
-            var targetType = string.IsNullOrEmpty(this.TargetName) ? "EventHub" : this.TargetType;
+            var targetType = string.IsNullOrEmpty(this.TargetType) ? "EventHub" : this.TargetType;
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.NewInsightsConfigItem(this.TargetName, targetType, this.ConnectionString).Result;
             WriteObject(new ItemCreatedResponse(this.TargetName));
