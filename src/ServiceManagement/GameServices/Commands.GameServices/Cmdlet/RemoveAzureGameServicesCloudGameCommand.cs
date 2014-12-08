@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Linq;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Remove a CloudGame instance.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesCloudGame")]
     public class RemoveAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -75,7 +75,6 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                         () =>
                         {
                             var result = Client.RemoveCloudGame(CloudGameName, Platform).Result;
-                            WriteObject(result);
                         });
                 });
         }

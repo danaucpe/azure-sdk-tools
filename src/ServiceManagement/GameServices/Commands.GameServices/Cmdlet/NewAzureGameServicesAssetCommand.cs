@@ -12,37 +12,41 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Create the cloud game asset.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesAsset"), OutputType(typeof(string))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesAsset"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesAssetCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("AssetName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the asset.")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
-        public string AssetName { get; set; }
+        public string Name { get; set; }
 
+        [Alias("AssetFileName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the asset file.")]
         [ValidateNotNullOrEmpty]
-        public string AssetFileName { get; set; }
+        public string Filename { get; set; }
 
+        [Alias("AssetStream")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The asset filestream.")]
         [ValidateNotNullOrEmpty]
-        public Stream AssetStream { get; set; }
+        public Stream FileStream { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.NewAsset(AssetName, AssetFileName, AssetStream).Result;
-            WriteObject(result);
+            var result = Client.NewAsset(Name, Filename, FileStream).Result;
+            WriteObject(new ItemCreatedResponse(result.AssetId));
         }
     }
 }

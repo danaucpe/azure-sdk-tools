@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
@@ -21,12 +21,13 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Remove the certificate.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesCertificate"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesCertificate")]
     public class RemoveAzureGameServicesCertificateCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("CertificateId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate Id.")]
         [ValidateNotNullOrEmpty]
-        public Guid CertificateId { get; set; }
+        public Guid Id { get; set; }
 
         [Parameter(HelpMessage = "Do not confirm deletion of certificate.")]
         public SwitchParameter Force { get; set; }
@@ -36,14 +37,13 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
-                          string.Format("CertificateId:{0} will be deleted by this action.", CertificateId),
+                          string.Format("CertificateId:{0} will be deleted by this action.", Id),
                           string.Empty,
                           string.Empty,
                           () =>
                           {
                               Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-                              var result = Client.RemoveCertificate(CertificateId).Result;
-                              WriteObject(result);
+                              var result = Client.RemoveCertificate(Id).Result;
                           });
         }
     }

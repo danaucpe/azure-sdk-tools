@@ -12,9 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
+    using System.Collections.Generic;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
@@ -22,9 +23,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Get the collection of GameModes for the selected Game Mode Schema
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesGameModes"), OutputType(typeof(GameModeCollectionResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesGameModes"), OutputType(typeof(List<GameModeResponse>))]
     public class GetAzureGameServicesGameModesCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("ParentId")]
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent game mode schema ID.")]
         [ValidateNotNullOrEmpty]
         public Guid GameModeSchemaId { get; set; }
@@ -35,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.GetGameModes(GameModeSchemaId).Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<GameModeResponse>() : result.GameModes);
         }
     }
 }

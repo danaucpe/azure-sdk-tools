@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
@@ -43,7 +43,6 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                           {
                               Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
                               var result = Client.RemoveGameModeSchema(GameModeSchemaId).Result;
-                              WriteObject(result);
                           });
         }
     }

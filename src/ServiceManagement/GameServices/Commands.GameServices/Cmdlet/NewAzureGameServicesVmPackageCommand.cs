@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.IO;
     using System.Management.Automation;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Create cloud game package.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesVmPackage"), OutputType(typeof(VmPackagePostResponse))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesVmPackage"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesVmPackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -35,9 +35,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Alias("PackageName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the VM package.")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
-        public string PackageName { get; set; }
+        public string Name { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The maximum number of players allowed.")]
         [ValidateNotNull]
@@ -73,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
             var result = Client.NewVmPackage(
                 CloudGameName,
                 Platform,
-                PackageName,
+                Name,
                 MaxPlayers,
                 AssetId,
                 CertificateIds,
@@ -81,7 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                 CspkgStream,
                 CscfgFileName,
                 CscfgStream).Result;
-            WriteObject(result);
+            WriteObject(new ItemCreatedResponse(result.VmPackageId));
         }
     }
 }

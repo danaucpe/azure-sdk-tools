@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Sets cloud game properties.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureGameServicesCloudGameProperties"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Set, "AzureGameServicesCloudGameProperties")]
     public class SetAzureGameServicesCloudGamePropertiesCommand : AzureGameServicesHttpClientCommandBase
     {
         private string[] sandboxes = new string[0];
@@ -70,7 +70,6 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.ConfigureCloudGame(CloudGameName, Platform, ResourceSets, Sandboxes).Result;
-            WriteObject(result);
         }
     }
 }

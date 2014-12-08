@@ -12,30 +12,33 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Create the certificate.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesGameModeSchema"), OutputType(typeof(NewGameModeSchemaResponse))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesGameModeSchema"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesGameModeSchemaCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("GameModeSchemaName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name.")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
-        public string GameModeSchemaName { get; set; }
+        public string Name { get; set; }
 
+        [Alias("GameModeSchemaFilename")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema filename.")]
         [ValidateNotNullOrEmpty]
-        public string GameModeSchemaFilename { get; set; }
+        public string Filename { get; set; }
 
+        [Alias("GameModeSchemaStream")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema stream.")]
         [ValidateNotNullOrEmpty]
-        public Stream GameModeSchemaStream { get; set; }
+        public Stream FileStream { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
@@ -43,10 +46,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.NewGameModeSchema(
-                GameModeSchemaName,
-                GameModeSchemaFilename,
-                GameModeSchemaStream).Result;
-            WriteObject(result);
+                Name,
+                Filename,
+                FileStream).Result;
+            WriteObject(result.GameModeSchemaId);
         }
     }
 }

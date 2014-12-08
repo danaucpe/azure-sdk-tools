@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common
+namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Common
 {
     using System;
     using System.Runtime.Serialization;

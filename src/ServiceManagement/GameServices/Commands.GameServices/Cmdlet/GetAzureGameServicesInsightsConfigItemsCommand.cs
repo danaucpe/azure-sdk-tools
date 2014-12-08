@@ -12,9 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
+    using System.Collections.Generic;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
@@ -22,7 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Get the cloud game assets.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesInsightsConfigItems"), OutputType(typeof(InsightsConfigItemsResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesInsightsConfigItems"), OutputType(typeof(List<InsightsConfigItem>))]
     public class GetAzureGameServicesInsightsConfigItemsCommand : AzureGameServicesHttpClientCommandBase
     {
         public ICloudGameClient Client { get; set; }
@@ -31,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.GetInsightsConfigItems().Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<InsightsConfigItem>() : result.InsightsConfigItems);
         }
     }
 }

@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Create cloud game package.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesGamePackage"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesGamePackage"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesGamePackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -34,21 +34,25 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Alias("ParentId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent VM package Id.")]
         [ValidateNotNullOrEmpty]
         public Guid VmPackageId { get; set; }
 
+        [Alias("GamePackageName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the game package.")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
-        public string GamePackageName { get; set; }
+        public string Name { get; set; }
 
+        [Alias("GamePackageFileName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original name of the game package file.")]
         [ValidateNotNullOrEmpty]
-        public string GamePackageFileName { get; set; }
+        public string Filename { get; set; }
 
+        [Alias("GamePackageStream")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game package file stream.")]
         [ValidateNotNullOrEmpty]
-        public Stream GamePackageStream { get; set; }
+        public Stream FileStream { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Whether this game package should be activated.")]
         [ValidateNotNullOrEmpty]
@@ -63,11 +67,11 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                         CloudGameName,
                         Platform,
                         VmPackageId,
-                        GamePackageName,
-                        GamePackageFileName,
+                        Name,
+                        Filename,
                         IsActive,
-                        GamePackageStream).Result;
-            WriteObject(result);
+                        FileStream).Result;
+            WriteObject(new ItemCreatedResponse(result.GamePackageId));
         }
     }
 }

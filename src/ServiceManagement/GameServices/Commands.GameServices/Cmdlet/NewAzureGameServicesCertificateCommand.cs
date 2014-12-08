@@ -12,33 +12,37 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using System.IO;
     using System.Management.Automation;
 
     /// <summary>
     /// Create the certificate.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesCertificate"), OutputType(typeof(CertificatePostResponse))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesCertificate"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesCertificateCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("CertificateName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate name.")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
-        public string CertificateName { get; set; }
+        public string Name { get; set; }
 
+        [Alias("CertificateFilename")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate filename.")]
         [ValidateNotNullOrEmpty]
-        public string CertificateFilename { get; set; }
+        public string Filename { get; set; }
 
+        [Alias("CertificatePassword")]
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate password.")]
-        public string CertificatePassword { get; set; }
+        public string Password { get; set; }
 
+        [Alias("CertificateStream")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The certificate stream.")]
         [ValidateNotNullOrEmpty]
-        public Stream CertificateStream { get; set; }
+        public Stream FileStream { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
@@ -46,11 +50,11 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.NewCertificate(
-                CertificateName,
-                CertificateFilename,
-                CertificatePassword,
-                CertificateStream).Result;
-            WriteObject(result);
+                Name,
+                Filename,
+                Password,
+                FileStream).Result;
+            WriteObject(new ItemCreatedResponse(result.CertificateId));
         }
     }
 }

@@ -12,14 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
-    using System;
-    using System.Linq;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Get info about the GameServices cmdlets.

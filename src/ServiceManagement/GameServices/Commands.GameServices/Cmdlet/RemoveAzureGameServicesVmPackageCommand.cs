@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Remove the cloud game package.
@@ -33,9 +33,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Alias("VmPackageId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The VM package ID.")]
         [ValidateNotNullOrEmpty]
-        public Guid VmPackageId { get; set; }
+        public Guid Id { get; set; }
 
         [Parameter(HelpMessage = "Do not confirm deletion of VM package.")]
         public SwitchParameter Force { get; set; }
@@ -45,13 +46,13 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
-                          string.Format("VmPackageId:{0} will be deleted by this action.", VmPackageId),
+                          string.Format("VmPackageId:{0} will be deleted by this action.", Id),
                           string.Empty,
                           string.Empty,
                           () =>
                           {
                               Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-                              var result = Client.RemoveVmPackage(CloudGameName, Platform, VmPackageId).Result;
+                              var result = Client.RemoveVmPackage(CloudGameName, Platform, Id).Result;
                               WriteObject(result);
                           });
         }

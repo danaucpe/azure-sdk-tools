@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
@@ -21,12 +21,13 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Remove the asset package.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesAsset"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesAsset")]
     public class RemoveAzureGameServicesAssetCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("AssetId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The asset ID.")]
         [ValidateNotNullOrEmpty]
-        public Guid AssetId { get; set; }
+        public Guid Id { get; set; }
 
         [Parameter(HelpMessage = "Do not confirm deletion of asset.")]
         public SwitchParameter Force { get; set; }
@@ -36,14 +37,13 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
-                          string.Format("AssetId:{0} will be deleted by this action.", AssetId),
+                          string.Format("AssetId:{0} will be deleted by this action.", Id),
                           string.Empty,
                           string.Empty,
                           () =>
                           {
                               Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-                              var result = Client.RemoveAsset(AssetId).Result;
-                              WriteObject(result);
+                              var result = Client.RemoveAsset(Id).Result;
                           });
         }
     }

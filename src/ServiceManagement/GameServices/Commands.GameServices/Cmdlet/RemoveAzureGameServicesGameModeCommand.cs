@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
@@ -21,16 +21,18 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Remove the game mode.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesGameMode"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesGameMode")]
     public class RemoveAzureGameServicesGameModeCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("ParentId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent game mode schema ID.")]
         [ValidateNotNullOrEmpty]
         public Guid GameModeSchemaId { get; set; }
 
+        [Alias("GameModeId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode ID.")]
         [ValidateNotNullOrEmpty]
-        public Guid GameModeId { get; set; }
+        public Guid Id { get; set; }
 
         [Parameter(HelpMessage = "Do not confirm deletion of game mode.")]
         public SwitchParameter Force { get; set; }
@@ -40,14 +42,13 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         protected override void Execute()
         {
             ConfirmAction(Force.IsPresent,
-                          string.Format("GameModeId:{0} will be deleted by this action.", GameModeId),
+                          string.Format("GameModeId:{0} will be deleted by this action.", Id),
                           string.Empty,
                           string.Empty,
                           () =>
                           {
                               Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-                              var result = Client.RemoveGameMode(GameModeSchemaId, GameModeId).Result;
-                              WriteObject(result);
+                              var result = Client.RemoveGameMode(GameModeSchemaId, Id).Result;
                           });
         }
     }

@@ -12,9 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
+    using System.Collections.Generic;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
@@ -22,7 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Get the cloud game certificates.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesCertificates"), OutputType(typeof(CertificateCollectionResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesCertificates"), OutputType(typeof(List<CertificateResponse>))]
     public class GetAzureGameServicesCertificatesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "An optional cloud game ID to filter by.")]
@@ -34,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.GetCertificates(CloudGameId).Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<CertificateResponse>() : result.Certificates);
         }
     }
 }

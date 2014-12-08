@@ -16,7 +16,6 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
 {
     using System.Runtime.Serialization;
     using Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
 
     /// <summary>
     /// The cloud game definition.
@@ -33,16 +32,19 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the display name.
+        /// Gets or sets the display name. This is just an alias for "Name".
         /// </summary>
         [DataMember(Name = "displayName")]
-        public string DisplayName 
+        public string CloudGameName 
         { 
-            get 
+            get
             { 
                 return this.Name; 
-            } 
-            set{}
+            }
+            set
+            {
+                this.Name = value;
+            }
         }
 
         /// <summary>

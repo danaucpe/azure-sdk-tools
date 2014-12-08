@@ -19,7 +19,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
     using Contract;
     using System.IO;
     using System.Threading.Tasks;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     ///     Defines interface to communicate with Azure Game Services REST API
@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="assetFileName">The asset filename.</param>
         /// <param name="assetStream">The asset filestream.</param>
         /// <returns></returns>
-        Task<string> NewAsset(
+        Task<AssetPostResponse> NewAsset(
             string assetName,
             string assetFileName,
             Stream assetStream);
@@ -188,7 +188,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="isActive">Whether the game package should be activated or not.</param>
         /// <param name="fileStream">The game package filestream.</param>
         /// <returns></returns>
-        Task<string> NewGamePackage(
+        Task<GamePackagePostResponse> NewGamePackage(
             string cloudGameName,
             CloudGamePlatform platform,
             Guid vmPackageId,

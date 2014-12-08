@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
@@ -21,9 +21,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
     /// <summary>
     /// Remove the config item.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesInsightsConfigItem"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureGameServicesInsightsConfigItem")]
     public class RemoveAzureGameServicesInsightsConfigItemCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("Name")]
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "The unique target name.")]
         [ValidateNotNullOrEmpty]
         public string TargetName { get; set; }
@@ -43,7 +44,6 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                           {
                               Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
                               var result = Client.RemoveInsightsConfigItem(TargetName).Result;
-                              WriteObject(result);
                           });
         }
     }

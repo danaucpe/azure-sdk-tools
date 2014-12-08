@@ -12,17 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
+    using System.Collections.Generic;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using System.Management.Automation;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Get the cloud game package.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesVmPackages"), OutputType(typeof(VmPackageCollectionResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesVmPackages"), OutputType(typeof(List<VmPackage>))]
     public class GetAzureGameServicesPackagesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -39,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.GetVmPackages(CloudGameName, Platform).Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<VmPackage>() : result.VmPackages);
         }
     }
 }

@@ -12,43 +12,47 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using System.IO;
 
     /// <summary>
     /// Create the cloud game mode.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesGameMode"), OutputType(typeof(NewGameModeResponse))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesGameMode"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesGameModeCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("ParentId")]
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent game mode schema ID.")]
         [ValidateNotNullOrEmpty]
         public Guid GameModeSchemaId { get; set; }
 
+        [Alias("GameModeName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the game mode.")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
-        public string GameModeName { get; set; }
+        public string Name { get; set; }
 
+        [Alias("GameModeFileName")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The original filename of the game mode file.")]
         [ValidateNotNullOrEmpty]
-        public string GameModeFileName { get; set; }
+        public string Filename { get; set; }
 
+        [Alias("GameModeStream")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode content stream.")]
         [ValidateNotNullOrEmpty]
-        public Stream GameModeStream { get; set; }
+        public Stream FileStream { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.NewGameMode(GameModeSchemaId, GameModeName, GameModeFileName, GameModeStream).Result;
-            WriteObject(result);
+            var result = Client.NewGameMode(GameModeSchemaId, Name, Filename, FileStream).Result;
+            WriteObject(new ItemCreatedResponse(result.GameModeId));
         }
     }
 }

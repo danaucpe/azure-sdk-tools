@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
+    using System.Collections.Generic;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Get the cloud game asset.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesGamePackages"), OutputType(typeof(GamePackageCollectionResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesGamePackages"), OutputType(typeof(List<GamePackage>))]
     public class GetAzureGameServicesGamePackagesCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -34,6 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Alias("ParentId")]
         [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent VM package Id.")]
         [ValidateNotNullOrEmpty]
         public Guid VmPackageId { get; set; }
@@ -44,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.GetGamePackages(CloudGameName, Platform, VmPackageId).Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<GamePackage>() : result.GamePackages);
         }
     }
 }

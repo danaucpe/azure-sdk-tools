@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Gets cloud game service.
     /// </summary>
-    [Cmdlet("Repair", "AzureGameServicesSessionHost"), OutputType(typeof(bool))]
+    [Cmdlet("Repair", "AzureGameServicesSessionHost")]
     public class RepairAzureGameServicesSessionHostCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -42,7 +42,6 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.RepairSessionHost(CloudGameName, Platform, SessionHostId).Result;
-            WriteObject(result);
         }
     }
 }

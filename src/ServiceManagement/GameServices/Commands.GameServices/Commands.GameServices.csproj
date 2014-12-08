@@ -145,6 +145,7 @@
     <Compile Include="Model\CloudGameUriElements.cs" />
     <Compile Include="Model\Common\CloudGamePlatform.cs" />
     <Compile Include="Model\Common\GameServicesCmdletsInfo.cs" />
+    <Compile Include="Model\Common\ItemCreatedResponse.cs" />
     <Compile Include="Model\Common\UnknownCloudGamePlatformException.cs" />
     <Compile Include="Model\Contract\Requests\AssetRequest.cs" />
     <Compile Include="Model\Contract\Requests\AzureResourceProviderContracts.cs" />

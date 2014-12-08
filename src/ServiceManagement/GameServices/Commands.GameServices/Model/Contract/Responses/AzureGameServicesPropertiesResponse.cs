@@ -17,7 +17,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     [DataContract]
     public class AzureGameServicesPropertiesResponse

@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
+    using System.Collections.Generic;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
-    using Utilities.CloudGame.Common;
     using System.Management.Automation;
 
     /// <summary>
     /// Get a list of clusters in the regions and matching the status specified in the request.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesClusters"), OutputType(typeof(EnumerateClustersResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesClusters"), OutputType(typeof(List<ClusterInformationEx>))]
     public class GetAzureGameServicesClustersCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -53,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
             var result = Client.GetClusters(CloudGameName, Platform, GeoRegion, Status, ClusterId, AgentId).Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<ClusterInformationEx>() : result.ClusterInformationCollection);
         }
     }
 }

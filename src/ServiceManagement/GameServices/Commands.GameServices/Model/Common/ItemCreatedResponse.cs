@@ -14,24 +14,34 @@
 
 namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Common
 {
-    /// <summary>
-    ///     The cloud game platforms.
-    /// </summary>
-    public enum CloudGamePlatform
+    public class ItemCreatedResponse
     {
         /// <summary>
-        /// The Xbox One compute platform (default)
+        /// Gets or sets the unique identifier.
         /// </summary>
-        XboxOne = 0,
-        
+        /// <value>
+        /// The unique identifier.
+        /// </value>
+        public string UniqueId { get; set; }
+
         /// <summary>
-        /// The Xbox 360 compute platform
+        /// Initializes a new instance of the <see cref="ItemCreatedResponse"/> class.
         /// </summary>
-        Xbox360,
-        
+        /// <param name="uniqueId">The unique identifier.</param>
+        public ItemCreatedResponse(string uniqueId)
+        {
+            this.UniqueId = uniqueId;
+        }
+
         /// <summary>
-        /// The PC compute platform
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        PC
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "Item Created: " + UniqueId;
+        }
     }
 }

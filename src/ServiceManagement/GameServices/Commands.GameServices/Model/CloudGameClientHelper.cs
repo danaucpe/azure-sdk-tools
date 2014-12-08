@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
     using Microsoft.WindowsAzure.Commands.Common;
     using Microsoft.WindowsAzure.Commands.Common.Factories;
     using Microsoft.WindowsAzure.Commands.Common.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <summary>
         /// The general information about the game services cmdlets.
         /// </summary>
-        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_10_v2");
+        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_12_v1");
 
         private static readonly Dictionary<CloudGamePlatform, string> PlatformMapping = new Dictionary<CloudGamePlatform, string>
         {

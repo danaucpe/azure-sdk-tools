@@ -12,23 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Remove the config item.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesInsightsConfigItem"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesInsightsConfigItem"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesInsightsConfigItemCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Alias("Name")]
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "The unique target name.")]
         [ValidateNotNullOrEmpty]
         public string TargetName { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The target type.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The target type (defaults to EventHub).")]
         [ValidateNotNullOrEmpty]
         public string TargetType { get; set; }
 
@@ -40,9 +42,10 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
 
         protected override void Execute()
         {
+            var targetType = string.IsNullOrEmpty(this.TargetName) ? "EventHub" : this.TargetType;
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.NewInsightsConfigItem(TargetName, TargetType, ConnectionString).Result;
-            WriteObject(result);
+            var result = Client.NewInsightsConfigItem(this.TargetName, targetType, this.ConnectionString).Result;
+            WriteObject(new ItemCreatedResponse(this.TargetName));
         }
     }
 }

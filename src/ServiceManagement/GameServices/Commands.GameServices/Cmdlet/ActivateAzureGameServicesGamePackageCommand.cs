@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.Net;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Utilities.CloudGame.Common;
 
     /// <summary>
     /// Activates a game package (shortcut for Set-AzureGameServicesGamePackage).
     /// </summary>
-    [Cmdlet("Activate", "AzureGameServicesGamePackage"), OutputType(typeof(bool))]
+    [Cmdlet("Activate", "AzureGameServicesGamePackage")]
     public class ActivateAzureGameServicesGamePackageCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -35,13 +35,15 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
         [ValidateNotNullOrEmpty]
         public CloudGamePlatform Platform { get; set; }
 
+        [Alias("ParentId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The parent VM package ID.")]
         [ValidateNotNullOrEmpty]
         public Guid VmPackageId { get; set; }
 
+        [Alias("GamePackageId")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game package ID to activate.")]
         [ValidateNotNullOrEmpty]
-        public Guid GamePackageId { get; set; }
+        public Guid Id { get; set; }
 
         public ICloudGameClient Client { get; set; }
 
@@ -51,12 +53,11 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
             var result = Client.GetGamePackages(CloudGameName, Platform, VmPackageId).Result;
             if (result != null && result.GamePackages != null)
             {
-                var gamePackageIdStr = GamePackageId.ToString();
+                var gamePackageIdStr = Id.ToString();
                 var gamePackage = result.GamePackages.Find((gamePack) => gamePack.GamePackageId == gamePackageIdStr);
                 if (gamePackage != null)
                 {
-                    var result2 = Client.SetGamePackage(CloudGameName, Platform, VmPackageId, GamePackageId, gamePackage.Name, gamePackage.FileName, true).Result;
-                    WriteObject(result2);
+                    var result2 = Client.SetGamePackage(CloudGameName, Platform, VmPackageId, Id, gamePackage.Name, gamePackage.FileName, true).Result;
                     return;
                 }
             }

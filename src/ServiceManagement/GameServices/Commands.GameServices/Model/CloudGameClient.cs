@@ -14,6 +14,7 @@
 namespace Microsoft.WindowsAzure.Commands.GameServices.Model
 {
     using Microsoft.WindowsAzure.Commands.Common.Models;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using System;
     using System.Collections.Generic;
@@ -26,7 +27,6 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
     using System.Threading;
     using System.Xml;
     using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -490,7 +490,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <returns></returns>
         /// <exception cref="ServiceResponseException"></exception>
         /// <exception cref="ServiceManagementError"></exception>
-        public async Task<string> NewAsset(string assetName, string assetFileName, Stream assetStream)
+        public async Task<AssetPostResponse> NewAsset(string assetName, string assetFileName, Stream assetStream)
         {
             if (assetStream.Length == 0)
             {
@@ -562,7 +562,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             }
 
             // Return the Asset info
-            return postAssetResult.AssetId;
+            return postAssetResult;
         }
 
         /// <summary>
@@ -576,7 +576,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="isActive">Whether the game package should be activated or not.</param>
         /// <param name="fileStream">The game package filestream.</param>
         /// <returns></returns>
-        public async Task<string> NewGamePackage(
+        public async Task<GamePackagePostResponse> NewGamePackage(
             string cloudGameName,
             CloudGamePlatform platform,
             Guid vmPackageId,
@@ -654,7 +654,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             }
 
             // Return the CodeFile info
-            return postGamePackageResult.GamePackageId;
+            return postGamePackageResult;
         }
 
         /// <summary>

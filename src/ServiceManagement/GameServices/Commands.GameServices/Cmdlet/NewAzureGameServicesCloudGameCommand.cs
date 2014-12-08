@@ -12,24 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
     using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
-    using Utilities.CloudGame.Common;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
 
     /// <summary>
     /// Create cloud game.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureGameServicesCloudGame"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.New, "AzureGameServicesCloudGame"), OutputType(typeof(ItemCreatedResponse))]
     public class NewAzureGameServicesCloudGameCommand : AzureGameServicesHttpClientCommandBase
     {
         private string[] sandboxes = new string[0];
         private string[] resourceSets = new string[0];
         private int selectionOrder = 1;
 
+        [Alias("Name")]
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
         [ValidatePattern(ClientHelper.CloudGameNameRegex)]
         public string CloudGameName { get; set; }
@@ -98,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename for creating a new schema.")]
         [ValidateNotNullOrEmpty]
-        public string SchemaFileName { get; set; }
+        public string SchemaFilename { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema file stream for creating a new schema.")]
         [ValidateNotNullOrEmpty]
@@ -118,9 +119,9 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
                 CloudGameName,
                 SchemaId,
                 SchemaName,
-                SchemaFileName,
+                SchemaFilename,
                 SchemaStream).Result;
-            WriteObject(result);
+            WriteObject(new ItemCreatedResponse(CloudGameName));
         }
     }
 }

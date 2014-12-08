@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.CloudGame
+namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
+    using System.Collections.Generic;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
+    using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudGame.Common;
 
     /// <summary>
     /// Get the monitoring counter data.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureGameServicesComputeMonitoringCounterData"), OutputType(typeof(CounterChartDataResponse))]
+    [Cmdlet(VerbsCommon.Get, "AzureGameServicesComputeMonitoringCounterData"), OutputType(typeof(List<CounterChartData>))]
     public class GetAzureGameServicesComputeMonitoringCounterDataCommand : AzureGameServicesHttpClientCommandBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The cloud game name.")]
@@ -75,7 +76,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudGame
             
             var timeZoom = TimeZoom.HasValue ? TimeZoom.Value : TimeSpan.FromHours(1);
             var result = Client.GetComputeMonitoringCounterData(CloudGameName, Platform, GeoRegion, startTime, endTime, timeZoom, CounterNames).Result;
-            WriteObject(result);
+            WriteObject(result == null ? new List<CounterChartData>() : result.Counters);
         }
     }
 }
