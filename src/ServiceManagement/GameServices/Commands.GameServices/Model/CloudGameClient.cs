@@ -899,7 +899,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             var putGameRequest = new CloudGameRequest()
             {
                 CloudGame = cloudGame,
-                Tags = tagsList.ToArray()
+                Tags = tags == null ? null : tagsList.ToArray()
             };
 
             // If a schemaID is provided, use that in the request, otherwise, add the schema data contract to the put request
