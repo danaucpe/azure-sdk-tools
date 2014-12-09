@@ -157,6 +157,13 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
             }
         }
 
+        [DataMember(Name = "tags")]
+        public Tag[] Tags
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Gets the cloud game platform.
         /// </summary>

@@ -892,7 +892,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 tagsList = new List<Tag>();
                 foreach (string key in tags.Keys)
                 {
-                    tagsList.Add(new Tag() { Key = key, Value = (string)tags[key] });
+                    tagsList.Add(new Tag() { Name = key, Value = (string)tags[key] });
                 }
             }
 

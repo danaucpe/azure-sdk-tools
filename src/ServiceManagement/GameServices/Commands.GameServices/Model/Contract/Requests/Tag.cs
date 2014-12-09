@@ -16,10 +16,11 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
 {
     using System.Runtime.Serialization;
 
+    [DataContract]
     public class Tag
     {
         [DataMember(Name = "name")]
-        public string Key
+        public string Name
         {
             get;
             set;
