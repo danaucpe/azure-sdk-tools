@@ -163,6 +163,7 @@
     <Compile Include="Model\Contract\Requests\GamePackage.cs" />
     <Compile Include="Model\Contract\Requests\GamePackageRequest.cs" />
     <Compile Include="Model\Contract\Requests\InsightsConfigItem.cs" />
+    <Compile Include="Model\Contract\Requests\Tag.cs" />
     <Compile Include="Model\Contract\Requests\VmPackage.cs" />
     <Compile Include="Model\Contract\Requests\VmPackageRequest.cs" />
     <Compile Include="Model\Contract\Responses\AssetCollectionResponse.cs" />

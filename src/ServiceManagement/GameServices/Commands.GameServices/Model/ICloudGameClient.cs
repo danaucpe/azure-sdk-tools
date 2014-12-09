@@ -16,6 +16,7 @@ using System.Collections.Generic;
 namespace Microsoft.WindowsAzure.Commands.GameServices.Model
 {
     using System;
+    using System.Collections;
     using Contract;
     using System.IO;
     using System.Threading.Tasks;
@@ -286,6 +287,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="schemaName">The name of the game mode schema to use if a schema Id is not specified.</param>
         /// <param name="schemaFileName">The local schema file name (only used for reference) if a schema Id is not specified.</param>
         /// <param name="schemaStream">The schema data as a file stream, used if a schema Id is not specified.</param>
+        /// <param name="tags">The tags for the cloud game.</param>
         /// <returns>
         /// The cloud task for completion
         /// </returns>
@@ -299,7 +301,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             Guid? schemaId,
             string schemaName,
             string schemaFileName,
-            Stream schemaStream);
+            Stream schemaStream,
+            Hashtable tags);
 
         /// <summary>
         /// Removes a cloud game instance.

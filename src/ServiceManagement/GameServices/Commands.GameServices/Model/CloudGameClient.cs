@@ -17,6 +17,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -824,7 +825,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <param name="schemaId">The Id of an existing variant schema</param>
         /// <param name="schemaName">The name of the game mode schema to use if a schema Id is not specified.</param>
         /// <param name="schemaFileName">The local schema file name (only used for reference) if a schema Id is not specified.</param>
-        /// <param name="schemaStream">The schema data as a file stream, used if a schema Id is not specified.</param>
+        /// <param name="schemaStream">The schema data as a file stream, used if a schema Id is not specified.</param>\
+        /// <param name="tags">The tags for the cloud game.</param>
         /// <returns>
         /// The cloud task for completion
         /// </returns>
@@ -838,7 +840,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             Guid? schemaId,
             string schemaName,
             string schemaFileName,
-            Stream schemaStream)
+            Stream schemaStream,
+            Hashtable tags)
         {
             var platformResourceString = ClientHelper.GetPlatformResourceTypeString(platform);
 
@@ -883,9 +886,20 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 SelectionOrder = selectionOrder
             };
 
+            List<Tag> tagsList = null;
+            if (tags != null && tags.Count > 0)
+            {
+                tagsList = new List<Tag>();
+                foreach (string key in tags.Keys)
+                {
+                    tagsList.Add(new Tag() { Key = key, Value = (string)tags[key] });
+                }
+            }
+
             var putGameRequest = new CloudGameRequest()
             {
-                CloudGame = cloudGame
+                CloudGame = cloudGame,
+                Tags = tagsList.ToArray()
             };
 
             // If a schemaID is provided, use that in the request, otherwise, add the schema data contract to the put request

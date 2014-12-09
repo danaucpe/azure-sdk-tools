@@ -16,37 +16,20 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model.Contract
 {
     using System.Runtime.Serialization;
 
-    /// <summary>
-    /// The put cloud game request
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Used by JavaScriptSerializer")]
-    [DataContract(Namespace = "")]
-    public class CloudGameRequest
+    public class Tag
     {
-        /// <summary>
-        /// Gets or sets the cloud game.
-        /// </summary>
-        [DataMember(Name = "cloudGame")]
-        public CloudGame CloudGame
+        [DataMember(Name = "name")]
+        public string Key
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the Xbl Game Mode schema.
-        /// </summary>
-        [DataMember(Name = "variantSchema")]
-        public GameModeSchemaRequest GameModeSchema
+        [DataMember(Name = "value")]
+        public string Value
         {
             get;
             set;
         }
-
-        /// <summary>
-        /// The tags for the cloud game.
-        /// </summary>
-        [DataMember(Name = "tags")]
-        public Tag[] Tags { get; set; }
     }
 }

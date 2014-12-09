@@ -15,6 +15,7 @@
 namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
     using System;
+    using System.Collections;
     using System.IO;
     using System.Management.Automation;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
@@ -105,6 +106,9 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
         [ValidateNotNullOrEmpty]
         public Stream SchemaStream { get; set; }
 
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Tags for the cloud game.")]
+        public Hashtable Tags { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
@@ -120,7 +124,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
                 SchemaId,
                 SchemaName,
                 SchemaFilename,
-                SchemaStream).Result;
+                SchemaStream,
+                Tags).Result;
             WriteObject(new ItemCreatedResponse(CloudGameName));
         }
     }
