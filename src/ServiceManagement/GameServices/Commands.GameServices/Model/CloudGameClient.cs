@@ -146,8 +146,8 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             certificateIds = certificateIds ?? new Guid[0];
             var requestMetadata = new VmPackageRequest()
             {
-                CspkgFilename = cspkgFileName,
-                CscfgFilename = cscfgFileName,
+                CspkgFilename = Path.GetFileName(cspkgFileName),
+                CscfgFilename = Path.GetFileName(cscfgFileName),
                 MaxAllowedPlayers = maxPlayers,
                 MinRequiredPlayers = 1,
                 Name = packageName,
@@ -277,8 +277,9 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 var newGameModeSchema = new GameModeSchema()
                 {
                     Name = schemaName,
-                    Filename = fileName
+                    Filename = Path.GetFileName(fileName)
                 };
+
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(newGameModeSchema)), "metadata");
                 multipartContent.Add(new StreamContent(schemaStream), "variantSchema");
 
@@ -348,8 +349,9 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 var newGameMode = new GameMode()
                 {
                     Name = gameModeName,
-                    FileName = gameModeFileName
+                    FileName = Path.GetFileName(gameModeFileName)
                 };
+
                 multipartContent.Add(new StringContent(ClientHelper.ToJson(newGameMode)), "metadata");
                 multipartContent.Add(new StreamContent(gameModeStream), "variant");
 
@@ -432,7 +434,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             var certificate = new CertificateRequest()
             {
                 Name = certificateName,
-                Filename = certificateFileName,
+                Filename = Path.GetFileName(certificateFileName),
                 Password = certificatePassword
             };
 
@@ -504,7 +506,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             // Call in to get an AssetID and preauthURL to use for upload of the asset
             var newGameAssetRequest = new AssetRequest()
             {
-                Filename = assetFileName,
+                Filename = Path.GetFileName(assetFileName),
                 Name = assetName
             };
 
@@ -594,7 +596,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             // Call in to get a game package ID and preauth URL to use for upload of the game package
             var newGamePackageRequest = new GamePackageRequest()
             {
-                Filename = fileName,
+                Filename = Path.GetFileName(fileName),
                 Name = name,
                 Active = isActive
             };
@@ -682,7 +684,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             var gamePackageRequest = new GamePackageRequest()
             {
                 Name = name,
-                Filename = fileName,
+                Filename = Path.GetFileName(fileName),
                 Active = isActive
             };
 
@@ -849,30 +851,33 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             await ClientHelper.RegisterCloudService(_httpClient, _httpXmlClient, platformResourceString).ConfigureAwait(false);
 
             GameModeSchemaRequest gameModeSchemaRequestData = null;
-            if (!schemaId.HasValue)
+            if (!string.IsNullOrEmpty(schemaName) )
             {
-                // Schema ID not provided, so must have schemaName, etc.
-                if (string.IsNullOrEmpty(schemaName) || string.IsNullOrEmpty(schemaFileName) || schemaStream == null || schemaStream.Length == 0)
+                if (schemaName != null)
                 {
-                    throw new ServiceResponseException(HttpStatusCode.BadRequest, "Invalid Game Mode Schema values provided.");
-                }
-
-                string schemaContent;
-                using (var streamReader = new StreamReader(schemaStream))
-                {
-                    schemaContent = streamReader.ReadToEnd();
-                }
-
-                gameModeSchemaRequestData = new GameModeSchemaRequest()
-                {
-                    Metadata = new GameModeSchema()
+                    // Schema ID not provided, so must have schemaName, etc.
+                    if (schemaStream == null || string.IsNullOrEmpty(schemaFileName) || schemaStream.Length == 0)
                     {
-                        Name = schemaName,
-                        Filename = schemaFileName,
-                        TitleId = titleId
-                    },
-                    Content = schemaContent
-                };
+                        throw new ServiceResponseException(HttpStatusCode.BadRequest, "Invalid Game Mode Schema values provided.");
+                    }
+
+                    string schemaContent;
+                    using (var streamReader = new StreamReader(schemaStream))
+                    {
+                        schemaContent = streamReader.ReadToEnd();
+                    }
+
+                    gameModeSchemaRequestData = new GameModeSchemaRequest()
+                    {
+                        Metadata = new GameModeSchema()
+                        {
+                            Name = schemaName,
+                            Filename = Path.GetFileName(schemaFileName),
+                            TitleId = titleId
+                        },
+                        Content = schemaContent
+                    };
+                }
             }
 
             var cloudGame = new CloudGame()
@@ -907,7 +912,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             {
                 cloudGame.SchemaId = schemaId.Value.ToString();
             }
-            else
+            else if (gameModeSchemaRequestData != null)
             {
                 putGameRequest.GameModeSchema = gameModeSchemaRequestData;
             }
