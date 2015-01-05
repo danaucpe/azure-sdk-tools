@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <summary>
         /// The general information about the game services cmdlets.
         /// </summary>
-        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2014_12_v1");
+        public static readonly GameServicesCmdletsInfo Info = new GameServicesCmdletsInfo("2015_01_v1");
 
         private static readonly Dictionary<CloudGamePlatform, string> PlatformMapping = new Dictionary<CloudGamePlatform, string>
         {
