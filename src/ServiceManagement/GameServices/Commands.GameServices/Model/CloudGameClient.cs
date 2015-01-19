@@ -851,33 +851,30 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             await ClientHelper.RegisterCloudService(_httpClient, _httpXmlClient, platformResourceString).ConfigureAwait(false);
 
             GameModeSchemaRequest gameModeSchemaRequestData = null;
-            if (!string.IsNullOrEmpty(schemaName) )
+            if (!string.IsNullOrEmpty(schemaName))
             {
-                if (schemaName != null)
+                // Schema name provided, so must have schemaStream, etc.
+                if (schemaStream == null || string.IsNullOrEmpty(schemaFileName) || schemaStream.Length == 0)
                 {
-                    // Schema ID not provided, so must have schemaName, etc.
-                    if (schemaStream == null || string.IsNullOrEmpty(schemaFileName) || schemaStream.Length == 0)
-                    {
-                        throw new ServiceResponseException(HttpStatusCode.BadRequest, "Invalid Game Mode Schema values provided.");
-                    }
-
-                    string schemaContent;
-                    using (var streamReader = new StreamReader(schemaStream))
-                    {
-                        schemaContent = streamReader.ReadToEnd();
-                    }
-
-                    gameModeSchemaRequestData = new GameModeSchemaRequest()
-                    {
-                        Metadata = new GameModeSchema()
-                        {
-                            Name = schemaName,
-                            Filename = Path.GetFileName(schemaFileName),
-                            TitleId = titleId
-                        },
-                        Content = schemaContent
-                    };
+                    throw new ServiceResponseException(HttpStatusCode.BadRequest, "Invalid Game Mode Schema values provided.");
                 }
+
+                string schemaContent;
+                using (var streamReader = new StreamReader(schemaStream))
+                {
+                    schemaContent = streamReader.ReadToEnd();
+                }
+
+                gameModeSchemaRequestData = new GameModeSchemaRequest()
+                {
+                    Metadata = new GameModeSchema()
+                    {
+                        Name = schemaName,
+                        Filename = Path.GetFileName(schemaFileName),
+                        TitleId = titleId
+                    },
+                    Content = schemaContent
+                };
             }
 
             var cloudGame = new CloudGame()
@@ -910,6 +907,11 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             // If a schemaID is provided, use that in the request, otherwise, add the schema data contract to the put request
             if (schemaId.HasValue)
             {
+                if (schemaFileName != null || schemaStream != null)
+                {
+                    throw new ServiceResponseException(HttpStatusCode.BadRequest, "Cannot specify both an existing Game Mode Schema ID to reference as well as upload a new Game Mode Schema.");
+                }
+
                 cloudGame.SchemaId = schemaId.Value.ToString();
             }
             else if (gameModeSchemaRequestData != null)

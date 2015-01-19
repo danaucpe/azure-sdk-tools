@@ -90,19 +90,19 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
             }
         }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "An existing game mode schema ID.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "An existing game mode schema ID.", ParameterSetName = "ExistingSchema")]
         [ValidateNotNullOrEmpty]
         public Guid? SchemaId { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name for creating a new schema.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name for creating a new schema.", ParameterSetName = "NewSchema")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string SchemaName { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename for creating a new schema.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename for creating a new schema.", ParameterSetName = "NewSchema")]
         [ValidateNotNullOrEmpty]
         public string SchemaFilename { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema file stream for creating a new schema.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema file stream for creating a new schema.", ParameterSetName = "NewSchema")]
         [ValidateNotNullOrEmpty]
         public Stream SchemaStream { get; set; }
 
