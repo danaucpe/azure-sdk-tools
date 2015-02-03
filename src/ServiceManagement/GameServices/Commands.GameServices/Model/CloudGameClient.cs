@@ -987,12 +987,41 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <summary>
         /// Gets the cloud game instances for the Azure Game Services resource in the current subscription
         /// </summary>
+        /// <param name="tags">The tags if available.</param>
         /// <returns></returns>
-        public async Task<CloudGameColletion> GetCloudGames()
+        public async Task<CloudGameColletion> GetCloudGames(Hashtable tags)
         {
             var url = _httpClient.BaseAddress + CloudGameUriElements.GetCloudServicesResourcePath;
             var message = await _httpXmlClient.GetAsync(url).ConfigureAwait(false);
-            return await ClientHelper.ProcessCloudServiceResponse(this, message).ConfigureAwait(false);
+            var games = await ClientHelper.ProcessCloudServiceResponse(this, message).ConfigureAwait(false);
+
+            if (tags == null || tags.Count == 0 || games == null || games.Count == 0)
+            {
+                return games;
+            }
+
+            var filteredCollection = new CloudGameColletion();
+            foreach (var game in games)
+            {
+                var allMatch = true;
+                foreach (var tagKeyObj in tags.Keys)
+                {
+                    var tagKey = (string)tagKeyObj;
+                    var tagVal = (string)tags[tagKey];
+                    if (!game.Tags.Any((tag) => tag.Name == tagKey && tag.Value == tagVal))
+                    {
+                        allMatch = false;
+                        break;
+                    }
+                }
+
+                if (allMatch)
+                {
+                    filteredCollection.Add(game);
+                }
+            }
+
+            return filteredCollection;
         }
 
         /// <summary>

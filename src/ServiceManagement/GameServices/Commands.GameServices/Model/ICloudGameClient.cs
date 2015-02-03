@@ -316,8 +316,9 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
         /// <summary>
         ///     Gets the cloud game instances for the Azure Game Services resource in the current subscription
         /// </summary>
+        /// <param name="tags">The tags if available.</param>
         /// <returns></returns>
-        Task<CloudGameColletion> GetCloudGames();
+        Task<CloudGameColletion> GetCloudGames(Hashtable tags);
 
         /// <summary>
         ///     Gets a cloud game.

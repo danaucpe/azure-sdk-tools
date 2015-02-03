@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
 {
+    using System.Collections;
     using Microsoft.WindowsAzure.Commands.GameServices.Model;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
     using System.Management.Automation;
@@ -24,12 +25,15 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
     [Cmdlet(VerbsCommon.Get, "AzureGameServicesCloudGames"), OutputType(typeof(CloudGameColletion))]
     public class GetAzureGameServicesCloudGamesCommand : AzureGameServicesHttpClientCommandBase
     {
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Tags to match on cloud games.")]
+        public Hashtable Tags { get; set; }
+
         public ICloudGameClient Client { get; set; }
 
         protected override void Execute()
         {
             Client = Client ?? new CloudGameClient(CurrentContext, WriteDebugLog);
-            var result = Client.GetCloudGames().Result;
+            var result = Client.GetCloudGames(Tags).Result;
             WriteObject(result);
         }
     }
