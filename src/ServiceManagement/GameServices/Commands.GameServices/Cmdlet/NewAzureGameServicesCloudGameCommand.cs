@@ -80,13 +80,9 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
         public string[] ResourceSetIds
         {
             get { return this.resourceSets; }
-            set
-            {
-                if (value.Length == 1)
-                {
-                    // For back-compat
-                    this.resourceSets = value[0].Split(',');
-                }
+            set {
+                // Split is for back-compat
+                this.resourceSets = value.Length == 1 ? value[0].Split(',') : value;
             }
         }
 
@@ -94,15 +90,15 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
         [ValidateNotNullOrEmpty]
         public Guid? SchemaId { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name for creating a new schema.", ParameterSetName = "NewSchema")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema name for creating a new schema.", ParameterSetName = "NewSchema")]
         [ValidatePattern(ClientHelper.ItemNameRegex)]
         public string SchemaName { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename for creating a new schema.", ParameterSetName = "NewSchema")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema local filename for creating a new schema.", ParameterSetName = "NewSchema")]
         [ValidateNotNullOrEmpty]
         public string SchemaFilename { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema file stream for creating a new schema.", ParameterSetName = "NewSchema")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The game mode schema file stream for creating a new schema.", ParameterSetName = "NewSchema")]
         [ValidateNotNullOrEmpty]
         public Stream SchemaStream { get; set; }
 

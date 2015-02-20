@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Cmdlet
                 Name,
                 Filename,
                 FileStream).Result;
-            WriteObject(result.GameModeSchemaId);
+            WriteObject(new ItemCreatedResponse(result.GameModeSchemaId));
         }
     }
 }
