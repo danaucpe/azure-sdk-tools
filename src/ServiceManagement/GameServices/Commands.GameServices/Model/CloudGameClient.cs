@@ -13,6 +13,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.GameServices.Model
 {
+    using Microsoft.Xbox.FastAzureTransfer;
     using Microsoft.WindowsAzure.Commands.Common.Models;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Common;
     using Microsoft.WindowsAzure.Commands.GameServices.Model.Contract;
@@ -614,22 +615,60 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
             var responseMessage = await _httpClient.PostAsync(url, multipartFormContent).ConfigureAwait(false);
             var postGamePackageResult = await ClientHelper.ProcessJsonResponse<GamePackagePostResponse>(responseMessage).ConfigureAwait(false);
 
-            bool uploadSuccess;
-            StorageException exception = null;
+            bool uploadSuccess = false;
+            Exception exception = null;
+
+
             try
             {
-                var cloudblob = new CloudBlockBlob(new Uri(postGamePackageResult.GamePackagePreAuthUrl));
-                await Task.Factory.FromAsync(
-                    (callback, state) => cloudblob.BeginUploadFromStream(fileStream, callback, state),
-                    cloudblob.EndUploadFromStream,
-                    TaskCreationOptions.None).ConfigureAwait(false);
+                //first try with FAT library for 2 times
+                var uri = new Uri(postGamePackageResult.GamePackagePreAuthUrl);
+                var fStream = fileStream as FileStream;
+                if (fStream == null || String.IsNullOrEmpty(fStream.Name))
+                {
+                    //something went wrong. Throw exception
+                    throw new ArgumentException("The stream provided is not a valid file stream");
+                }
+                var filePath = fStream.Name;
+
+                IProgress<UploadProgressInfo> progress = new Progress<UploadProgressInfo>();
+                var parallelBlobUploader = new ParallelBlobUploader();
+                var cancellationToken = new CancellationToken();
+                await parallelBlobUploader.UploadFromFileAsync(filePath, uri, UploadOptions.DefaultOptions,cancellationToken, progress);
                 uploadSuccess = true;
             }
-            catch (StorageException ex)
+            catch (ArgumentException ex)
             {
-                // workaround because await cannot be used in a "catch" block
-                uploadSuccess = false;
+                //no point retrying here. exit
                 exception = ex;
+            }
+
+            if (!uploadSuccess)
+            {
+                //since FAT was unsuccessful, let us upload using Azure Library
+                try
+                {
+                    var cloudblob = new CloudBlockBlob(new Uri(postGamePackageResult.GamePackagePreAuthUrl));
+
+                    //normal method with azure inbuilt support
+                    var blobRequestOptions = new BlobRequestOptions
+                    {
+                        SingleBlobUploadThresholdInBytes = 4000000,
+                        //Max is 64
+                        ParallelOperationThreadCount = 63
+                    };
+                    cloudblob.ServiceClient.DefaultRequestOptions = blobRequestOptions;
+                    //normal method to upload
+                    await Task.Factory.FromAsync(
+                        (callback, state) => cloudblob.BeginUploadFromStream(fileStream, callback, state),
+                        cloudblob.EndUploadFromStream,
+                        TaskCreationOptions.None).ConfigureAwait(false);
+                    uploadSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
             }
 
             if (!uploadSuccess)
@@ -638,7 +677,14 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 await this.RemoveGamePackage(cloudGameName, platform, vmPackageId, Guid.Parse(postGamePackageResult.GamePackageId));
 
                 var errorMessage = string.Format("Failed to upload game package file for cloud game instance to azure storage. gameId {0}, platform {1}, vmPackageId, {2} GamePackageId {3}", cloudGameName, platformResourceString, vmPackageId, postGamePackageResult.GamePackageId);
-                throw ClientHelper.CreateExceptionFromJson((HttpStatusCode)exception.RequestInformation.HttpStatusCode, errorMessage + "\nException: " + exception);
+
+                var storageEx = exception as StorageException;
+
+                if (storageEx != null)
+                {
+                    throw ClientHelper.CreateExceptionFromJson((HttpStatusCode)storageEx.RequestInformation.HttpStatusCode, errorMessage + "\nException: " + exception);    
+                }
+                throw exception;
             }
 
             var multpartFormContentMetadata = new MultipartFormDataContent
