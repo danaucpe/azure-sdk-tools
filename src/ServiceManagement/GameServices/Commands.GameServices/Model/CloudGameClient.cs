@@ -617,14 +617,12 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
 
             bool uploadSuccess = false;
             Exception exception = null;
-
+            var uri = new Uri(postGamePackageResult.GamePackagePreAuthUrl);
 
             try
             {
-                //first try with FAT library for 2 times
-                var uri = new Uri(postGamePackageResult.GamePackagePreAuthUrl);
                 var fStream = fileStream as FileStream;
-                if (fStream == null || String.IsNullOrEmpty(fStream.Name))
+                if (fStream == null || String.IsNullOrWhiteSpace(fStream.Name))
                 {
                     //something went wrong. Throw exception
                     throw new ArgumentException("The stream provided is not a valid file stream");
@@ -634,10 +632,10 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 IProgress<UploadProgressInfo> progress = new Progress<UploadProgressInfo>();
                 var parallelBlobUploader = new ParallelBlobUploader();
                 var cancellationToken = new CancellationToken();
-                await parallelBlobUploader.UploadFromFileAsync(filePath, uri, UploadOptions.DefaultOptions,cancellationToken, progress);
+                await parallelBlobUploader.UploadFromFileAsync(filePath, uri, UploadOptions.DefaultOptions, cancellationToken, progress);
                 uploadSuccess = true;
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 //no point retrying here. exit
                 exception = ex;
@@ -648,7 +646,7 @@ namespace Microsoft.WindowsAzure.Commands.GameServices.Model
                 //since FAT was unsuccessful, let us upload using Azure Library
                 try
                 {
-                    var cloudblob = new CloudBlockBlob(new Uri(postGamePackageResult.GamePackagePreAuthUrl));
+                    var cloudblob = new CloudBlockBlob(uri);
 
                     //normal method with azure inbuilt support
                     var blobRequestOptions = new BlobRequestOptions
